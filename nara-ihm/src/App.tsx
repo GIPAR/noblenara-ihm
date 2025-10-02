@@ -117,7 +117,6 @@ function App() {
       <main>
         <div className="dashboard">
           <div className="camera-panel">
-            <h2>Lembrar de Mudar a cor e posição desse trem "Camera Feed"</h2>
             <div className={`camera-stream-container ${cameraActive ? 'online' : 'offline'}`}>
               {cameraActive ? (
                 <>
