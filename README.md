@@ -18,7 +18,7 @@ $ sudo apt install ros-jazzy-rosbridge-suite
 $ sudo apt install ros-jazzy-web-video-server
 $ sudo apt install npm
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-$ nvm install --lts
+$ nvm install --lts #abra um novo terminal pra conseguir usar o comando!
 ```
 A seguir, copie o arquivo nara-ihm no seu computador
 
