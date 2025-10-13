@@ -33,6 +33,7 @@ $ npm install
 $ npm run dev
 ```
 Após o install, pode-se rodar o pacote em qualquer momento com o comando "npm run dev", desde que o terminal esteja diretamente na pasta base do projeto
+
 Também é necessário rodar outros comandos para o correto funcionamento da comunicação ROS2-IHM
 ```
 bash
