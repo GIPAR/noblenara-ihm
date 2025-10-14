@@ -7,6 +7,8 @@ function App() {
   const [isConnected, setIsConnected] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
   const connectionAttemptedRef = useRef(false);
+  const [camerasettings, setcamerasettings] = useState(0);
+  const [cameraurl, setcameraurl] = useState('');
 
   useEffect(() => {                                           // Só conecta se ainda não tentou conectar devido ao RestrictMode
     if (!connectionAttemptedRef.current) {                    // Conecta ao ROS2 na abertura do site
@@ -66,7 +68,7 @@ function App() {
           }}
           title={isConnected ? 'ROS2 Connected - Click to reconnect' : 'Connect to ROS2'}
         >
-          {isConnected ? '⚙️' : '🔌'}
+          {isConnected ? '🔧' : '🔌'}
         </div>
       
       <div 
@@ -98,42 +100,63 @@ function App() {
           🛑
         </div>
 
-      <div className="panel-item">🔧</div>
     </div>
     );
   };
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>NARA - Robot HMI</h1>
-        <p style={{ color: isConnected ? '#4ade80' : '#0000008a' }}>
-          Robot Status: {isConnected ? 'Connected' : 'Disconnected'}
-        </p>
-      </header>
-      
-      <FloatingPanel />
+  const whichCamera = () => {  
+    switch(camerasettings) {
+      case 0:
+        return <div>No camera</div>;
+      case 1:
+        return whichCameraCODE();
+      case 2:
+        return whichCameraCODE();
+      case 3:
+        return whichCameraCODE();
+      default:
+        return <div>No camera</div>;
+   }
+  };
 
-      <main>
-        <div className="dashboard">
-          <div className="camera-panel">
-            <div className={`camera-stream-container ${cameraActive ? 'online' : 'offline'}`}>
+  const whichCameraCODE = () => {
+          return (                                       /* Código para a lógica da câmera com variável string em lugar do endereço */
+          <div className={`camera-stream-container ${cameraActive ? 'online' : 'offline'}`}>
               {cameraActive ? (
                 <>
                   <img 
-                    src="http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg"
+                    src={cameraurl}                     /* Variável State para endereço que pegará a câmera */
                     alt="Robot Camera Feed"
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover'
                     }}
-                    onError={(e) => {
+                    onError={(_e) => {                  /* _e indica que é uma variavel intencionalmente não usada mas que possivel irá no futuro */
                       console.log('❌ Camera stream error')
                       setCameraActive(false)
                     }}
                     onLoad={() => console.log('✅ Camera stream loaded')}
                   />
+                  {camerasettings === 3 &&              /* Mostra o camera user em conjunto com o camera link apenas quando a variavel settings é = 3 */
+                  <img 
+                    src="http://localhost:8080/stream?topic=/noblenara/camera_user&type=mjpeg"
+                    alt="Robot Camera Feed"
+                    style={{
+                      right: '10px',
+                      position: 'absolute',             /* posição absoluta em relação á primeira */
+                      width: '25%',
+                      height: '25%',
+                      objectFit: 'cover',
+                      border: '2px solid white'
+                    }}
+                    onError={(_e) => {
+                      console.log('❌ Camera stream error')
+                      setCameraActive(false)
+                    }}
+                    onLoad={() => console.log('✅ Camera stream loaded')}
+                  />
+                  }
                   <div className="camera-status online">LIVE</div>
                 </>
               ) : (
@@ -152,8 +175,54 @@ function App() {
                 maxLinearSpeed={-5}
                 maxAngularSpeed={0.8}
               />
+          </div>
+        );
+  };
 
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>NARA - Robot HMI</h1>
+        <p style={{ color: isConnected ? '#4ade80' : '#0000008a' }}>
+          Robot Status: {isConnected ? 'Connected' : 'Disconnected'}
+        </p>
+      </header>
+      
+      <FloatingPanel />
+
+      <main>
+        <div className="dashboard">
+          <div className="camera-panel">
+            {whichCamera()}
+          </div>
+
+          <div className="settings-panel">
+            <div className="settings-item"
+              onClick={() => setcamerasettings(0)}>💤
             </div>
+
+            <div className="settings-item" 
+              onClick={() => {
+                setcameraurl('http://localhost:8080/stream?topic=/noblenara/camera_user&type=mjpeg');
+                setcamerasettings(1);
+                }}>👤
+            </div>
+
+            <div className="settings-item" 
+              onClick={() => {
+                setcameraurl('http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg');
+                setcamerasettings(2);
+                }}>📹
+            </div>
+            
+            <div className="settings-item" 
+              onClick={() => {
+                setcameraurl('http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg');
+                setcamerasettings(3);
+                }}>
+                <span style={{fontSize: '0.9rem'}}>👤📹</span>
+            </div>
+
           </div>
         </div>
       </main>
