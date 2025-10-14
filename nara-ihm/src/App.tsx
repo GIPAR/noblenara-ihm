@@ -3,12 +3,12 @@ import './App.css'
 import { ros2Service } from './services/ROS2Service';
 import { KeyboardControl } from './services/KeyboardControl';
 
-function App() {
-  const [isConnected, setIsConnected] = useState(false);
-  const [cameraActive, setCameraActive] = useState(false);
-  const connectionAttemptedRef = useRef(false);
-  const [camerasettings, setcamerasettings] = useState(0);
-  const [cameraurl, setcameraurl] = useState('');
+function App() {                                              // OBS: No vite é necessário o uso de useState para que haja atualização instant
+  const [isConnected, setIsConnected] = useState(false);      // Seta o estado de conexão do ROS2, OBS: não há atualização automatica (14/10/25)
+  const [cameraActive, setCameraActive] = useState(false);    // Seta o estado da camera, no código se for falso ele coloca um placeholder
+  const connectionAttemptedRef = useRef(false);               // Variável necessária para não dar problema com o Restrict Mode do React
+  const [camerasettings, setcamerasettings] = useState(0);    // Variável int para a lógica da câmera de acordo com a escolha do usuário
+  const [cameraurl, setcameraurl] = useState('');             // String para endereço da camera a ser pego de acordo com a seleção do usuário
 
   useEffect(() => {                                           // Só conecta se ainda não tentou conectar devido ao RestrictMode
     if (!connectionAttemptedRef.current) {                    // Conecta ao ROS2 na abertura do site
