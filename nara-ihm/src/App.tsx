@@ -172,8 +172,8 @@ function App() {                                              // OBS: No vite é
               {/* Keyboard Control Bar - always visible */}
               <KeyboardControl 
                 isConnected={isConnected}
-                maxLinearSpeed={-5}
-                maxAngularSpeed={0.8}
+                maxLinearSpeed={-1.5}
+                maxAngularSpeed={1.5}
               />
           </div>
         );
