@@ -73,14 +73,14 @@ class ROS2Service {	// This class handles all communication between our React ap
   publishVelocity(linear: number, angular: number) {
     const velocityMessage = {
       linear: {
-        x: angular, // Rotation speed (left/right)
+        x: angular, // Rotation speed (left/right) -> Coloque "linear" para a cadeira física
         y: 0.0,
         z: 0.0
       },
       angular: {
         x: 0.0,
         y: 0.0,
-        z: linear // Forward/backward speed
+        z: linear // Forward/backward speed -> Coloque "angular" para a cadeira física
       }
     };
 
