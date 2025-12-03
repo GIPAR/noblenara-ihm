@@ -9,8 +9,8 @@ interface KeyboardControlProps {
 
 export const KeyboardControl: React.FC<KeyboardControlProps> = ({
   isConnected,
-  maxLinearSpeed = 0.5,
-  maxAngularSpeed = 0.8
+  maxLinearSpeed = 0.0,
+  maxAngularSpeed = 0.0
 }) => {
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
   const [currentVelocity, setCurrentVelocity] = useState({ linear: 0, angular: 0 });
