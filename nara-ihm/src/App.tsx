@@ -7,8 +7,10 @@ function App() {                                              // OBS: No vite é
   const [isConnected, setIsConnected] = useState(false);      // Seta o estado de conexão do ROS2, OBS: não há atualização automatica (14/10/25)
   const [cameraActive, setCameraActive] = useState(false);    // Seta o estado da camera, no código se for falso ele coloca um placeholder
   const connectionAttemptedRef = useRef(false);               // Variável necessária para não dar problema com o Restrict Mode do React
+  
   const [camerasettings, setcamerasettings] = useState(0);    // Variável int para a lógica da câmera de acordo com a escolha do usuário
   const [cameraurl, setcameraurl] = useState('');             // String para endereço da camera a ser pego de acordo com a seleção do usuário
+  const [cameralink, setcameralink] = useState('');           // Variável para alterar o endereço da câmera Simulação <-> Física
 
   useEffect(() => {                                           // Só conecta se ainda não tentou conectar devido ao RestrictMode
     if (!connectionAttemptedRef.current) {                    // Conecta ao ROS2 na abertura do site
@@ -85,6 +87,24 @@ function App() {                                              // OBS: No vite é
           📹
       </div>
 
+      <div 
+          className="panel-item" 
+          onClick={() =>{
+            setcameralink(cameralink === 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg' ? 'http://localhost:8080/stream?topic=/zed/zed_node/rgb/color/rect/image&type=mjpeg' : 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg')
+            //anotherchangehere
+          }}
+          style={{ 
+            background: cameraActive 
+              ? 'rgba(74, 222, 128, 0.3)' 
+              : 'rgba(0, 184, 230, 0.068)',
+            cursor: isConnected ? 'pointer' : 'not-allowed',
+            opacity: isConnected ? 1 : 0.5
+          }}
+          title={"Switch: Simulação <-> Física"}
+        >
+          🔧
+      </div>
+      
       <div
           className="panel-item"
           onClick={ros2Service.stopRobot}
