@@ -7,10 +7,14 @@ function App() {                                              // OBS: No vite é
   const [isConnected, setIsConnected] = useState(false);      // Seta o estado de conexão do ROS2, OBS: não há atualização automatica (14/10/25)
   const [cameraActive, setCameraActive] = useState(false);    // Seta o estado da camera, no código se for falso ele coloca um placeholder
   const connectionAttemptedRef = useRef(false);               // Variável necessária para não dar problema com o Restrict Mode do React
-  
+
   const [camerasettings, setcamerasettings] = useState(0);    // Variável int para a lógica da câmera de acordo com a escolha do usuário
-  const [cameraurl, setcameraurl] = useState('');             // String para endereço da camera a ser pego de acordo com a seleção do usuário
-  const [cameralink, setcameralink] = useState('');           // Variável para alterar o endereço da câmera Simulação <-> Física
+  const [cameraurl, setcameraurl] = useState('');             // Strings para o caminho da camera de acordo com seleção do usuário
+  const [cameralink, setcameralink] = useState('http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg');
+
+  
+  const [maxLinearSpeed, setMaxLinearSpeed] = useState(-1.5); //Variáveis para mudar a velocidade máxima
+  const [maxAngularSpeed, setMaxAngularSpeed] = useState(0.5);
 
   useEffect(() => {                                           // Só conecta se ainda não tentou conectar devido ao RestrictMode
     if (!connectionAttemptedRef.current) {                    // Conecta ao ROS2 na abertura do site
@@ -90,8 +94,9 @@ function App() {                                              // OBS: No vite é
       <div 
           className="panel-item" 
           onClick={() =>{
-            setcameralink(cameralink === 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg' ? 'http://localhost:8080/stream?topic=/zed/zed_node/rgb/color/rect/image&type=mjpeg' : 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg')
-            //anotherchangehere
+            setcameralink(cameralink === 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg' ? 'http://localhost:8080/stream?topic=/zed/zed_node/rgb/color/rect/image&type=mjpeg' : 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg');
+            //setMaxAngularSpeed(maxAngularSpeed === 1.0 ? -1.0 : 1.0); //Verificar se é necessário mudar o sinal deste!
+            setMaxLinearSpeed(maxLinearSpeed === -1.5 ? 1.5 : -1.5);
           }}
           style={{ 
             background: cameraActive 
@@ -102,9 +107,9 @@ function App() {                                              // OBS: No vite é
           }}
           title={"Switch: Simulação <-> Física"}
         >
-          🔧
+          ⚙️
       </div>
-      
+
       <div
           className="panel-item"
           onClick={ros2Service.stopRobot}
@@ -192,8 +197,8 @@ function App() {                                              // OBS: No vite é
               {/* Keyboard Control Bar - always visible */}
               <KeyboardControl 
                 isConnected={isConnected}
-                maxLinearSpeed={-1.5}
-                maxAngularSpeed={1.5}
+                maxAngularSpeed={maxAngularSpeed}
+                maxLinearSpeed={maxLinearSpeed}
               />
           </div>
         );
@@ -204,7 +209,7 @@ function App() {                                              // OBS: No vite é
       <header className="App-header">
         <h1>NARA - Robot HMI</h1>
         <p style={{ color: isConnected ? '#4ade80' : '#0000008a' }}>
-          Robot Status: {isConnected ? 'Connected' : 'Disconnected'}
+          Bridge Status: {isConnected ? 'Connected' : 'Disconnected'} 
         </p>
       </header>
       
@@ -230,14 +235,14 @@ function App() {                                              // OBS: No vite é
 
             <div className="settings-item" 
               onClick={() => {
-                setcameraurl('http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg');
+                setcameraurl(cameralink);
                 setcamerasettings(2);
                 }}>📹
             </div>
             
             <div className="settings-item" 
               onClick={() => {
-                setcameraurl('http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg');
+                setcameraurl(cameralink);
                 setcamerasettings(3);
                 }}>
                 <span style={{fontSize: '0.9rem'}}>👤📹</span>
