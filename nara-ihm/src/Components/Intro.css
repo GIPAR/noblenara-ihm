@@ -248,7 +248,6 @@ main {    /* Main content area */
   width: 2rem;
   height: 3rem;
   background-image: url('../assets/Intro/Vi.png');
-  /* border: 1px solid white; */
   background-size: 100%; background-position: center; background-repeat: no-repeat;
   z-index: 3;
 }

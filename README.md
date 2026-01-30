@@ -16,13 +16,13 @@ $ sudo apt install ros-jazzy-rosbridge-suite
 $ sudo apt install ros-jazzy-web-video-server
 $ sudo apt install npm
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-$ nvm install --lts #abra um novo terminal pra conseguir usar o comando!
+$ nvm install 24.11.1 #abra um novo terminal pra conseguir usar o comando!
 ```
 A seguir, copie o arquivo nara-ihm no seu computador
 
 ### 2 - Rodando o IHM
 
-Execute os seguintes comandos para instalar o pacote após a cópia do arquivo
+Baixe o repositório e copie o arquivo "nara-ihm" para o local desejado; mova-se para este arquivo e rode os seguintes comandos:
 ```
 bash
 $ cd nara-ihm
@@ -31,10 +31,11 @@ $ npm run dev
 ```
 Após o install, pode-se rodar o pacote em qualquer momento com o comando "npm run dev", desde que o terminal esteja diretamente na pasta base do projeto
 
+****Importante! Para logar no site use o usuário "gipar" e senha "usergipar", são placeholders temporários****
+
 Também é necessário rodar outros comandos para o correto funcionamento da comunicação ROS2-IHM
 ```
 bash
 $ ros2 run rosbridge_server rosbridge_websocket
 $ ros2 run web_video_server web_video_server
-$ npm run dev
 ```

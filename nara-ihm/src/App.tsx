@@ -25,7 +25,7 @@ function App() {
       ros.connect();
     }
     return () => {
-      connectionAttemptedRef.current = false;
+      connectionAttemptedRef.current = true;
   
       if (isConnected) {
         ros.disconnect();

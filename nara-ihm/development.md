@@ -50,29 +50,18 @@ H.264/H.265 via FFMPEG (ffmpeg_image_transport)
 
 ## Details (ignore)
 
-$ npm run dev        #To start the server
+$ npm run dev        #Para inicializar o server
 
-Dependencieres: Command List (Minimal)
+Command List (Minimal)
 ```
 bash
 $ sudo apt install ros-jazzy-rosbridge-suite
 $ sudo apt install ros-jazzy-web-video-server
-$ sudo apt install npm
+$ sudo apt install npm ::: Verificar!
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 $ nvm install 24.11.1
-$ npm create vite@latest nara-ihm -- --template react-ts	#For TypeScript
-Trocar o Arquivo
-$ cd nara-ihm ***
 $ npm install
-$ npm install ws        #instalar o websocket para comunicação 'Obs: e'
-$ npm install @types/ws --save-dev 
-$ npm install roslib
-$ npm install zustand
-$ npm install jotai
 ```
-node --version 24.11.1  
-nvm --version 0.39.2  
-npm --version 11.6.2  
-VS Code - Extensions: ES7+ React/Redux/React-Native snippets  
-TypeScript  
-React
+node --version 24.11.1
+nvm --version 0.39.2
+npm --version 11.6.2

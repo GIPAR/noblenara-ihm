@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { ROS2Service } from '../services/ROS2Service' // Your class
+import { ROS2Service } from '../services/ROS2Service'
 
 const defaultuserConfig = { Login: false, Type: false, Environment: 0 }
 const nullUser = { name: '', password: '' }

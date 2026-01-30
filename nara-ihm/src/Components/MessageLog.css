@@ -1,8 +1,8 @@
 /* Messagebox for viewable logs */
 .Intro-Messagebox {
   position: fixed;
-  bottom: 2rem; /* Distance from the bottom edge */
-  left: 2rem;   /* Distance from the left edge */
+  bottom: 2rem;
+  left: 2rem;
   display: flex;
   align-items: center;
   --messagebox-color: 15, 230, 255;

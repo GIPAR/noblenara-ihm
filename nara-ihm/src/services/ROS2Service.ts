@@ -76,7 +76,7 @@ export class ROS2Service {
 
     return {  // We return an object for it to know easily how to unsubscribe later
       unsubscribe: () => {
-        // We reuse your existing unsubscribe logic, but we handle the arguments for the user
+        // We reuse the existing unsubscribe logic, but we handle the arguments for the user
         this.unsubscribe(topic, callback);
       }
     };
