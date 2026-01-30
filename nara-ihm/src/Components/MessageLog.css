@@ -1,0 +1,66 @@
+/* Messagebox for viewable logs */
+.Intro-Messagebox {
+  position: fixed;
+  bottom: 2rem; /* Distance from the bottom edge */
+  left: 2rem;   /* Distance from the left edge */
+  display: flex;
+  align-items: center;
+  --messagebox-color: 15, 230, 255;
+
+  color: white;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 2rem;
+  background: rgba(var(--messagebox-color), 0.67);
+
+  padding: 0rem 3rem;
+  gap: 2rem;
+  width: auto;
+  height: 1.5rem;
+  transition: 0.3s;
+  animation: logEffect 6s ease-in forwards;
+}
+.Intro-Messagebox.error{
+  --messagebox-color: 226, 185, 3;
+  font-weight: bolder;
+}
+.Intro-Messagebox-testandomano{
+  color: rgb(190, 146, 0);
+}
+.Intro-Messagebox-Exclamationmark {
+  position: absolute;
+  font-weight: bold;
+  font-size: 1.5rem;
+  left: -0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border: 2px solid rgba(255, 255, 255, 0.808);
+  border-radius: 50%;
+  background: rgba(var(--messagebox-color));
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.Intro-Messagebox:hover {
+  animation-play-state: paused;
+  text-shadow: 0 0 4px rgba(var(--messagebox-color), 0.562);
+  box-shadow: 0 0 8px rgb(var(--messagebox-color)), inset 0 0 10px rgba(var(--messagebox-color), 0.2);
+  transform: scale(1.03);
+}
+
+@keyframes logEffect {
+  0% {
+    opacity: 90%;
+  }
+  50% {
+    opacity: 60%;
+    transform: translateX(0rem);
+   }
+  95% {
+    opacity: 0%;
+    transform: translateX(5rem);
+   }
+  100% {
+    opacity: 0%;
+    transform: translateX(-25rem);
+}}

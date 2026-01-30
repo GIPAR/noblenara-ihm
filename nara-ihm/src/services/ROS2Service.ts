@@ -1,76 +1,115 @@
-class ROS2Service {	// This class handles all communication between our React app and ROS2
-  // Private variables - Local ones
-  private ws: WebSocket | null = null;                                    // The WebSocket connection to ROS2
-  private listeners: { [topic: string]: (message: any) => void } = {};   // Storage for callback functions
+import { LogAtom } from "../contexts/Molecule";
+import { ROStore } from "../contexts/Store";
+import { getDefaultStore } from 'jotai';
 
-  connect(url: string = 'ws://localhost:9090'): Promise<boolean> {	// Connection to ROS2 rosbridge server
-    // Returns a Promise - means this function is asynchronous (takes time to complete)
+interface RosBridgeMessage {
+  op: string;
+  topic?: string;
+  msg?: unknown;
+}
+
+export class ROS2Service {
+  private ws: WebSocket | null = null;
+  private listeners: { [topic: string]: ((message: unknown) => void)[] } = {};
+  private unexpectedDisconnect: boolean | null = null;
+
+  connect(url: string = 'ws://localhost:9090'): Promise<boolean> {
     return new Promise((resolve, reject) => {
+
+      if(ROStore.getState().isConnected){ 
+        resolve(true);
+        getDefaultStore().set(LogAtom, {msg: "ROS2 Bridge já Conectado!", id: Date.now(), error: false});
+        return;
+      }
+
       try {
-        this.ws = new WebSocket(url);					// Create WebSocket connection to rosbridge server (default port 9090)
-        
-        this.ws.onopen = () => {					// Event handler for connection
-          console.log('Connected to ROS2 Bridge');
+        this.ws = new WebSocket(url);	
+        this.ws.onopen = () => {					    // Event handler: connection
+          ROStore.getState().setisConnected(true);
+          getDefaultStore().set(LogAtom, {msg: "Conectado com sucesso!", id: Date.now(), error: false});
+          this.unexpectedDisconnect = true;
           resolve(true);
         };
 
-        this.ws.onerror = (error) => {					// Event handler for failed connection
+        this.ws.onerror = (error) => {				// Event handler: failed connection
           console.error('ROS2 WebSocket error:', error);
+          getDefaultStore().set(LogAtom, {msg: "Falha na conexão com o ROS2!", id: Date.now(), error: true});
           reject(error);
         };
 
-        this.ws.onmessage = (event) => {				// Event handler: What to do when we receive ANY message from ROS2
+        this.ws.onmessage = (event) => {			// Event handler: What to do when we receive ANY message from ROS2
           const data = JSON.parse(event.data); 				// Parse the JSON string back into a JavaScript object
-          // Send this data to our message handler (defined below)
           this.handleMessage(data);
         };
 
-        this.ws.onclose = () => {					// Event handler for closed connection
-          console.log('Disconnected from ROS2 Bridge');
+        this.ws.onclose = () => {					    // Event handler: closed connection || Checkar quando a conexão for cortada manualmente
+          ROStore.getState().setisConnected(false)
+          if(this.unexpectedDisconnect === true){getDefaultStore().set(LogAtom, {msg: "Desconectado inesperadamente do ROS2!", id: Date.now(), error: true});}
+          else if(this.unexpectedDisconnect === false){getDefaultStore().set(LogAtom, {msg: "Robô desconectado pelo usuário", id: Date.now(), error: false});}
+          this.unexpectedDisconnect = null;
         };
 
       } catch (error) {
-        // If anything goes wrong during setup, report the error
         reject(error);
       }
     });
   }
 
-  // Subscribe to a specific ROS2 topic
-  subscribe(topic: string, messageType: string, callback: (message: any) => void) {
-    if (!this.ws) return;						// Check if we're connected first
-
-    const subscribeMessage = {// Create the subscribe message in the format rosbridge expects
-      op: 'subscribe',        // Operation type: subscribe
-      topic: topic,           // Which ROS2 topic to listen to (e.g., '/noblenara/odom')
-      type: messageType       // What type of messages to expect (e.g., 'nav_msgs/Odometry')
-    };
-
-    this.ws.send(JSON.stringify(subscribeMessage));			// Send the subscribe request to rosbridge as a JSON string
-    
-    this.listeners[topic] = callback;					// Store the callback function so we can call it when messages arrive
-  }
-
-
-// NEW: Publish a message to a ROS2 topic
-  publish(topic: string, messageType: string, message: any) {
+  subscribe = (topic: string, messageType: string, callback: (message: unknown) => void): { unsubscribe: () => void } => {
     if (!this.ws) {
-      console.warn('Cannot publish: Not connected to ROS2');
-      return;
+        return { unsubscribe: () => {} }; // Dummy unsubscribe if not connected
     }
 
-    const publishMessage = {
-      op: 'publish', // Operation type: publish (send data)
-      topic: topic, // Which topic to send to
-      type: messageType, // Message type
-      msg: message // The actual data to send
+    const subscribeMessage = {
+      op: 'subscribe',
+      topic: topic,
+      type: messageType
     };
 
+    if ((!this.listeners[topic] || this.listeners[topic].length === 0) && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify(subscribeMessage));
+    }
+    if (!this.listeners[topic]) {
+      this.listeners[topic] = [];
+    }
+    this.listeners[topic].push(callback);
+
+    return {  // We return an object for it to know easily how to unsubscribe later
+      unsubscribe: () => {
+        // We reuse your existing unsubscribe logic, but we handle the arguments for the user
+        this.unsubscribe(topic, callback);
+      }
+    };
+  }
+  unsubscribe = (topic: string, callback: (message: unknown) => void) => {
+    if (!this.listeners[topic]) return;
+  
+    this.listeners[topic] = this.listeners[topic].filter(cb => cb !== callback); // Remove this specific callback from the array
+    if (this.listeners[topic].length === 0) {                                    // If no more listeners, unsubscribe from rosbridge
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        op: 'unsubscribe',
+        topic: topic
+      }));
+      }
+    delete this.listeners[topic];}
+  }
+
+  publish = (topic: string, messageType: string, message: unknown) => {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      console.warn('Publicação Impossível: Não conectado ao ROS2');
+      return;
+    }
+    const publishMessage = {
+      op: 'publish',
+      topic: topic,
+      type: messageType,
+      msg: message
+    };
     this.ws.send(JSON.stringify(publishMessage));
   }
 
-  // NEW: Specific method for publishing velocity commands
-  publishVelocity(linear: number, angular: number) {
+  publishVelocity = (linear: number, angular: number) => {
     const velocityMessage = {
       linear: {
         x: angular, // Rotation speed (left/right) -> Coloque "linear" para a cadeira física
@@ -83,41 +122,32 @@ class ROS2Service {	// This class handles all communication between our React ap
         z: linear // Forward/backward speed -> Coloque "angular" para a cadeira física
       }
     };
-
     this.publish('/noblenara/cmd_vel', 'geometry_msgs/Twist', velocityMessage);
-    console.log(`🚀 Sent velocity: linear=${linear}, angular=${angular}`);
+    console.log(`🚀 Velocidade Enviada: linear=${linear}, angular=${angular}`);
   }
 
-  // NEW: Quick stop method
-  stopRobot() {
+  stopRobot = () => {
     this.publishVelocity(0, 0);
-    console.log('🛑 Robot stopped');
+    console.log('Publicado comando de parar ao Robô.');
   }
   
-  private handleMessage(data: any) {					// Private method to handle incoming messages from ROS2
-    // Check if this is a published message (actual topic data)
-    if (data.op === 'publish' && this.listeners[data.topic]) {
-      // Find the callback function we stored for this topic
-      // Call it with the message data (data.msg contains the actual ROS2 message)
-      this.listeners[data.topic](data.msg);
+  private handleMessage(data: unknown) {
+    const message = data as RosBridgeMessage; // Type assertion
+    if (message.op === 'publish' && message.topic && this.listeners[message.topic]) {
+    this.listeners[message.topic].forEach(callback => {
+      callback(message.msg);
+    });
     }
-    // Note: rosbridge sends different types of messages:
-    // - op: 'publish' = actual topic data
-    // - op: 'status' = connection status updates
-    // - etc.
   }
 
-  // Method to cleanly disconnect from ROS2
-  disconnect() {
+  disconnect = () => {
+    console.log(this.ws)
     if (this.ws) {
       this.stopRobot(); // Stop robot before disconnecting
+      this.unexpectedDisconnect = false;
       this.ws.close();        // Close the WebSocket connection
       this.ws = null;         // Clear our reference
+      ROStore.getState().setisConnected(false); // Update isConnected state
     }
   }
 }
-  
-
-// Create a single instance that the whole app can use
-// This is called the "Singleton" pattern - one shared instance
-export const ros2Service = new ROS2Service();

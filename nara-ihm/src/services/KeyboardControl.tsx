@@ -1,164 +1,75 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { ros2Service } from './ROS2Service';
+import { useEffect, useState, useRef } from 'react'
+import '../Components/Keyboard.css';
 
-interface KeyboardControlProps {
-  isConnected: boolean;
-  maxLinearSpeed?: number;
-  maxAngularSpeed?: number;
-}
+import { useStore } from 'zustand'
+import { ROStore } from '../contexts/Store';
+import { useAtom, useSetAtom } from 'jotai';
+import { LogAtom, SpeedAtom, TeleopAtom } from '../contexts/Molecule';
 
-export const KeyboardControl: React.FC<KeyboardControlProps> = ({
-  isConnected,
-  maxLinearSpeed = 0.0,
-  maxAngularSpeed = 0.0
-}) => {
-  const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
-  const [currentVelocity, setCurrentVelocity] = useState({ linear: 0, angular: 0 });
+export const KeyboardControl = () => {
+    const [linear, setlinear] = useState(0);
+    const [angular, setangular] = useState(0);
+    const keysRef = useRef<Set<string>>(new Set()); // useRef = No Re-renders
 
-  const sendVelocity = useCallback((linear: number, angular: number) => {
-    if (!isConnected) return;
-    
-    ros2Service.publishVelocity(linear, angular);
-    setCurrentVelocity({ linear, angular });
-  }, [isConnected]);
+    const ros = useStore(ROStore, (s) => s.ros)
+    const isConnected = useStore(ROStore, (s) => s.isConnected)
+    const [MaxSpeed] = useAtom(SpeedAtom)
+    const setLogData = useSetAtom(LogAtom)
+    const setStartTeleop = useSetAtom(TeleopAtom)
 
-  const stopRobot = useCallback(() => {
-    sendVelocity(0, 0);
-  }, [sendVelocity]);
-
-  const handleKeyPress = useCallback((key: string, isPressed: boolean) => {
-    if (!isConnected) return;
-
-    setPressedKeys(prev => {
-      const newKeys = new Set(prev);
-      if (isPressed) {
-        newKeys.add(key);
-      } else {
-        newKeys.delete(key);
-      }
-
-      // Calculate velocity based on pressed keys
-      let linear = 0;   // angular.z - Forward/backward
-      let angular = 0;  // linear.x - Left/right
-
-      if (newKeys.has('ArrowLeft')) angular -= maxAngularSpeed;
-      if (newKeys.has('ArrowRight')) angular += maxAngularSpeed;
-      if (newKeys.has('ArrowUp')) linear += maxLinearSpeed;
-      if (newKeys.has('ArrowDown')) linear -= maxLinearSpeed;
-
-      // Send velocity command
-      sendVelocity(linear, angular);
-
-      return newKeys;
-    });
-  }, [isConnected, maxLinearSpeed, maxAngularSpeed, sendVelocity]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // Prevent default browser behavior for arrow keys
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(event.key)) {
-        event.preventDefault();
-      }
-
-      if (event.key === ' ') {
-        stopRobot();
-        setPressedKeys(new Set());
-        return;
-      }
-
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-        handleKeyPress(event.key, true);
-      }
-    };
-
-    const handleKeyUp = (event: KeyboardEvent) => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-        handleKeyPress(event.key, false);
-      }
-    };
-
-    // Add event listeners
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [handleKeyPress, stopRobot]);
-
-  // Stop robot when disconnected
-  useEffect(() => {
-    if (!isConnected) {
-      setPressedKeys(new Set());
-      setCurrentVelocity({ linear: 0, angular: 0 });
+    useEffect(() => {
+    if(isConnected == false){
+      setLogData({msg: "Não há conexão com o ROS!", id: Date.now(), error: true});
+      setStartTeleop(false);
+      return;
     }
-  }, [isConnected]);
 
-  const isKeyPressed = (key: string) => pressedKeys.has(key);
+    const HandleKeyDown = (e: KeyboardEvent) => keysRef.current.add(e.key.toLowerCase());
+    const HandleKeyUp = (e: KeyboardEvent) => keysRef.current.delete(e.key.toLowerCase());
 
-  return (
-    <div className="camera-control-bar">
-      <div className="keyboard-controls">
-        <div className="arrow-controls">
-          <button
-            className={`arrow-btn arrow-up ${isKeyPressed('ArrowUp') ? 'pressed' : ''} ${!isConnected ? 'disabled' : ''}`}
-            onMouseDown={() => !isConnected || handleKeyPress('ArrowUp', true)}
-            onMouseUp={() => handleKeyPress('ArrowUp', false)}
-            onMouseLeave={() => handleKeyPress('ArrowUp', false)}
-            disabled={!isConnected}
-          >
-            ↑
-          </button>
-          <button
-            className={`arrow-btn arrow-left ${isKeyPressed('ArrowLeft') ? 'pressed' : ''} ${!isConnected ? 'disabled' : ''}`}
-            onMouseDown={() => !isConnected || handleKeyPress('ArrowLeft', true)}
-            onMouseUp={() => handleKeyPress('ArrowLeft', false)}
-            onMouseLeave={() => handleKeyPress('ArrowLeft', false)}
-            disabled={!isConnected}
-          >
-            ←
-          </button>
-          <button
-            className={`arrow-btn arrow-down ${isKeyPressed('ArrowDown') ? 'pressed' : ''} ${!isConnected ? 'disabled' : ''}`}
-            onMouseDown={() => !isConnected || handleKeyPress('ArrowDown', true)}
-            onMouseUp={() => handleKeyPress('ArrowDown', false)}
-            onMouseLeave={() => handleKeyPress('ArrowDown', false)}
-            disabled={!isConnected}
-          >
-            ↓
-          </button>
-          <button
-            className={`arrow-btn arrow-right ${isKeyPressed('ArrowRight') ? 'pressed' : ''} ${!isConnected ? 'disabled' : ''}`}
-            onMouseDown={() => !isConnected || handleKeyPress('ArrowRight', true)}
-            onMouseUp={() => handleKeyPress('ArrowRight', false)}
-            onMouseLeave={() => handleKeyPress('ArrowRight', false)}
-            disabled={!isConnected}
-          >
-            →
-          </button>
+    window.addEventListener('keydown', HandleKeyDown);
+    window.addEventListener('keyup', HandleKeyUp);
+
+    const PeriodicPublisher = setInterval(() => {
+      let linear = 0;
+      let angular = 0;
+      const keys = keysRef.current; // Read from Ref
+
+      if(!keys.has(' ')){
+        if(keys.has('w')){linear = MaxSpeed.linear}
+        if(keys.has('a')){angular = -MaxSpeed.angular}
+        if(keys.has('s')){linear = -MaxSpeed.linear}
+        if(keys.has('d')){angular = MaxSpeed.angular}
+      } 
+
+      ros.publishVelocity(linear, angular);
+
+      setlinear(prev => (prev !== linear ? linear : prev));
+      setangular(prev => (prev !== angular ? angular : prev));
+    }, 100);
+
+    return () => {
+      window.removeEventListener('keydown', HandleKeyDown);
+      window.removeEventListener('keyup', HandleKeyUp);
+      clearInterval(PeriodicPublisher);
+    };
+
+    },[isConnected, setLogData, MaxSpeed, ros, setStartTeleop]);
+
+    return (
+      <div className='Keyboard'>
+        <div className='Keyboard-main'>
+          <div className='Keyboard-main-W'>W</div>
+          <div className='Keyboard-main-A'>A</div>
+          <div className='Keyboard-main-S'>S</div>
+          <div className='Keyboard-main-D'>D</div>
+        </div>
+
+        <div className='Control'>
+          <div className='Control-info'> L: {linear} | A: {angular} </div>
+          <div className='Control-tutorial'> Use "w, a, s, d", pressione Espaço para parar </div>
         </div>
         
-        <div className="space-control">
-          <button
-            className={`space-btn ${!isConnected ? 'disabled' : ''}`}
-            onClick={stopRobot}
-            disabled={!isConnected}
-          >
-            🛑 SPACE
-          </button>
-        </div>
       </div>
-
-      <div className="control-info">
-        <div className="velocity-display">
-          L: {currentVelocity.linear.toFixed(2)} | A: {currentVelocity.angular.toFixed(2)}
-        </div>
-        <div style={{ fontSize: '0.7rem', opacity: 0.7 }}>
-          {isConnected ? 'Use arrow keys + SPACE to stop' : 'ROS2 Disconnected'}
-        </div>
-      </div>
-    </div>
-  );
-};
+    )
+}

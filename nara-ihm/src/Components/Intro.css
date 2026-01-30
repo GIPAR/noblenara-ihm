@@ -1,0 +1,387 @@
+.Intro {
+  min-height: 100vh;
+  position: relative; /* Needed for the ::before to position itself */
+  overflow-x: hidden; /* Prevents scrollbars if the blur bleeds out */
+  overflow-y: hidden;
+}
+.Intro.start::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+    url('../assets/Intro/fotodaporta.jpg');
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  z-index: -1;
+  animation: backgroundEffect 4.5s ease-out forwards;
+}
+.Intro.disappear {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+    url('../assets/Intro/fotodaporta.jpg');
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  z-index: -1;
+  animation: leaveEffect 3.5s ease-out reverse both;
+}
+
+main {    /* Main content area */
+  flex: 1;
+}
+
+.Intro-title{
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: positionEffect 3.5s ease-in-out both 3.5s;
+}
+.Intro-title h1{
+  font-size: 5rem;
+  padding: 2rem;
+  background: linear-gradient(110deg, #0eff1a, #00ffc8, #0e98c2cb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(2px 2px 2px rgba(107, 107, 107, 0.329));
+  animation: textEffect 3s ease-out forwards;
+}
+
+.Intro-login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 3.5rem 3rem;
+  width: 45%;
+  height: auto;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  --anim-duration: 3s;
+  --anim-delay: 5s;
+  animation: invisibleEffect var(--anim-duration) ease-in-out both var(--anim-delay);
+}
+.Intro-image{
+  position: absolute;
+  width: 15rem;
+  height: 15rem;
+  left: 70%;
+  transform: translateX(50%);
+  border: 1px solid #00ffc800;
+  background-image: url('../assets/Intro/undraw_five-year-plan_7hwj.svg');
+  background-size: 100%; background-position: center; background-repeat: no-repeat;
+}
+.Intro-login-headerbar {
+  width: 60%;
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  text-align: center;
+  color: rgb(73, 253, 253);
+}
+.Intro-login-bar {
+  width: 100%;
+  background: rgba(195, 253, 255, 0.226);
+  border-radius: 0.9rem;
+  border: 1px solid rgba(54, 207, 207, 0.781);
+  outline: none;
+  font-size: 1.5rem;
+  font-weight: 200;
+  text-align: center;
+  padding: 0.2rem 0.5rem;
+  color: #fbfffb;
+}
+.Intro-login-bar p {
+  position: fixed;
+  z-index: 1000;
+}
+.Intro-login-bar::placeholder {
+  color: #fbfffb;
+}
+.Intro-login label {
+  color: rgba(73, 253, 253, 1); 
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.Intro-login-button {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  padding: 0rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid #1ff82a1a;
+
+  transition: 0.5s;
+  font-size: 1.4rem;
+  color: #1ff82a;
+}
+.Intro-login-button.relocate { bottom: 0rem; } /* Usado na parte 2/3 */
+.Intro-login-button:hover {
+  border-color: #054d08;
+  text-shadow: 0 0 6px rgba(31, 248, 42, 0.8);
+  box-shadow: 0 0 4px rgba(31, 248, 42, 0.4), inset 0 0 8px rgba(31, 248, 42, 0.2);
+  transform: translate(-50%, -50%) scale(1.06);
+  cursor: pointer;
+}
+
+/* "Back" Button Part */
+.Intro-backbutton {
+  position: fixed;
+  top: 3.5rem;
+  left: 4rem;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  
+  --backbutton-color: 15, 230, 255;
+  color: white;
+  font-size: 4rem;
+  width: auto;
+  height: auto;
+  transition: 0.4s;
+}
+.Intro-backbutton:hover {
+  text-shadow: 0 0 5px rgba(var(--backbutton-color), 0.8);
+  transform: translate(-50%, -50%) scale(1.1);
+  cursor: pointer;
+}
+
+
+/* Box para as opções de entrada 2/3 */
+.Intro-configbox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: auto;
+  padding: 2.5rem 0rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+.Intro-configbox::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 3rem;
+  /* https://grabient.com/HQBgrAzANKAsAcMT0cAjLAnDNYDsOsATDEUSKWicGWlBMHmtA3kS8AGybTojRpQ8MDEw8oAWjicgA?style=angularSwatches&steps=13 */
+  background: conic-gradient(from 90deg, #131319 0.000deg, #131319 27.692deg, #17181d calc(27.692deg + 0.1deg), #17181d 55.385deg, #1c1c21 calc(55.385deg + 0.1deg), #1c1c21 83.077deg, #202125 calc(83.077deg + 0.1deg), #202125 110.769deg, #252629 calc(110.769deg + 0.1deg), #252629 138.462deg, #2a2b2e calc(138.462deg + 0.1deg), #2a2b2e 166.154deg, #2f2f32 calc(166.154deg + 0.1deg), #2f2f32 193.846deg, #333437 calc(193.846deg + 0.1deg), #333437 221.538deg, #38383b calc(221.538deg + 0.1deg), #38383b 249.231deg, #3c3d40 calc(249.231deg + 0.1deg), #3c3d40 276.923deg, #404144 calc(276.923deg + 0.1deg), #404144 304.615deg, #434447 calc(304.615deg + 0.1deg), #434447 332.308deg, #47484b calc(332.308deg + 0.1deg) 360.000deg);
+  filter: opacity(0.1);
+  z-index: -1;
+}
+.Intro-configbox h2{
+  font-size: 1.5rem;
+  color: rgb(73, 253, 253);
+  position: absolute;
+  left: 50%;
+  top: 1.4rem;
+  transform: translate(-50%, -50%);
+}
+.Intro-configbox-partial {
+  width: 50%;
+  height: 100%;
+  padding: 1rem 1rem;
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.Intro-configbox-partial p{
+  font-size: 1.2rem;
+  color: rgba(73, 253, 253, 0.856);
+  text-align: left; /* Modificado no inline css do Intro.tsx */
+  padding-right: 40px;
+}
+.Intro-second-image {
+  position: absolute;
+  width: 15rem;
+  height: 15rem;
+  left: 69%;
+  transform: translateX(50%);
+  background-image: url('../assets/Intro/undraw_personal-notes_n75r.svg');
+  background-size: 100%; background-position: center; background-repeat: no-repeat;
+}
+
+.Intro-select-box {
+  width: 100%;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 0rem 1rem;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.836);
+  font-size: 1.4rem;
+}
+.Intro-select {
+  width: 1rem;
+  height: 1rem;
+  background-color: rgba(255, 255, 255, 0.932);
+  border-radius: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  cursor: pointer;
+}
+.Intro-select-image{
+  position: absolute;
+  width: 2rem;
+  height: 3rem;
+  background-image: url('../assets/Intro/Vi.png');
+  /* border: 1px solid white; */
+  background-size: 100%; background-position: center; background-repeat: no-repeat;
+  z-index: 3;
+}
+
+
+/* Círculo central; Seleção de Ambiente 3/3 */
+.Intro-circle {
+  width: 20rem;
+  height: 20rem;
+  border-radius: 15rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  background-image: url('../assets/Intro/circle.png');
+  background-size: 100%; background-position: center; background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Intro-circle h3 {
+  color:#0eb5bb;
+  font-size: 1.6rem;
+  z-index: 3;
+  font-weight: bolder;
+}
+.Intro-rectangle {
+  width: 70rem;
+  height: 7rem;
+  position: absolute;
+  transform: translateZ(-10px) rotate(-20deg);
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.Intro-rectangle-partial{
+  height: 100%;
+  width: 50%;
+  border-radius: 5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5rem;
+}
+.Intro-rectangle-partial:hover{
+  text-shadow: 0 1px 2px rgb(73, 253, 253);
+  box-shadow: inset 1px 2px 4px rgb(73, 253, 253);
+  cursor: pointer;
+  transform: scale(1.03);
+}
+.Intro-rectangle-partial h4 { 
+  font-size: 1.5rem;
+}
+.Intro-rectangle-partial.left{ justify-content: left; border: 1px solid rgb(72, 201, 176); border-top: none; }
+.Intro-rectangle-partial.right{ justify-content: right; border: 1px solid rgb(132, 196, 240); border-bottom: none; }
+.Intro-rectangle-partial.left:hover { box-shadow: inset 1px -2px 4px rgb(73, 253, 253); }
+.Intro-lines {
+  width: 12rem;
+  height: 6rem;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.Intro-lines.left{
+  left: 0rem;
+  top: -14rem;
+  transform: rotate(20deg) translate(50%, -50%);
+}
+.Intro-lines.left h5 {
+  font-size: large;
+  color: rgb(61, 224, 203);
+}
+.Intro-lines.left p { color: rgb(61, 224, 203); }
+.Intro-lines.right{
+  right: 0rem;
+  top: 14rem;
+  transform: rotate(20deg) translate(-50%, 50%);
+}
+.Intro-lines.right h5 {
+  font-size: large;
+  color: rgb(95, 207, 241);
+}
+.Intro-lines.right p { color: rgb(149, 218, 240); }
+
+
+@keyframes backgroundEffect {
+  0% {
+    filter: blur(20px) brightness(0.15);
+    transform: scale(1.8);
+  }
+  100% {
+    filter: blur(0px) brightness(0.35);
+    transform: scale(1);
+  }
+}
+@keyframes textEffect {
+  0% {
+    filter: blur(5px) brightness(0.4);
+    transform: scale(1.2);
+  }
+  100% {
+    filter: blur(0px) brightness(1);
+    transform: scale(1);
+  }
+}
+@keyframes positionEffect {
+  0% {
+    top: 50%;
+    left: 50%;
+  }
+  100% {
+    top: 4rem;
+    left: 50%;
+  }
+}
+@keyframes invisibleEffect {
+  0% {
+    filter:opacity(0%)
+  }
+  100% {
+    filter:opacity(100%)
+  }
+}
+@keyframes leaveEffect {
+  0% {
+    filter: blur(15px) brightness(0.05);
+    transform: scale(1.8);
+  }
+  100% {
+    filter: blur(0px) brightness(0.35);
+    transform: scale(1);
+  }
+}
