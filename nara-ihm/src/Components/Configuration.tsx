@@ -24,9 +24,9 @@ export const ConfigurationMenu = () => {
 
             <div className='configuration-options'>
               <div className='configuration-options-button' onClick={() => setConfigOption(1)}>Principal</div>
-              <div className='configuration-options-button' onClick={() => setConfigOption(2)}>Option Two</div>
-              <div className='configuration-options-button' onClick={() => setConfigOption(3)}>Option Three</div>
-              <div className='configuration-options-button' onClick={() => setConfigOption(4)}>Option Four</div>
+              <div className='configuration-options-button' onClick={() => setConfigOption(2)}>Ferramentas</div>
+              <div className='configuration-options-button' onClick={() => setConfigOption(3)}>Aparência</div>
+              <div className='configuration-options-button' onClick={() => setConfigOption(4)}>Avançado</div>
             </div>
 
             {ConfigOption === 1 ?

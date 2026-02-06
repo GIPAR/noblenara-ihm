@@ -67,16 +67,14 @@ main {    /* Main content area */
   align-items: center;
   gap: 1.5rem;
   --anim-duration: 3s;
-  --anim-delay: 5s;
+  --anim-delay: 4.5s;
   animation: invisibleEffect var(--anim-duration) ease-in-out both var(--anim-delay);
 }
 .Intro-image{
   position: absolute;
   width: 15rem;
   height: 15rem;
-  left: 70%;
-  transform: translateX(50%);
-  border: 1px solid #00ffc800;
+  left: 100%;
   background-image: url('../assets/Intro/undraw_five-year-plan_7hwj.svg');
   background-size: 100%; background-position: center; background-repeat: no-repeat;
 }
@@ -276,7 +274,7 @@ main {    /* Main content area */
   font-weight: bolder;
 }
 .Intro-rectangle {
-  width: 70rem;
+  width: 75vw;
   height: 7rem;
   position: absolute;
   transform: translateZ(-10px) rotate(-20deg);
