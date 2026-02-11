@@ -37,9 +37,9 @@ export const KeyboardControl = () => {
 
       if(!keys.has(' ')){
         if(keys.has('w')){linear = MaxSpeed.linear}
-        if(keys.has('a')){angular = -MaxSpeed.angular}
+        if(keys.has('a')){angular = MaxSpeed.angular}
         if(keys.has('s')){linear = -MaxSpeed.linear}
-        if(keys.has('d')){angular = MaxSpeed.angular}
+        if(keys.has('d')){angular = -MaxSpeed.angular}
       } 
 
       ros.publishVelocity(linear, angular);

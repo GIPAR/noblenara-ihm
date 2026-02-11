@@ -112,14 +112,14 @@ export class ROS2Service {
   publishVelocity = (linear: number, angular: number) => {
     const velocityMessage = {
       linear: {
-        x: angular, // Rotation speed (left/right) -> Coloque "linear" para a cadeira física
+        x: linear, // Rotation speed (left/right) -> Coloque "linear" para a cadeira física
         y: 0.0,
         z: 0.0
       },
       angular: {
         x: 0.0,
         y: 0.0,
-        z: linear // Forward/backward speed -> Coloque "angular" para a cadeira física
+        z: angular // Forward/backward speed -> Coloque "angular" para a cadeira física
       }
     };
     this.publish('/noblenara/cmd_vel', 'geometry_msgs/Twist', velocityMessage);
