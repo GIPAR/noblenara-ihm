@@ -32,6 +32,8 @@ interface ROSProps {
   setisConnected: ( newState: boolean ) => void
 
   ros: ROS2Service
+  rosapiData: Record<string, string | string[] | number | boolean>,
+  setrosapiData: ( newState: Record<string, string | string[] | number | boolean>, ) => void
 }
 
 export const ROStore = create<ROSProps>()((set) => ({
@@ -39,4 +41,6 @@ export const ROStore = create<ROSProps>()((set) => ({
   setisConnected: ( newState: boolean ) => set({ isConnected: newState }),
 
   ros: new ROS2Service(),
+  rosapiData: {} as Record<string, string | string[] | number | boolean>,
+  setrosapiData: (newState: Record<string, string | string[] | number | boolean>) => set({ rosapiData: newState }),
 }))

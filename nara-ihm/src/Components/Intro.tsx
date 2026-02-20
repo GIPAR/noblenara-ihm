@@ -4,8 +4,8 @@ import './Intro.css'
 
 import { useStore } from 'zustand'
 import { GlobalStore } from '../contexts/Store'
-import { useSetAtom } from 'jotai';
-import { LogAtom } from '../contexts/Molecule'
+import { useAtom, useSetAtom } from 'jotai';
+import { isAdminAtom, LogAtom } from '../contexts/Molecule'
 
 export const Intro = () => {
   const [isReturning, setIsReturning] = useState(false);      // Flag para detectar retorno
@@ -13,12 +13,11 @@ export const Intro = () => {
   const loginRef = useRef<HTMLDivElement>(null);              // Referência para a div principal
   const introsleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const [isAdmin, setisAdmin] = useState<boolean | null>(null);
-
   const User = useStore(GlobalStore, (s) => s.User)           //Globais
   const setUser = useStore(GlobalStore, (s) => s.setUser)
   const userConfig = useStore(GlobalStore, (s) => s.userConfig)
   const setuserConfig = useStore(GlobalStore, (s) => s.setuserConfig)
+  const [isAdmin, setisAdmin] = useAtom(isAdminAtom)
   const setLogData = useSetAtom(LogAtom)
 
   useEffect(() => {  // Efeito para apressar a animação no retorno

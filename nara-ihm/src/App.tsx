@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
+import { RosapiMenu } from './Components/Rosapi';
 import { CameraComponent } from './Components/Camera';
 import { MessageLog } from './Components/MessageLog';
 
@@ -37,11 +38,11 @@ function App() {
   useEffect(() => {
       if (userConfig.Environment === 2) { // 2 é para o ambiente virtual
         setCameraURL({link: 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/camera_user&type=mjpeg'});
-        setMaxSpeed({linear: 1.5, angular: 1});
+        setMaxSpeed({linear: 1.5, angular: 3});
       }
       else if (userConfig.Environment === 1) { // 1 é para o ambiente real -> Atualizar o endereço
-        setCameraURL({link: '', user: ''});
-        setMaxSpeed({linear: 1.5, angular: 1});
+        setCameraURL({link: 'http://localhost:8080/stream?topic=/zed/zed_node/rgb/color/rect/image&type=mjpeg', user: ''});
+        setMaxSpeed({linear: 1.5, angular: 3});
       }}, [userConfig.Environment, setCameraURL, setMaxSpeed]);
 
   if(userConfig.Environment === 0){ //Renderiza a Introdução enquanto a variável === 0
@@ -58,6 +59,8 @@ function App() {
         <ConfigurationMenu/>
 
         <CameraComponent/>
+
+        <RosapiMenu/>
       </main>
     </div>
   )

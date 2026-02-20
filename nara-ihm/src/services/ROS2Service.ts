@@ -6,6 +6,7 @@ interface RosBridgeMessage {
   op: string;
   topic?: string;
   msg?: unknown;
+  values?: Record<string, string[]>;
 }
 
 export class ROS2Service {
@@ -130,15 +131,6 @@ export class ROS2Service {
     this.publishVelocity(0, 0);
     console.log('Publicado comando de parar ao Robô.');
   }
-  
-  private handleMessage(data: unknown) {
-    const message = data as RosBridgeMessage; // Type assertion
-    if (message.op === 'publish' && message.topic && this.listeners[message.topic]) {
-    this.listeners[message.topic].forEach(callback => {
-      callback(message.msg);
-    });
-    }
-  }
 
   disconnect = () => {
     console.log(this.ws)
@@ -150,4 +142,34 @@ export class ROS2Service {
       ROStore.getState().setisConnected(false); // Update isConnected state
     }
   }
+
+  private handleMessage(data: unknown) {
+    const message = data as RosBridgeMessage; // Type assertion
+
+    if (message.op === 'publish' && message.topic && this.listeners[message.topic]) {
+    this.listeners[message.topic].forEach(callback => {
+      callback(message.msg);
+    });
+    }
+
+    if(message.op === 'service_response') {
+      console.log("Service response:", message.values)
+      ROStore.getState().setrosapiData(message.values ?? {});
+    }
+  }
+
+  callrosapi = (call: string) => {
+    if(!this.ws) {getDefaultStore().set(LogAtom, {msg: "ROSBridge não conectado!", id: Date.now(), error: true}); 
+    return;}
+
+    if(call == "topics" || call == "services" || call == "nodes"){
+      this.ws.send(JSON.stringify({
+      op: "call_service",
+      service: `/rosapi/${call}`,
+      id: Date.now(),
+      args: {}
+      }));
+    }
+  }
+
 }
