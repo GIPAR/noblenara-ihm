@@ -20,7 +20,7 @@ function App() {
   const setCameraURL = useSetAtom(LocationAtom)
   const setMaxSpeed = useSetAtom(SpeedAtom)
 
-  useEffect(() => {                                           // Verificar se ainda é necessário!
+  useEffect(() => {
     if (!connectionAttemptedRef.current) {
       connectionAttemptedRef.current = true;
       ros.connect();

@@ -4,19 +4,19 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, isAdminAtom } from '../contexts/Molecule'
+import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
 
     const ros = useStore(ROStore, (s) => s.ros)
     const isConnected = useStore(ROStore, (s) => s.isConnected)
+    const userConfig = useStore(GlobalStore, (s) => s.userConfig)
     const logout = useStore(GlobalStore, (state) => state.logout)
     const [ShowMenu, setShowMenu]= useAtom(MenuAtom)
     const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
     const [StartTeleop, setStartTeleop]= useAtom(TeleopAtom)
     const setLogData = useSetAtom(LogAtom)
-    const [isAdmin] = useAtom(isAdminAtom)
 
     return (
         <div className='Configuration'>
@@ -58,13 +58,14 @@ export const ConfigurationMenu = () => {
             </div>
 
             <div className='configuration-box'>
-              <div className='configuration-box-button' onClick={() => { logout(); setShowMenu(false); setLogData({msg: "Retornado a tela Inicial", id: Date.now(), error: false}); }}> </div>
+              <div className='configuration-box-button' onClick={() => { 
+                logout(); setShowMenu(false); setShowRosapi(false); setLogData({msg: "Retornado a tela Inicial", id: Date.now(), error: false}); }}> </div>
               <div className='configuration-box-text'> Deslogar </div>
             </div>
             </>
             : null}
 
-            {ConfigOption === 2 && isAdmin === true ?
+            {ConfigOption === 2 && userConfig.Type === true ?
             <>
             <div className='configuration-box'>
               <div className={'configuration-box-switch'} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowRosapi(!ShowRosapi)}}}>

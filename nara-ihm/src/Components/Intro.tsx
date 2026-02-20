@@ -4,20 +4,20 @@ import './Intro.css'
 
 import { useStore } from 'zustand'
 import { GlobalStore } from '../contexts/Store'
-import { useAtom, useSetAtom } from 'jotai';
-import { isAdminAtom, LogAtom } from '../contexts/Molecule'
+import { useSetAtom } from 'jotai';
+import { LogAtom } from '../contexts/Molecule'
 
 export const Intro = () => {
   const [isReturning, setIsReturning] = useState(false);      // Flag para detectar retorno
   const [LeaveIntro, setLeaveIntro] = useState(false);        // Flag para detectar saída
   const loginRef = useRef<HTMLDivElement>(null);              // Referência para a div principal
   const introsleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  const [auxType, setauxType] = useState<boolean | null>(null);
 
   const User = useStore(GlobalStore, (s) => s.User)           //Globais
   const setUser = useStore(GlobalStore, (s) => s.setUser)
   const userConfig = useStore(GlobalStore, (s) => s.userConfig)
   const setuserConfig = useStore(GlobalStore, (s) => s.setuserConfig)
-  const [isAdmin, setisAdmin] = useAtom(isAdminAtom)
   const setLogData = useSetAtom(LogAtom)
 
   useEffect(() => {  // Efeito para apressar a animação no retorno
@@ -30,13 +30,12 @@ export const Intro = () => {
 
   const HandleLogin = useCallback(() => {
     if(User.name == 'gipar' && User.password == 'usergipar'){
-      setuserConfig({Login: true, Type: false, Environment: 0});
+      setuserConfig({Login: true, Type: 0, Environment: 0});
       setIsReturning(false);  // Reseta para carregamento inicial
       setLogData({msg: "Login realizado com sucesso!", id: Date.now(), error: false});
     }
     else{
       setLogData({msg: "Usuário ou senha inválida", id: Date.now(), error: true});
-      setuserConfig({Login: false, Type: false, Environment: 0});
     };
   }, [User, setuserConfig, setLogData]);
 
@@ -53,7 +52,7 @@ export const Intro = () => {
   const HandleLeave = async (whichEnv: number) => {
     setLeaveIntro(true);
     await introsleep(3600);
-    setuserConfig({Login: true, Type: true, Environment: whichEnv});
+    setuserConfig({...userConfig, Environment: whichEnv});
   }
 
   return (
@@ -99,7 +98,7 @@ export const Intro = () => {
           </div>
         ) : (
           <>
-          {userConfig.Type !== true ? ( /* Seleção de Modo 2/3 */
+          {userConfig.Type === 0 ? ( /* Seleção de Modo 2/3 */
             <>
               <div className="Intro-configbox">
                 <h2>Bem vindo, {User.name}!</h2>
@@ -116,17 +115,17 @@ export const Intro = () => {
 
                 <div className='Intro-configbox-partial'>
                   <div className='Intro-select-box'>
-                    <div className={`Intro-select ${isAdmin === false ? 'checked' : ''}`}
-                      onClick={() => {if(isAdmin !== false){setisAdmin(false)} else{setisAdmin(null)}} } >
-                      { isAdmin === false ? <div className='Intro-select-image'></div> : null }
+                    <div className={`Intro-select ${auxType === false ? 'checked' : ''}`}
+                      onClick={() => {if(auxType !== false){setauxType(false)} else{setauxType(null)}} } >
+                      { auxType === false ? <div className='Intro-select-image'></div> : null }
                     </div>
                     <h3>Usuário</h3>
                   </div>
 
                   <div className='Intro-select-box'>
-                    <div className={`Intro-select ${isAdmin === true ? 'checked' : ''}`}
-                      onClick={() =>{if(isAdmin !== true){setisAdmin(true)} else{setisAdmin(null)}}}>
-                      { isAdmin === true ? <div className='Intro-select-image'></div> : null }
+                    <div className={`Intro-select ${auxType === true ? 'checked' : ''}`}
+                      onClick={() =>{if(auxType !== true){setauxType(true)} else{setauxType(null)}}}>
+                      { auxType === true ? <div className='Intro-select-image'></div> : null }
                     </div>
                     <h3>Desenvolvedor</h3>
                   </div>
@@ -134,10 +133,10 @@ export const Intro = () => {
 
                 <div className='Intro-login-button relocate'
                   onClick={() => {
-                    if(isAdmin !== null){
-                      setLogData({msg: `Modo ${isAdmin === false ? 'Usuário' : 'Desenvolvedor'} selecionado!`, id: Date.now(), error: false});
-                      setuserConfig({Login: true, Type: true, Environment: 0});
-                      setisAdmin(null);}
+                    if(auxType !== null){
+                      setLogData({msg: `Modo ${auxType === false ? 'Usuário' : 'Desenvolvedor'} selecionado!`, id: Date.now(), error: false});
+                      setuserConfig({Login: true, Type: auxType, Environment: 0});
+                      setauxType(null);}
                     else{ setLogData({msg: `Selecione o tipo de exibição!`, id: Date.now(), error: true}) }
                   }}>
                   <p>Continuar</p>
@@ -147,7 +146,7 @@ export const Intro = () => {
               <div className="Intro-backbutton"
                 onClick={() => {
                   setIsReturning(true);  // Marca que estamos retornando
-                  setuserConfig({Login: false, Type: false, Environment: 0});
+                  setuserConfig({Login: false, Type: 0, Environment: 0});
                   setLogData({msg: "Retornado para a tela inicial", id: Date.now(), error: false});
                 }}>
                 <p>&laquo;</p>
@@ -190,7 +189,7 @@ export const Intro = () => {
               <div className="Intro-backbutton"
                 onClick={() => {
                   setIsReturning(true);  // Marca que estamos retornando
-                  setuserConfig({Login: true, Type: false, Environment: 0});
+                  setuserConfig({Login: true, Type: 0, Environment: 0});
                   setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
                 }}>
                 <p>&laquo;</p>

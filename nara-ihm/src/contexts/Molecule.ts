@@ -8,8 +8,6 @@ export const RosapiAtom = atom(false)
 export const TeleopAtom = atom(false)
 
 // Átomos de Configurações;
-export const isAdminAtom = atom<boolean | null>(null)
-
 export const LocationAtom = atom({ link: '', user: '' })
 
 // Átomos de Variáveis;

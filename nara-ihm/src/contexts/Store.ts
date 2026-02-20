@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { ROS2Service } from '../services/ROS2Service'
 
-const defaultuserConfig = { Login: false, Type: false, Environment: 0 }
+const defaultuserConfig = { Login: false, Type: 0 as boolean | number, Environment: 0 }
 const nullUser = { name: '', password: '' }
 
 // Loja 1/2 => Loja Geral
