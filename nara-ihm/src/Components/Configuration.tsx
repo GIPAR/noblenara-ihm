@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './Configuration.css'
 
 import { useStore } from 'zustand'
@@ -17,6 +17,12 @@ export const ConfigurationMenu = () => {
     const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
     const [StartTeleop, setStartTeleop]= useAtom(TeleopAtom)
     const setLogData = useSetAtom(LogAtom)
+
+    useEffect(() => {
+        if(isConnected === false){
+            setShowRosapi(false);
+        }
+    }, [isConnected, setShowRosapi]);
 
     return (
         <div className='Configuration'>

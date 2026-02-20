@@ -13,6 +13,7 @@ Adições e Mudanças Gerais para rosapi:
     Adicionados novos States nos dois contextos
     Modificado ROS2Service
     MOdificado Configuration.tsx
+    Adicionado useEffect no Configuration.tsx
 
 ## Planos Atuais
 
