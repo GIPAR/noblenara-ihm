@@ -73,23 +73,31 @@ export const Intro = () => {
 
             <div className='Intro-image'></div>
 
-            <label htmlFor="username">Usuário:</label>
-            <input 
-              type="text" 
-              placeholder="Digite o seu nome de usuário" 
-              value={User.name}
-              onChange={(e) => setUser({...User, name: e.target.value})}
-              className="Intro-login-bar"
-            />
+            <div className='Intro-login-wrapper'>
+              <div className='Intro-login-label'>
+                <h6>Usuário:</h6>
+              </div>
+              <input 
+                type="text" 
+                placeholder="Digite o seu nome de usuário" 
+                value={User.name}
+                onChange={(e) => setUser({...User, name: e.target.value})}
+                className="Intro-login-bar"
+              />
+            </div>  
 
-            <label htmlFor="password">Senha:</label>
-            <input 
-              type="password" 
-              placeholder="Digite sua senha" 
-              value={User.password}
-              onChange={(e) => setUser({...User, password: e.target.value})}
-              className="Intro-login-bar"
-            />
+            <div className='Intro-login-wrapper'>
+              <div className='Intro-login-label'>
+                <h6>Senha:</h6>
+              </div>
+              <input 
+                type="password" 
+                placeholder="Digite sua senha" 
+                value={User.password}
+                onChange={(e) => setUser({...User, password: e.target.value})}
+                className="Intro-login-bar"
+              />
+            </div>
 
             <div className='Intro-login-button'
               onClick={() => {HandleLogin()}}>
