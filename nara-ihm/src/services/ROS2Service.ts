@@ -123,7 +123,7 @@ export class ROS2Service {
         z: angular // Forward/backward speed -> Coloque "angular" para a cadeira física
       }
     };
-    this.publish('/noblenara/cmd_vel', 'geometry_msgs/Twist', velocityMessage);
+    this.publish(getDefaultStore().get(RobotAtom).topic, 'geometry_msgs/Twist', velocityMessage);
     console.log(`🚀 Velocidade Enviada: linear=${linear}, angular=${angular}`);
   }
 

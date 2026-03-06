@@ -4,7 +4,7 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom } from '../contexts/Molecule'
+import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, RobotAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
@@ -16,6 +16,7 @@ export const ConfigurationMenu = () => {
     const [ShowMenu, setShowMenu]= useAtom(MenuAtom)
     const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
     const [StartTeleop, setStartTeleop]= useAtom(TeleopAtom)
+    const [RobotConfig, setRobotConfig] = useAtom(RobotAtom)
     const setLogData = useSetAtom(LogAtom)
 
     useEffect(() => {
@@ -78,6 +79,21 @@ export const ConfigurationMenu = () => {
                 <div className={`configuration-switch-slider ${ShowRosapi ? 'active' : ''}`}></div>
               </div>
               <div className='configuration-box-text'> {ShowRosapi ? 'Desativar Menu ROS' : 'Ativar Menu ROS'} </div>
+            </div>
+            </>
+            : null}
+
+            {ConfigOption === 4 && userConfig.Type === true ?
+            <>
+           
+            <div className='configuration-box'>
+              <div className='configuration-box-button' onClick={() => {setRobotConfig({ robot: 0, topic: '/noblenara/cmd_vel' })}}> </div>
+              <div className='configuration-box-text'> NOBLENARA </div>
+            </div>
+
+            <div className='configuration-box'>
+              <div className='configuration-box-button' onClick={ () => {setRobotConfig({robot: 1, topic: '/RoboticsLLM/cmd_vel'})}}> </div>
+              <div className='configuration-box-text'> Robotics LLM </div>
             </div>
             </>
             : null}
