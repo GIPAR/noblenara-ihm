@@ -10,6 +10,8 @@ export const TeleopAtom = atom(false)
 // Átomos de Configurações;
 export const LocationAtom = atom({ link: '', user: '' })
 
+export const RobotAtom = atom({ robot: 0, topic: '' })
+
 // Átomos de Variáveis;
 export const SpeedAtom = atom({ linear: 0, angular: 0 })
 
