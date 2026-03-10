@@ -1,4 +1,4 @@
-import { LogAtom } from "../contexts/Molecule";
+import { LogAtom, RobotAtom } from "../contexts/Molecule";
 import { ROStore } from "../contexts/Store";
 import { getDefaultStore } from 'jotai';
 

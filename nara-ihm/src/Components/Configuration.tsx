@@ -16,7 +16,7 @@ export const ConfigurationMenu = () => {
     const [ShowMenu, setShowMenu]= useAtom(MenuAtom)
     const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
     const [StartTeleop, setStartTeleop]= useAtom(TeleopAtom)
-    const [RobotConfig, setRobotConfig] = useAtom(RobotAtom)
+    const setRobotConfig = useSetAtom(RobotAtom)
     const setLogData = useSetAtom(LogAtom)
 
     useEffect(() => {
@@ -87,12 +87,12 @@ export const ConfigurationMenu = () => {
             <>
            
             <div className='configuration-box'>
-              <div className='configuration-box-button' onClick={() => {setRobotConfig({ robot: 0, topic: '/noblenara/cmd_vel' })}}> </div>
+              <div className='configuration-box-button' onClick={() => {setRobotConfig({ robot: 0, topic: '/noblenara/cmd_vel' }); setLogData({msg: "'NARA' selecionado!", id: Date.now(), error: false});}}> </div>
               <div className='configuration-box-text'> NOBLENARA </div>
             </div>
 
             <div className='configuration-box'>
-              <div className='configuration-box-button' onClick={ () => {setRobotConfig({robot: 1, topic: '/RoboticsLLM/cmd_vel'})}}> </div>
+              <div className='configuration-box-button' onClick={ () => {setRobotConfig({robot: 1, topic: '/RoboticsLLM/cmd_vel'}); setLogData({msg: "'LLM' Selecionado!", id: Date.now(), error: false});}}> </div>
               <div className='configuration-box-text'> Robotics LLM </div>
             </div>
             </>
