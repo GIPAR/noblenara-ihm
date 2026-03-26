@@ -2,13 +2,8 @@
 
 ## Development Notes
 
-Modificado visualização do App, com a adição de um Dashboard;
-    Duas câmeras simultâneas ao qual é possível modificar qual será a principal
-
-Modificado o visual do Teleop Keyboard
-
-Adicionado Visualização da Bateria quando está no ambiente Físico, ao qual lê o tópico BatteryState mandado pela ESP32
-    A parte física ainda precisa ser modificada
+Robotics General:::
+    Modificado opcione de configurações para adicionar mais um robô (Configuration.tsx)
 
 ## Planos Atuais
 
