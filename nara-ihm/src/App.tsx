@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react'
 import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
 import { RosapiMenu } from './Components/Rosapi';
-import { CameraComponent } from './Components/Camera';
 import { MessageLog } from './Components/MessageLog';
-
+import { Dashboard } from './Components/Dashboard/Dashboard';
+import { BatteryView } from './Components/Battery/Battery';
 import './App.css';
 
 import { useStore } from 'zustand'
@@ -58,9 +58,11 @@ function App() {
       
         <ConfigurationMenu/>
 
-        <CameraComponent/>
+        <Dashboard/>
 
         <RosapiMenu/>
+
+        {userConfig.Environment === 1 ? <BatteryView/> : null}
       </main>
     </div>
   )

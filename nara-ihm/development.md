@@ -2,33 +2,25 @@
 
 ## Development Notes
 
-Adicionado launch file para: rosbridge, rosapi e web_video_server no nara-sim
-Precisa ser rodado no server-side, since o cliente não necessariamente terá o ROS2 instalado;
-    Rodar no robô: Opção boa, diminui o total de conexões necessárias
-    Cons: web video server pode ser pesado
+Modificado visualização do App, com a adição de um Dashboard;
+    Duas câmeras simultâneas ao qual é possível modificar qual será a principal
 
-Criado uma maneira de comunicação com rosapi para vizualisar topicos serviços e nós, sendo esta visualização feita no componente "Rosapi.tsx" que é chamado no "App.tsx"; Um Átomo define se esta janela será ativada ou não, ao qual o usuário pode acionar no Configuration.tsx. Os dados da resposta são salvos em uma variável do ROStore (Zustand) e chamado no componente do api
+Modificado o visual do Teleop Keyboard
 
-Adições e Mudanças Gerais para rosapi:
-    Adicionados novos States nos dois contextos
-    Modificado ROS2Service
-    MOdificado Configuration.tsx
-    Adicionado useEffect no Configuration.tsx
+Adicionado Visualização da Bateria quando está no ambiente Físico, ao qual lê o tópico BatteryState mandado pela ESP32
+    A parte física ainda precisa ser modificada
 
 ## Planos Atuais
 
-- Verificar a simplificação e reutilização da variável userConfig.Type para o isAdmin boolean
+Adicionar visualização do mapa slam
 
 - Aprimorar o App.tsx
-    Aprimorar opção de visualizar os tópicos do ROS
-    Adicionar opção de visualizar o estado da bateria
-    Adicionar opção de criar uma nova guia com a câmera, em vez de ser usada na tela principal
+    Aprimorar o frontend do rosapi; Possivelmente colocar no dashboard
     Aprimorar o menu de configurações no Configuration.tsx (Component)
     Adicionar opção de visualizar localização
+    Possivelmente adicionar efeitos sonoros
 
-- Possivelmente adicionar efeitos sonoros
-
-- Backend
+Possivelmente adicionar o manual e o automático do Teleop
 
 ## Notas
 
@@ -37,6 +29,8 @@ H.264/H.265 via FFMPEG (ffmpeg_image_transport)
     What it is: Video compression using keyframes with predictive frames encoding only differences between frames; Bandwidth: ~1-5 Mbps typical (configurable via bitrate)
     Use case: Best for teleoperation - high frame rate video over WiFi
         'You need the <video tag: It activates the browser's built-in video player engine (hardware acceleration).'
+
+Correção de Bugs
 
 ## Details (ignore)
 

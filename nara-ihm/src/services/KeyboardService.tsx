@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
-import '../Components/Keyboard.css';
-
 import { useStore } from 'zustand'
 import { ROStore } from '../contexts/Store';
 import { useAtom, useSetAtom } from 'jotai';
 import { LogAtom, SpeedAtom, TeleopAtom } from '../contexts/Molecule';
+import '../Components/Keyboard.css';
 
 export const KeyboardControl = () => {
     const [linear, setlinear] = useState(0);
@@ -58,18 +57,18 @@ export const KeyboardControl = () => {
 
     return (
       <div className='Keyboard'>
-        <div className='Keyboard-main'>
-          <div className='Keyboard-main-W'>W</div>
-          <div className='Keyboard-main-A'>A</div>
-          <div className='Keyboard-main-S'>S</div>
-          <div className='Keyboard-main-D'>D</div>
-        </div>
-
         <div className='Control'>
           <div className='Control-info'> L: {linear} | A: {angular} </div>
-          <div className='Control-tutorial'> Use "w, a, s, d", pressione Espaço para parar </div>
+          <div className='Control-tutorial'> Use 'w, a, s, d' para mover </div>
+          <div className='Control-tutorial'> Pressione 'Espaço' para parar </div>
         </div>
-        
+
+        <div className='Keyboard-main'>
+          <div className='Keyboard-main-key W'>W</div>
+          <div className='Keyboard-main-key A'>A</div>
+          <div className='Keyboard-main-key S'>S</div>
+          <div className='Keyboard-main-key D'>D</div>
+        </div>
       </div>
     )
 }
