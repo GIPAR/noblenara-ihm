@@ -2,20 +2,20 @@
 
 ## Development Notes
 
-Robotics General:::
-    Modificado opcione de configurações para adicionar mais um robô (Configuration.tsx)
+Modificado background do Dashboard
 
 ## Planos Atuais
-
-Adicionar visualização do mapa slam
 
 - Aprimorar o App.tsx
     Aprimorar o frontend do rosapi; Possivelmente colocar no dashboard
     Aprimorar o menu de configurações no Configuration.tsx (Component)
+    Adicionar visualização do mapa slam
     Adicionar opção de visualizar localização
     Possivelmente adicionar efeitos sonoros
 
 Possivelmente adicionar o manual e o automático do Teleop
+
+Criar um usuário sem privilégios de administrador, enquanto o backend não é criado
 
 ## Notas
 
