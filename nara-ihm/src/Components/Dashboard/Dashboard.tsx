@@ -2,8 +2,9 @@ import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
 import { ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
-import { DashboardAtom } from '../../contexts/Molecule';
+import { DashboardAtom, TeleopAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
+import { Teleoperation } from '../../services/TeleopService';
 import './Dashboard.css'
 
 export const Dashboard = () => {
@@ -12,6 +13,7 @@ export const Dashboard = () => {
 
     const [Selection, setSelection] = useAtom(DashboardAtom)
     const isConnected = useStore(ROStore, (s) => s.isConnected)
+    const [StartTeleop] = useAtom(TeleopAtom)
 
     // Develop: Ver se á outra maneira para selecionar se vai mudar o "main" ou o "firstside", tentei guardar uma string e jogar dentro do set mas não funcionou, porém talvez errei a sintaxe
 
@@ -28,8 +30,6 @@ export const Dashboard = () => {
         }
     }
 
-    // Issue: o teleop na camera da navegação quando este se encontra no dashboard lateral fica meme
-
     return (
         <div className='Dashboard' style={{ '--side-grid' : isFull ? '0fr' : '1fr'} as React.CSSProperties}>
 
@@ -44,6 +44,8 @@ export const Dashboard = () => {
                     onClick={() => { {HandleReload(Selection.main, 1)} }}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="#38bd9c" viewBox="0 0 256 256"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L44.59,96H72a8,8,0,0,1,0,16H24a8,8,0,0,1-8-8V56a8,8,0,0,1,16,0V85.8L60.25,60A96,96,0,0,1,224,128Z"></path></svg>
                 </div>
+
+                {StartTeleop ? <Teleoperation/> : null}
             </div>
 
             <div className='Dashboard-side'>
@@ -65,6 +67,7 @@ export const Dashboard = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#38bd9c" viewBox="0 0 256 256"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L44.59,96H72a8,8,0,0,1,0,16H24a8,8,0,0,1-8-8V56a8,8,0,0,1,16,0V85.8L60.25,60A96,96,0,0,1,224,128Z"></path></svg>
                     </div>
                 </div>
+
             </div>
 
         </div>

@@ -263,11 +263,10 @@ main {    /* Main content area */
   z-index: 3;
 }
 
-
 /* Círculo central; Seleção de Ambiente 3/3 */
 .Intro-circle {
-  width: 20rem;
-  height: 20rem;
+  width: 360px;
+  height: 360px;
   border-radius: 15rem;
   position: absolute;
   left: 50%;
@@ -287,8 +286,8 @@ main {    /* Main content area */
   font-weight: bolder;
 }
 .Intro-rectangle {
-  width: 75vw;
-  height: 7rem;
+  width: 90vw;
+  height: 160px;
   position: absolute;
   transform: translateZ(-10px) rotate(-20deg);
   display: flex;
@@ -302,7 +301,7 @@ main {    /* Main content area */
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 5rem;
+  padding: 0rem 5rem;
 }
 .Intro-rectangle-partial:hover{
   text-shadow: 0 1px 2px rgb(73, 253, 253);
@@ -318,7 +317,7 @@ main {    /* Main content area */
 .Intro-rectangle-partial.left:hover { box-shadow: inset 1px -2px 4px rgb(73, 253, 253); }
 .Intro-lines {
   width: 12rem;
-  height: 6rem;
+  height: 8rem;
   position: absolute;
   display: flex;
   flex-direction: column;
