@@ -12,6 +12,8 @@ export const LocationAtom = atom({ link: '', user: '' })
 
 export const RobotAtom = atom({ robot: 0, topic: '/noblenara/cmd_vel' })
 
+export const DashboardAtom = atom({ main: 1, firstside: 2 })
+
 // Átomos de Variáveis;
 export const SpeedAtom = atom({ linear: 0, angular: 0 })
 

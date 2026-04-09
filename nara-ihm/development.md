@@ -2,33 +2,32 @@
 
 ## Development Notes
 
-Adicionado launch file para: rosbridge, rosapi e web_video_server no nara-sim
-Precisa ser rodado no server-side, since o cliente não necessariamente terá o ROS2 instalado;
-    Rodar no robô: Opção boa, diminui o total de conexões necessárias
-    Cons: web video server pode ser pesado
+Otimização e polimento do Código
 
-Criado uma maneira de comunicação com rosapi para vizualisar topicos serviços e nós, sendo esta visualização feita no componente "Rosapi.tsx" que é chamado no "App.tsx"; Um Átomo define se esta janela será ativada ou não, ao qual o usuário pode acionar no Configuration.tsx. Os dados da resposta são salvos em uma variável do ROStore (Zustand) e chamado no componente do api
+1. Polido o Teleop que ficava estranho quando a câmera trocava, agora, fixou-a no container principal do dashboard
+Changes: Keyboard.css SwitchCode.tsx Dashboard.tsx
 
-Adições e Mudanças Gerais para rosapi:
-    Adicionados novos States nos dois contextos
-    Modificado ROS2Service
-    MOdificado Configuration.tsx
-    Adicionado useEffect no Configuration.tsx
+2. Adicionar Mensagens de Load de Try and Error da câmera
+changes: SwitchCode.tsx
+
+3. Arrumar a Escala da tela 3/3 de Login para monitores menores, especificamente o circulo
+Changes: Modificado Intro.css
+
+4. Modificando o Visual do Teleop com a adição de um Joystick
+Changes: TeleopService.tsx + Dashboard.tsx
+Rename: KeyboardService -> TeleopService.tsx ||| Keyboard.css -> Teleop.css
 
 ## Planos Atuais
 
-- Verificar a simplificação e reutilização da variável userConfig.Type para o isAdmin boolean
+Adicionar visualização do mapa slam
 
 - Aprimorar o App.tsx
-    Aprimorar opção de visualizar os tópicos do ROS
-    Adicionar opção de visualizar o estado da bateria
-    Adicionar opção de criar uma nova guia com a câmera, em vez de ser usada na tela principal
+    Aprimorar o frontend do rosapi; Possivelmente colocar no dashboard
     Aprimorar o menu de configurações no Configuration.tsx (Component)
     Adicionar opção de visualizar localização
+    Possivelmente adicionar efeitos sonoros
 
-- Possivelmente adicionar efeitos sonoros
-
-- Backend
+Possivelmente adicionar o manual e o automático do Teleop
 
 ## Notas
 
@@ -38,8 +37,13 @@ H.264/H.265 via FFMPEG (ffmpeg_image_transport)
     Use case: Best for teleoperation - high frame rate video over WiFi
         'You need the <video tag: It activates the browser's built-in video player engine (hardware acceleration).'
 
+Correção de Bugs
+
 ## Details (ignore)
 
 node --version 24.11.1
 nvm --version 0.39.2
 npm --version 11.6.2
+
+Protótipo Interface
+Por detrás do Código

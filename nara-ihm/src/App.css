@@ -21,7 +21,7 @@ main {
   animation: invisibleEffect ease-in 3s 2.5s both;
 }
 .App-header h1 {
-  font-size: 3.5rem;
+  font-size: 3rem;
   padding: 2rem;
   line-height: 1.1;
   margin-bottom: 0.5rem;

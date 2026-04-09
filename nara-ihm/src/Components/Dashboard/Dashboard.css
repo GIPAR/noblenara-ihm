@@ -1,0 +1,95 @@
+.Dashboard{
+    position: absolute;
+    width: 90%;
+    height: 70%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    --side-grid: 1fr;
+    display: grid;
+    grid-template-columns: 4fr var(--side-grid);
+    
+    border: 2px solid rgba(133, 255, 188, 0.712);
+    animation: invisibleEffect ease-in 3s 2.5s both;
+    transition: 1s;
+}
+
+/* Container Principal */
+.Dashboard-main{
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(47, 255, 245, 0.616);
+}
+.Dashboard-main img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Dashboard dos Containers Laterais */
+.Dashboard-side{
+    border: 2px solid rgba(92, 255, 206, 0.63);
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    padding: 0.2rem 0rem;
+    gap: 0.2rem;
+}
+.Dashboard-side-status{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 5%;
+    white-space: nowrap;
+}
+.Dashboard-side-status h3{
+    font-size: 1.2rem;
+    color: aqua;
+}
+.Dashboard-side-container{
+    position: relative;
+}
+.Dashboard-side-container img{
+    border: 1px solid rgb(103, 219, 165);
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Caixa para Seleção de Posição e/ou Tamanho dos Containers */
+.Dashboard-select{
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1.4rem;
+    height: 1.4rem;
+    color: rgb(43, 174, 226);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1s ease-out;
+    cursor: pointer;
+}
+.Dashboard-select:hover{
+    transform: scale(1.3);
+}
+
+/* Caixa para o botão de Refresh */
+.Dashboard-reload{
+    position: absolute;
+    top: 0.5rem;
+    right: 2.4rem;
+    width: 1.4rem;
+    height: 1.4rem;
+    color: rgb(43, 174, 226);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1s ease-out;
+    cursor: pointer;
+}
+.Dashboard-reload:hover{
+    transform: scale(1.3);
+}

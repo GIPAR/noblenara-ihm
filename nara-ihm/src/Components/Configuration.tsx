@@ -85,15 +85,19 @@ export const ConfigurationMenu = () => {
 
             {ConfigOption === 4 && userConfig.Type === true ?
             <>
-           
             <div className='configuration-box'>
               <div className='configuration-box-button' onClick={() => {setRobotConfig({ robot: 0, topic: '/noblenara/cmd_vel' }); setLogData({msg: "'NARA' selecionado!", id: Date.now(), error: false});}}> </div>
               <div className='configuration-box-text'> NOBLENARA </div>
             </div>
 
             <div className='configuration-box'>
-              <div className='configuration-box-button' onClick={ () => {setRobotConfig({robot: 1, topic: '/RoboticsLLM/cmd_vel'}); setLogData({msg: "'LLM' Selecionado!", id: Date.now(), error: false});}}> </div>
-              <div className='configuration-box-text'> Robotics LLM </div>
+              <div className='configuration-box-button' onClick={ () => {setRobotConfig({robot: 1, topic: '/RoboticsLLM/cmd_vel'}); setLogData({msg: "'NARINHA' Selecionado!", id: Date.now(), error: false});}}> </div>
+              <div className='configuration-box-text'> NARINHA </div>
+            </div>
+
+            <div className='configuration-box'>
+              <div className='configuration-box-button' onClick={() => {setRobotConfig({ robot: 2, topic: '/RoboticsLLM/cmd_vel' }); setLogData({msg: "'GIPZINHO' selecionado!", id: Date.now(), error: false});}}> </div>
+              <div className='configuration-box-text'> GIPZINHO </div>
             </div>
             </>
             : null}

@@ -1,5 +1,5 @@
 # NOBLENARA IHM
-Interface Humano-Máquina propriamente para o projeto em desenvolvimento da NARA feita em ROS2.
+Interface Humano-Máquina propriamente para o ROS2.
 
 ## 1 - Pré-requisitos
 É necessário instalar bibliotecas e diferentes dependências para o correto funcionamento das simulações e pacotes, sendo que o projeto está sendo testado e construido no seguinte sistema:
@@ -22,7 +22,7 @@ A seguir, copie o arquivo nara-ihm no seu computador
 
 ### 2 - Rodando o IHM
 
-Baixe o repositório e copie o arquivo "nara-ihm" para o local desejado; mova-se para este arquivo e rode os seguintes comandos:
+Baixe o repositório e copie o arquivo "nara-ihm" para o local desejado; mova-se para este **mesmo** arquivo e rode os seguintes comandos:
 ```
 bash
 $ cd nara-ihm
@@ -38,4 +38,10 @@ Também é necessário rodar outros comandos para o correto funcionamento da com
 bash
 $ ros2 run rosbridge_server rosbridge_websocket
 $ ros2 run web_video_server web_video_server
+ros2 run rosapi rosapi_node 
+```
+Caso a ***simulação*** da NARA estiver instalada, pode-se rodar este único comando 3 em 1: 
+```
+bash
+$ ros2 launch smartwheelchair bridgelaunch.xml
 ```
