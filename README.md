@@ -31,7 +31,7 @@ $ npm run dev
 ```
 Após o install, pode-se rodar o pacote em qualquer momento com o comando "npm run dev", desde que o terminal esteja diretamente na pasta base do projeto
 
-****Importante! Para logar no site use o usuário "gipar" e senha "usergipar", são placeholders temporários****
+****Importante! Para logar no site use o usuário "gipar" e senha "usergipar", caso queira a visualização para usuários comuns, utilize "user" e "usergipar"; são placeholders temporários****
 
 Também é necessário rodar outros comandos para o correto funcionamento da comunicação ROS2-IHM
 ```

@@ -4,8 +4,8 @@ import './Intro.css'
 
 import { useStore } from 'zustand'
 import { GlobalStore } from '../contexts/Store'
-import { useSetAtom } from 'jotai';
-import { LogAtom } from '../contexts/Molecule'
+import { useAtom, useSetAtom } from 'jotai';
+import { LogAtom, RobotAtom } from '../contexts/Molecule'
 
 export const Intro = () => {
   const [isReturning, setIsReturning] = useState(false);      // Flag para detectar retorno
@@ -18,6 +18,7 @@ export const Intro = () => {
   const setUser = useStore(GlobalStore, (s) => s.setUser)
   const userConfig = useStore(GlobalStore, (s) => s.userConfig)
   const setuserConfig = useStore(GlobalStore, (s) => s.setuserConfig)
+  const [RobotState] = useAtom(RobotAtom)
   const setLogData = useSetAtom(LogAtom)
 
   useEffect(() => {  // Efeito para apressar a animação no retorno
@@ -32,6 +33,11 @@ export const Intro = () => {
     if(User.name == 'gipar' && User.password == 'usergipar'){
       setuserConfig({Login: true, Type: 0, Environment: 0});
       setIsReturning(false);  // Reseta para carregamento inicial
+      setLogData({msg: "Login realizado com sucesso!", id: Date.now(), error: false});
+    }
+    else if(User.name == 'user' && User.password == 'usergipar'){
+      setuserConfig({Login: true, Type: false, Environment: 0}); // Ambiente é realmente settado no "HandleLeave", não aqui
+      setIsReturning(false);
       setLogData({msg: "Login realizado com sucesso!", id: Date.now(), error: false});
     }
     else{
@@ -64,7 +70,7 @@ export const Intro = () => {
 
         <MessageLog/>
 
-        {userConfig.Login !== true ? ( /* Tela de Login 1/3 */
+        {userConfig.Login !== true ? ( /* Tela de Login | 1/3 (Desenvolvedor) | 1/2 (Usuário) */
 
           <div className="Intro-login" ref={loginRef}>
             <div className='Intro-login-headerbar'>
@@ -106,7 +112,7 @@ export const Intro = () => {
           </div>
         ) : (
           <>
-          {userConfig.Type === 0 ? ( /* Seleção de Modo 2/3 */
+          {userConfig.Type === 0 ? ( /* Desenvolvedores: Seleção de Modo 2/3 */
             <>
               <div className="Intro-configbox">
                 <h2>Bem vindo, {User.name}!</h2>
@@ -160,8 +166,10 @@ export const Intro = () => {
                 <p>&laquo;</p>
               </div>
             </>
-          ) : ( /* Seleção de Ambiente 3/3 ---> No futuro retire a seleção para usuário comum, por enquanto necessário para desenvolvimento */
+          ) : (
             <> 
+            {userConfig.Type === true ? ( /* Desenvolvedores: Seleção de Ambiente 3/3 */
+              <>
               <div className={`Intro-circle`}>
                 <h3>Selecione o Ambiente</h3>
                 
@@ -195,13 +203,39 @@ export const Intro = () => {
               </div>
 
               <div className="Intro-backbutton"
-                onClick={() => {
-                  setIsReturning(true);  // Marca que estamos retornando
-                  setuserConfig({Login: true, Type: 0, Environment: 0});
-                  setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
-                }}>
+              onClick={() => {
+                setIsReturning(true);  // Marca que estamos retornando
+                setuserConfig({Login: true, Type: 0, Environment: 0});
+                setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
+              }}>
                 <p>&laquo;</p>
               </div>
+              </>
+            ) : ( /* Usuário Comum: Tela Auxiliar 2/2 */
+              <>
+                <div className='Intro-info'>
+
+                  <h2>Bem vindo {User.name} à interface da {RobotState.robot === 0 ? 'NARA' : 'LLM' } <br/> Pressione 'Continuar' para entrar na página principal </h2>
+
+                  <div className='Intro-login-button relocate' style={{ color: 'white'}}
+                    onClick={() => {
+                      HandleLeave(1);
+                    }}>
+                    <p>Continuar</p>
+                  </div>
+
+                </div>
+
+                <div className="Intro-backbutton"
+                  onClick={() => {
+                    setIsReturning(true);  // Marca que estamos retornando
+                    setuserConfig({Login: false, Type: 0, Environment: 0});
+                    setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
+                  }}>
+                  <p>&laquo;</p>
+                </div>
+              </>
+            )}
             </>
           )}
           </>

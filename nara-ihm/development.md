@@ -2,8 +2,7 @@
 
 ## Development Notes
 
-Movido Rosapi Menu para o Dashboard lateral
-Changes: Dashboard.tsx SwitchCode.tsx App.tsx Rosapi.tsx Rosapi.css
+Adicionado tela para usuário no Login, espera-se a adição de informações auxiliares ou similar
 
 ## Planos Atuais
 
