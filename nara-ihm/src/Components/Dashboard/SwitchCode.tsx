@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { LocationAtom, LogAtom } from '../../contexts/Molecule'
+import { RosapiMenu } from '../Rosapi'
 
 
 export const SwitchCode = ({which}: {which: number}) => {
@@ -35,6 +36,12 @@ export const SwitchCode = ({which}: {which: number}) => {
                     if (cameraLoadedRef.current.minor !== true){
                         cameraLoadedRef.current.minor = true
                         setLogData({msg: "Camera de usuário carregada com sucesso.", id: Date.now(), error: false})}}}/>
+            </>
+        ) : (null) }
+
+        {which === 3 ? (
+            <>
+                <RosapiMenu/>
             </>
         ) : (null) }
         </>

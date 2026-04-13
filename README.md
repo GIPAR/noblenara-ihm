@@ -22,10 +22,10 @@ A seguir, copie o arquivo nara-ihm no seu computador
 
 ### 2 - Rodando o IHM
 
-Baixe o repositório e copie o arquivo "nara-ihm" para o local desejado; mova-se para este **mesmo** arquivo e rode os seguintes comandos:
+Baixe o repositório e copie o arquivo "noblenara-ihm-Desenvolvimento" para o local desejado, preferencialmente no home, então, mova-se para este **mesmo** arquivo pelo terminal e rode os seguintes comandos:
 ```
 bash
-$ cd nara-ihm
+$ cd ~/noblenara-ihm/Desenvolvimento/nara-ihm #Caso o arquivo foi copiado na área de trabalho do computador
 $ npm install
 $ npm run dev
 ```
@@ -45,3 +45,10 @@ Caso a ***simulação*** da NARA estiver instalada, pode-se rodar este único co
 bash
 $ ros2 launch smartwheelchair bridgelaunch.xml
 ```
+
+### Regras de Projeto 🚀📋
+
+Para a plena organização e desenvolvimento do projeto, todos os Commits de *novas* contribuições devem ser feitas fora do branch principal:
+
+- Cria uma nova branch do repositório com o nome do seu enfoque no projeto
+- Ou faça commit no repositório chamado "Desenvolvimento"

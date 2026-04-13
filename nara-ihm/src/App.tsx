@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
-import { RosapiMenu } from './Components/Rosapi';
 import { MessageLog } from './Components/MessageLog';
 import { Dashboard } from './Components/Dashboard/Dashboard';
 import { BatteryView } from './Components/Battery/Battery';
@@ -64,8 +63,6 @@ function App() {
         <ConfigurationMenu/>
 
         <Dashboard/>
-
-        <RosapiMenu/>
 
         {userConfig.Environment === 1 ? <BatteryView/> : null}
       </main>

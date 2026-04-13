@@ -23,7 +23,7 @@ export const RosapiMenu = () => {
             <div className='rosapi-data'>
                 {Object.entries(Data).map(([key, content]) => (
                     <div key={key} style={{ marginBottom: '1rem' }}>
-                        <strong style={{ display: 'block', borderBottom: '1px solid #ccc' }}>
+                        <strong style={{ display: 'block', borderBottom: '1px solid #a4ddc6' }}>
                             {key.toUpperCase()}
                         </strong>
       

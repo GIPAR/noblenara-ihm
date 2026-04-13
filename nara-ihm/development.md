@@ -2,32 +2,20 @@
 
 ## Development Notes
 
-Otimização e polimento do Código
-
-1. Polido o Teleop que ficava estranho quando a câmera trocava, agora, fixou-a no container principal do dashboard
-Changes: Keyboard.css SwitchCode.tsx Dashboard.tsx
-
-2. Adicionar Mensagens de Load de Try and Error da câmera
-changes: SwitchCode.tsx
-
-3. Arrumar a Escala da tela 3/3 de Login para monitores menores, especificamente o circulo
-Changes: Modificado Intro.css
-
-4. Modificando o Visual do Teleop com a adição de um Joystick
-Changes: TeleopService.tsx + Dashboard.tsx
-Rename: KeyboardService -> TeleopService.tsx ||| Keyboard.css -> Teleop.css
+Movido Rosapi Menu para o Dashboard lateral
+Changes: Dashboard.tsx SwitchCode.tsx App.tsx Rosapi.tsx Rosapi.css
 
 ## Planos Atuais
 
-Adicionar visualização do mapa slam
-
 - Aprimorar o App.tsx
-    Aprimorar o frontend do rosapi; Possivelmente colocar no dashboard
     Aprimorar o menu de configurações no Configuration.tsx (Component)
+    Adicionar visualização do mapa slam
     Adicionar opção de visualizar localização
     Possivelmente adicionar efeitos sonoros
 
 Possivelmente adicionar o manual e o automático do Teleop
+
+Criar um usuário sem privilégios de administrador, enquanto o backend não é criado
 
 ## Notas
 
@@ -44,6 +32,3 @@ Correção de Bugs
 node --version 24.11.1
 nvm --version 0.39.2
 npm --version 11.6.2
-
-Protótipo Interface
-Por detrás do Código
