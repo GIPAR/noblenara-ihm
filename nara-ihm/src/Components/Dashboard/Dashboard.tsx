@@ -1,10 +1,11 @@
 import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
-import { ROStore } from '../../contexts/Store';
+import { GlobalStore, ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
 import { DashboardAtom, TeleopAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
 import { Teleoperation } from '../../services/TeleopService';
+import { BatteryView } from '../Battery/Battery';
 import './Dashboard.css'
 
 export const Dashboard = () => {
@@ -12,6 +13,7 @@ export const Dashboard = () => {
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     const [Selection, setSelection] = useAtom(DashboardAtom)
+    const userConfig = useStore(GlobalStore, (s) => s.userConfig)
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const [StartTeleop] = useAtom(TeleopAtom)
 
@@ -50,9 +52,9 @@ export const Dashboard = () => {
 
             <div className='Dashboard-side'>
                 <div className='Dashboard-side-status'>
-                    <h3>Bridge: {isConnected ? 'ONLINE': 'OFFLINE'}</h3>
+                    {userConfig.Environment === 1 ? <BatteryView/> : <h3> {isConnected ? (<span style={{ color: 'rgb(85, 165, 162)' }}>Bridge: Conectada</span>): (<span style={{ color: 'rgb(76, 166, 24)' }}>Bridge: Desconectada</span>)}</h3>}
                 </div>
-
+                
                 <div className='Dashboard-side-container'>
                     <SwitchCode which={Selection.firstside}/>
                     <div className='Dashboard-select'

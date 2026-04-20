@@ -18,7 +18,6 @@ $ sudo apt install npm
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 $ nvm install 24.11.1 #abra um novo terminal pra conseguir usar o comando!
 ```
-A seguir, copie o arquivo nara-ihm no seu computador
 
 ### 2 - Rodando o IHM
 
@@ -31,14 +30,14 @@ $ npm run dev
 ```
 Após o install, pode-se rodar o pacote em qualquer momento com o comando "npm run dev", desde que o terminal esteja diretamente na pasta base do projeto
 
-****Importante! Para logar no site use o usuário "gipar" e senha "usergipar", caso queira a visualização para usuários comuns, utilize "user" e "usergipar"; são placeholders temporários****
+****Importante! Para logar no site use o usuário "gipar" e senha "usergipar", caso queira a visualização para usuários comuns, utilize "nara" e "usergipar"; são placeholders temporários****
 
 Também é necessário rodar outros comandos para o correto funcionamento da comunicação ROS2-IHM
 ```
 bash
 $ ros2 run rosbridge_server rosbridge_websocket
 $ ros2 run web_video_server web_video_server
-ros2 run rosapi rosapi_node 
+$ ros2 run rosapi rosapi_node 
 ```
 Caso a ***simulação*** da NARA estiver instalada, pode-se rodar este único comando 3 em 1: 
 ```

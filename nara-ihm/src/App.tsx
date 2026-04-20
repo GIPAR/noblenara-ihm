@@ -3,13 +3,12 @@ import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
 import { MessageLog } from './Components/MessageLog';
 import { Dashboard } from './Components/Dashboard/Dashboard';
-import { BatteryView } from './Components/Battery/Battery';
 import './App.css';
 
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from './contexts/Store'
 import { useSetAtom, useAtom } from 'jotai';
-import { LocationAtom, SpeedAtom, RobotAtom } from './contexts/Molecule';
+import { LocationAtom, SpeedAtom, RobotAtom, ThemeAtom } from './contexts/Molecule';
 
 function App() {
   const connectionAttemptedRef = useRef(false);
@@ -18,6 +17,7 @@ function App() {
   const ros = useStore(ROStore, (s) => s.ros)
   const setCameraURL = useSetAtom(LocationAtom)
   const setMaxSpeed = useSetAtom(SpeedAtom)
+  const [Theme] = useAtom(ThemeAtom)
   const [Robot] = useAtom(RobotAtom)
 
   useEffect(() => {
@@ -50,21 +50,19 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className={`App ${Theme}`}>
       <main>
         <MessageLog/>
 
         <div className='App-header'> <h1>
-                {Robot.robot === 0 ? ( "NARA - Robot HMI"  ):( null )}
-                {Robot.robot === 1 ? ( "NARINHA - Robot HMI"  ):( null )}
-                {Robot.robot === 2 ? ( "GIPIZINHO - Robot HMI"  ):( null )}
+          {Robot.robot === 0 ? ( "NARA - Robot HMI"  ):( null )}
+          {Robot.robot === 1 ? ( "NARINHA - Robot HMI"  ):( null )}
+          {Robot.robot === 2 ? ( "GIPIZINHO - Robot HMI"  ):( null )}
         </h1></div>
 
         <ConfigurationMenu/>
 
         <Dashboard/>
-
-        {userConfig.Environment === 1 ? <BatteryView/> : null}
       </main>
     </div>
   )

@@ -2,19 +2,20 @@
 
 ## Development Notes
 
-Adicionado tela para usuário no Login, espera-se a adição de informações auxiliares ou similar
+Desenvolvimento da tela auxiliar do usuário no Login
+Modificado visualização da mensagem auxiliar
+
+Adicionado "DarkTheme" e Aprimorado Menu de Configurações
 
 ## Planos Atuais
 
 - Aprimorar o App.tsx
     Aprimorar o menu de configurações no Configuration.tsx (Component)
-    Adicionar visualização do mapa slam
-    Adicionar opção de visualizar localização
-    Possivelmente adicionar efeitos sonoros
+    Adicionar visualização do slam
+    Possivelmente adicionar o manual e o automático do Teleop no Keyboard
 
-Possivelmente adicionar o manual e o automático do Teleop
-
-Criar um usuário sem privilégios de administrador, enquanto o backend não é criado
+- Personalização:
+    Possivelmente colocar seleção de color theme na introdução, não somente no menu de configurações, contudo, preferencialmente ser salvo a opção via Backend
 
 ## Notas
 

@@ -347,32 +347,6 @@ main {    /* Main content area */
 .Intro-lines.right p { color: rgb(149, 218, 240); }
 
 
-/* Tela de Usuário: Auxiliar */
-.Intro-info{
-  position: absolute;
-  width: 80%;
-  height: 60%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid rgb(147, 255, 241);
-  padding: 1rem 1rem;
-}
-.Intro-info h2{
-  color: rgb(197, 255, 236);
-}
-
-.Intro-info-bridge{
-  position: absolute;
-  width: 80%;
-  height: 60%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid rgb(147, 255, 241);
-}
-
-
 @keyframes backgroundEffect {
   0% {
     filter: blur(20px) brightness(0.15);
