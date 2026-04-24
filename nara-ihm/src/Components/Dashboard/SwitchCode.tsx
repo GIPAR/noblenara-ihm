@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { LocationAtom, LogAtom } from '../../contexts/Molecule'
 import { RosapiMenu } from '../Rosapi'
+import { Map } from '../Map'
 
 
 export const SwitchCode = ({which}: {which: number}) => {
@@ -42,6 +43,12 @@ export const SwitchCode = ({which}: {which: number}) => {
         {which === 3 ? (
             <>
                 <RosapiMenu/>
+            </>
+        ) : (null) }
+
+        {which === 4 ? (
+            <>
+                <Map/>
             </>
         ) : (null) }
         </>

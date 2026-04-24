@@ -1,0 +1,19 @@
+.Map{
+    position: relative;
+    width: 100%;
+    height: 25vh;
+    border: 1px solid rgb(14, 223, 101);
+    overflow: scroll;
+}
+.Map-navigator{
+    position: absolute;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%) rotate(45deg);
+
+    color: rgb(0, 223, 164);
+}

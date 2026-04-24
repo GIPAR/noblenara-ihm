@@ -1,11 +1,10 @@
 import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
-import { GlobalStore, ROStore } from '../../contexts/Store';
+import { ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
-import { DashboardAtom, TeleopAtom } from '../../contexts/Molecule';
+import { DashboardAtom, TeleopAtom, RosapiAtom, MapAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
 import { Teleoperation } from '../../services/TeleopService';
-import { BatteryView } from '../Battery/Battery';
 import './Dashboard.css'
 
 export const Dashboard = () => {
@@ -13,9 +12,10 @@ export const Dashboard = () => {
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     const [Selection, setSelection] = useAtom(DashboardAtom)
-    const userConfig = useStore(GlobalStore, (s) => s.userConfig)
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const [StartTeleop] = useAtom(TeleopAtom)
+    const [ShowRosapi] = useAtom(RosapiAtom)
+    const [ShowMap] = useAtom(MapAtom)
 
     // Develop: Ver se á outra maneira para selecionar se vai mudar o "main" ou o "firstside", tentei guardar uma string e jogar dentro do set mas não funcionou, porém talvez errei a sintaxe
 
@@ -52,9 +52,9 @@ export const Dashboard = () => {
 
             <div className='Dashboard-side'>
                 <div className='Dashboard-side-status'>
-                    {userConfig.Environment === 1 ? <BatteryView/> : <h3> {isConnected ? (<span style={{ color: 'rgb(85, 165, 162)' }}>Bridge: Conectada</span>): (<span style={{ color: 'rgb(76, 166, 24)' }}>Bridge: Desconectada</span>)}</h3>}
+                    <h3>Bridge: {isConnected ? 'ONLINE': 'OFFLINE'}</h3>
                 </div>
-                
+
                 <div className='Dashboard-side-container'>
                     <SwitchCode which={Selection.firstside}/>
                     <div className='Dashboard-select'
@@ -70,10 +70,13 @@ export const Dashboard = () => {
                     </div>
                 </div>
                 
-                <div className='Dashboard-side-container'>
-                    <SwitchCode which={3}/>
-                </div>
+                {ShowRosapi === true ? <div className='Dashboard-side-container'> <SwitchCode which={3}/> </div> : null}
 
+                {ShowMap === true ?
+                <div className='Dashboard-side-container'>
+                    <SwitchCode which={4}/>
+                </div>
+                : null}
             </div>
 
         </div>

@@ -2,10 +2,9 @@
 
 ## Development Notes
 
-Desenvolvimento da tela auxiliar do usuário no Login
-Modificado visualização da mensagem auxiliar
+Trocado (Adicionado) posição da logica ShowRosapi? em Dashboard.tsx para não renderizar
 
-Adicionado "DarkTheme" e Aprimorado Menu de Configurações
+Adicionado mapa 2d do slam
 
 ## Planos Atuais
 
