@@ -4,11 +4,25 @@ main {
 
 .App{
   min-height: 100vh;
-  color: rgb(0, 0, 0);
-  background: radial-gradient(circle, #ffffff, #eeeeeee0);
-  animation: appEffect forwards 5.5s ease-in;
+  position: relative;
   overflow-x: hidden;
+  overflow-y: hidden;
+  animation: appEffect forwards 5.5s ease-in;
+}
+.App.light{
+  background: radial-gradient(circle, #ffffff, #eeeeeee0);
+}
+.App.dark::before{
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
   
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+    url('./assets/Intro/fotodaporta.jpg');
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  z-index: -1;
+  animation: backgroundEffect 6s ease-out forwards;
 }
 
 .App-header {

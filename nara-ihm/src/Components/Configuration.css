@@ -1,7 +1,8 @@
 /* Painel das configurações do lado direito */
 
 .Configuration{
-  --box-width: 30rem;
+  --box-width: 22rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .configuration-button {
@@ -15,7 +16,7 @@
   display: flex;
   align-items: center;
   font-size: 3rem;
-  color: rgb(82, 223, 0);
+  color: rgb(0, 223, 164);
   cursor: pointer;
   transition: all ease-in-out 1s;
 }
@@ -23,20 +24,19 @@
 .configuration-button.enabled { transform: translate(0%, -50%); right: var(--box-width); }
 
 .configuration-panel {
-  border: 1px solid rgba(0, 0, 0, 0.781);
+  border: 1px solid rgba(0, 207, 226, 0.781);
   border-right: none;
   border-radius: 0.5rem;
-  background-color: #ffffff;
   position: absolute;
   top: 50%;
   z-index: 2;
   transform: translateY(-50%);
 
   width: var(--box-width);
-  height: 80%;
+  height: 100%;
   gap: 0.75rem;
   padding: 1.25rem 0.75rem;
-  
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,16 +45,18 @@
 }
 .configuration-panel.show { right: 0rem; }
 .configuration-panel.hide { right: calc(-1 * var(--box-width)); }
-.configuration-panel p {
-  font-size: 1rem;
-  font-weight: 500;
+
+.configuration-panel-background{
   position: absolute;
-  
-  bottom: 1rem;
-  left: 50%;
-  z-index: 1000;
-  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.861);
+  transition: all ease-in-out 0.2s;
 }
+.configuration-panel-background.dark{
+  background-color: rgba(240, 255, 255, 0.841);
+}
+
 
 /* Menu de opções na parte superior */
 .configuration-options {
@@ -67,19 +69,21 @@
   justify-content: center;
 }
 .configuration-options > * { flex: 1; width: 0; } /* flex: 1; for the thingies to auto fill automatically */
+
 .configuration-options-button {
   height: 100%;
   border:1px solid #1e7888;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: rgb(0, 103, 163);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  overflow: hidden;
 }
 
-/* Box que se localiza uma linha (row de conteúdo) */
+/* Box para conteúdo no painel */
 .configuration-box {
   width: calc(var(--box-width) * 0.7);
   height: 2.5rem;
@@ -87,26 +91,18 @@
   font-size: 1rem;
   color: #262626;
 }
-.configuration-box-switch {
+.configuration-box-button {
   position: fixed;
-  width: 15%;
-  height: 2.5rem;
-  background-image: url('../assets/Menu/SwitchBox.jpg');
-  background-size: cover; background-position: center; background-repeat: no-repeat;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 1px solid rgb(2, 152, 134);
+  border-radius: 5rem;
   z-index: 1;
   cursor: pointer;
 }
-.configuration-switch-slider{
-  width: 50%;
-  height: 100%;
-  position: absolute;
-  
-  background-image: url('../assets/Menu/Slider.png');
-  background-size: cover; background-position: center; background-repeat: no-repeat;
-  z-index: 2;
-  transition: all ease-in-out 1s;
+.configuration-box-button.active {
+  background: rgb(62, 158, 163);
 }
-.configuration-switch-slider.active{ right: 0rem; }
 .configuration-box-text {
   position: relative;
   width: 85%;
@@ -114,13 +110,6 @@
   right: 15%;
   display: flex; align-items: center; justify-content: center;
   padding: 1rem;
-}
-.configuration-box-button {
-  position: fixed;
-  width: 15%;
-  height: 2.5rem;
-  background-image: url('../assets/Menu/Slider.png');
-  background-size: contain; background-position: center; background-repeat: no-repeat;
-  z-index: 1;
-  cursor: pointer;
+  color: rgb(19, 143, 162);
+  font-weight: bold;
 }

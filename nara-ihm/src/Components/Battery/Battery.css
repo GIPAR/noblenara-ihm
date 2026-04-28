@@ -1,14 +1,6 @@
 .Battery{
-    position: absolute;
-    bottom: 0rem;
-    right: 0rem;
     padding: 0.5rem 1rem;
-    color: rgb(51, 221, 198);
-
-    width: auto;
-    height: 2.5rem;
 }
 .Battery h3{
-    text-align: right;
     font-size: 1.2rem;
 }

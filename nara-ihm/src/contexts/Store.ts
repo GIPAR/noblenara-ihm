@@ -23,17 +23,21 @@ export const GlobalStore = create<GlobalState>()((set) => ({
   logout: () => set({ userConfig: defaultuserConfig, User: nullUser }),
 }))
 
-//Ideia: usar User and SetUser para serem as variÁveis na hora de se "registrar", enquanto que Intro usa variÁvel local
-//Mas: Considerar o uso de outro método para backend instead
+
 
 // Loja 2/2 => Loja ROS
+
+const defaultbatteryConfig = { voltage: 0, percentage: 0, status: 'Desconhecido' }
+
 interface ROSProps {
   isConnected: boolean
   setisConnected: ( newState: boolean ) => void
 
   ros: ROS2Service
   rosapiData: Record<string, string | string[] | number | boolean>,
-  setrosapiData: ( newState: Record<string, string | string[] | number | boolean>, ) => void
+  setrosapiData: ( newState: Record<string, string | string[] | number | boolean>, ) => void,
+  batteryData: typeof defaultbatteryConfig,
+  setbatteryData: ( newconfig: typeof defaultbatteryConfig ) => void
 }
 
 export const ROStore = create<ROSProps>()((set) => ({
@@ -43,4 +47,6 @@ export const ROStore = create<ROSProps>()((set) => ({
   ros: new ROS2Service(),
   rosapiData: {} as Record<string, string | string[] | number | boolean>,
   setrosapiData: (newState: Record<string, string | string[] | number | boolean>) => set({ rosapiData: newState }),
+  batteryData: defaultbatteryConfig,
+  setbatteryData: ( newconfig ) => set({ batteryData: newconfig })
 }))

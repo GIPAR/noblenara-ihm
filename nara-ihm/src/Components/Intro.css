@@ -53,6 +53,7 @@ main {    /* Main content area */
   animation: textEffect 3s ease-out forwards;
 }
 
+/* ------ Tela de Login Geral ------ */
 .Intro-login {
   position: fixed;
   top: 50%;
@@ -150,7 +151,7 @@ main {    /* Main content area */
   cursor: pointer;
 }
 
-/* "Back" Button Part */
+/* Botão de Retorno Geral */
 .Intro-backbutton {
   position: fixed;
   top: 3.5rem;
@@ -173,7 +174,7 @@ main {    /* Main content area */
 }
 
 
-/* Box para as opções de entrada 2/3 */
+/* Tela para Desenvolvedor: Box para as opções de entrada 2/3 */
 .Intro-configbox {
   position: fixed;
   top: 50%;
@@ -263,7 +264,7 @@ main {    /* Main content area */
   z-index: 3;
 }
 
-/* Círculo central; Seleção de Ambiente 3/3 */
+/* Desenvolvedor: Círculo central - Seleção de Ambiente 3/3 */
 .Intro-circle {
   width: 360px;
   height: 360px;

@@ -4,7 +4,7 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, RobotAtom } from '../contexts/Molecule'
+import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, RobotAtom, ThemeAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
@@ -15,7 +15,8 @@ export const ConfigurationMenu = () => {
     const logout = useStore(GlobalStore, (state) => state.logout)
     const [ShowMenu, setShowMenu]= useAtom(MenuAtom)
     const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
-    const [StartTeleop, setStartTeleop]= useAtom(TeleopAtom)
+    const [StartTeleop, setStartTeleop] = useAtom(TeleopAtom)
+    const [Theme, setTheme] = useAtom(ThemeAtom)
     const setRobotConfig = useSetAtom(RobotAtom)
     const setLogData = useSetAtom(LogAtom)
 
@@ -31,6 +32,8 @@ export const ConfigurationMenu = () => {
 
           <div className={`configuration-panel ${ShowMenu ? 'show' : 'hide'}`}>
 
+            <div className={`configuration-panel-background ${Theme === 'light' ? 'light' : 'dark'}`}></div>
+
             <div className='configuration-options'>
               <div className='configuration-options-button' onClick={() => setConfigOption(1)}>Principal</div>
               <div className='configuration-options-button' onClick={() => setConfigOption(2)}>Ferramentas</div>
@@ -41,16 +44,12 @@ export const ConfigurationMenu = () => {
             {ConfigOption === 1 ?
             <>
             <div className='configuration-box'>
-              <div className={'configuration-box-switch'} onClick={() => ros.connect()}>
-                <div className={`configuration-switch-slider ${isConnected ? 'active' : ''}`}></div>
-              </div>
+              <div className={`configuration-box-button ${isConnected ? 'active' : ''} `} onClick={() => ros.connect()}> </div>
               <div className='configuration-box-text'> {isConnected ? 'Conectado ao ROS2!' : 'Conectar-se ao ROS2'} </div>
             </div>
 
             <div className='configuration-box'>
-              <div className={'configuration-box-switch'} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setStartTeleop(!StartTeleop)}}}>
-                <div className={`configuration-switch-slider ${StartTeleop ? 'active' : ''}`}></div>
-              </div>
+              <div className={`configuration-box-button ${StartTeleop ? 'active' : ''} `} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setStartTeleop(!StartTeleop)}}}> </div>
               <div className='configuration-box-text'> {StartTeleop ? 'Desativar Teclado' : 'Ativar Teclado'} </div>
             </div>
 
@@ -75,10 +74,17 @@ export const ConfigurationMenu = () => {
             {ConfigOption === 2 && userConfig.Type === true ?
             <>
             <div className='configuration-box'>
-              <div className={'configuration-box-switch'} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowRosapi(!ShowRosapi)}}}>
-                <div className={`configuration-switch-slider ${ShowRosapi ? 'active' : ''}`}></div>
-              </div>
+              <div className={`configuration-box-button ${ShowRosapi ? 'active' : ''} `} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowRosapi(!ShowRosapi)}}}> </div>
               <div className='configuration-box-text'> {ShowRosapi ? 'Desativar Menu ROS' : 'Ativar Menu ROS'} </div>
+            </div>
+            </>
+            : null}
+
+            {ConfigOption === 3 === true ?
+            <>
+            <div className='configuration-box'>
+              <div className={`configuration-box-button ${Theme === 'light' ? 'active' : ''} `} onClick={() => { if(Theme === 'light'){ setTheme('dark') } else{ setTheme('light') }}}> </div>
+              <div className='configuration-box-text'> {Theme === 'light' ? 'Ativar Tema Escuro' : 'Ativar Tema Claro'} </div>
             </div>
             </>
             : null}
