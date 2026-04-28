@@ -2,16 +2,14 @@
 
 ## Development Notes
 
-Trocado (Adicionado) posição da logica ShowRosapi? em Dashboard.tsx para não renderizar
+Em desenvolvimento: Adicionar localização em tempo real do robô no mapa e adicionado lógica para não aparecer ao usuário
 
-Adicionado mapa 2d do slam
+Adicionado maximo de publicações com comando 0, 0 no TeleopServc
 
 ## Planos Atuais
 
 - Aprimorar o App.tsx
-    Aprimorar o menu de configurações no Configuration.tsx (Component)
-    Adicionar visualização do slam
-    Possivelmente adicionar o manual e o automático do Teleop no Keyboard
+    Adicionar localização do slam
 
 - Personalização:
     Possivelmente colocar seleção de color theme na introdução, não somente no menu de configurações, contudo, preferencialmente ser salvo a opção via Backend

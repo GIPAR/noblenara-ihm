@@ -15,6 +15,7 @@ export const Teleoperation = () => {
     const centerXRef = useRef(0);
     const centerYRef = useRef(0);
     const lastPublishRef = useRef({ linear: 0, angular: 0 });
+    const publishRef = useRef({ n: 0, max: 5 });
 
     const [linear, setlinear] = useState(0);
     const [angular, setangular] = useState(0);
@@ -119,7 +120,7 @@ export const Teleoperation = () => {
         ros.stopRobot(); 
       }
       else if(valueRef.current.x !== 0 || valueRef.current.y !== 0){
-        velocity.linear = valueRef.current.y * MaxSpeed.linear; //Chngeee
+        velocity.linear = valueRef.current.y * MaxSpeed.linear;
         velocity.angular = -valueRef.current.x * MaxSpeed.angular;
       }
       else{
@@ -129,16 +130,27 @@ export const Teleoperation = () => {
         if(keys.has('d')){velocity.angular = -MaxSpeed.angular}
       }
 
-      ros.publishVelocity(velocity.linear, velocity.angular);
-      lastPublishRef.current = {linear: velocity.linear, angular: velocity.angular};
+      if(velocity.linear === 0 && velocity.angular === 0){
+        publishRef.current.n = publishRef.current.n + 1; 
+      }
+      else{
+        publishRef.current.n = 0;
+      }
+
+      if(publishRef.current.n < publishRef.current.max){
+        ros.publishVelocity(velocity.linear, velocity.angular);
+        lastPublishRef.current = {linear: velocity.linear, angular: velocity.angular};
+      }
 
       setlinear(prev => (prev !== velocity.linear ? velocity.linear : prev));
       setangular(prev => (prev !== velocity.angular ? velocity.angular : prev));
+      
     }, 100);
 
     return () => {
       window.removeEventListener('keydown', HandleKeyDown);
       window.removeEventListener('keyup', HandleKeyUp);
+      ros.stopRobot();
       clearInterval(PeriodicPublisher);
     };
 

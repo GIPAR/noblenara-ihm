@@ -1,6 +1,6 @@
 import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
-import { ROStore } from '../../contexts/Store';
+import { GlobalStore, ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
 import { DashboardAtom, TeleopAtom, RosapiAtom, MapAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
@@ -11,8 +11,9 @@ export const Dashboard = () => {
     const [isFull, setisFull] = useState(false)
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    const [Selection, setSelection] = useAtom(DashboardAtom)
     const isConnected = useStore(ROStore, (s) => s.isConnected)
+    const userConfig = useStore(GlobalStore, (s) => s.userConfig)
+    const [Selection, setSelection] = useAtom(DashboardAtom)
     const [StartTeleop] = useAtom(TeleopAtom)
     const [ShowRosapi] = useAtom(RosapiAtom)
     const [ShowMap] = useAtom(MapAtom)
@@ -72,7 +73,7 @@ export const Dashboard = () => {
                 
                 {ShowRosapi === true ? <div className='Dashboard-side-container'> <SwitchCode which={3}/> </div> : null}
 
-                {ShowMap === true ?
+                {ShowMap === true && userConfig.Type === true ?
                 <div className='Dashboard-side-container'>
                     <SwitchCode which={4}/>
                 </div>
