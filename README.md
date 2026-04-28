@@ -21,10 +21,10 @@ $ nvm install 24.11.1 #abra um novo terminal pra conseguir usar o comando!
 
 ### 2 - Rodando o IHM
 
-Baixe o repositório e copie o arquivo "noblenara-ihm-Desenvolvimento" para o local desejado, preferencialmente no home, então, mova-se para este **mesmo** arquivo pelo terminal e rode os seguintes comandos:
+Baixe o repositório e copie o arquivo "noblenara-ihm-main" para o local desejado, preferencialmente no home, então, mova-se para este **mesmo** arquivo pelo terminal e rode os seguintes comandos:
 ```
 bash
-$ cd ~/noblenara-ihm/Desenvolvimento/nara-ihm #Caso o arquivo foi copiado na área de trabalho do computador
+$ cd ~/noblenara-ihm-main/nara-ihm #Caso o arquivo foi copiado na área de trabalho do computador
 $ npm install
 $ npm run dev
 ```
