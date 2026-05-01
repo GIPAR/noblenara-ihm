@@ -38,11 +38,11 @@ function App() {
   useEffect(() => {
       if (userConfig.Environment === 2) { // 2 é para o ambiente virtual
         setCameraURL({link: 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/camera_user&type=mjpeg'});
-        setMaxSpeed({linear: 1, angular: 2});
+        setMaxSpeed({linear: 1, angular: 1});
       }
       else if (userConfig.Environment === 1) { // 1 é para o ambiente real -> Atualizar o endereço
-        setCameraURL({link: 'http://localhost:8080/stream?topic=/zed/zed_node/rgb/color/rect/image&type=mjpeg', user: ''});
-        setMaxSpeed({linear: 1, angular: 2});
+        setCameraURL({link: 'http://localhost:8080/stream?topic=/zed/zed_node/rgb/color/rect/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/camera_usuario&type=mjpeg'});
+        setMaxSpeed({linear: 1, angular: 1});
       }}, [userConfig.Environment, setCameraURL, setMaxSpeed]);
 
   if(userConfig.Environment === 0){ //Renderiza a Introdução enquanto a variável === 0

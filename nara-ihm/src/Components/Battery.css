@@ -1,0 +1,64 @@
+/* Componente da Bateria Pincipal: Grid com 2 Colunas 90% 10% */
+.Battery{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.Battery-Grid{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+
+    justify-content: center;
+    align-items: left;
+    text-align: center;
+    transition: 1s;
+}
+.Battery-Grid.Carregada{
+    color: rgb(59, 197, 68);
+}
+.Battery-Grid.Boa{
+    color: rgb(59, 197, 68);
+}
+.Battery-Grid.Fraca{
+    color: rgb(171, 213, 2);
+}
+.Battery-Grid.Depletada{
+    color: rgb(213, 55, 2);
+}
+.Battery-Grid.Desconhecida{
+    color: rgb(85, 165, 162);
+}
+
+/* --- Primeiro Elemento do Grid: Texto --- */
+.Battery-text{
+    width: 90%;
+    overflow-x: scroll;
+}
+.Battery h3{
+    font-size: 1.2rem;
+}
+
+/* --- Segundo Elemento do Grid: Ícone e Stack de Informações --- */
+.Battery-icon{
+    width: 10%;
+    height: 100%;
+    cursor: pointer;
+}
+.Battery-stack{
+    position: absolute;
+    width: 100%;
+    height: 4.5rem;
+    top: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+}
+.Battery-stack h4{
+    padding: 0rem 0.4rem;
+    font-size: 0.8rem;
+}

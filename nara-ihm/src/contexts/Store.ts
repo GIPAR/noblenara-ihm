@@ -27,7 +27,7 @@ export const GlobalStore = create<GlobalState>()((set) => ({
 
 // Loja 2/2 => Loja ROS
 
-const defaultbatteryConfig = { voltage: 0, percentage: 0, status: 'Desconhecido' }
+const defaultbatteryConfig = { voltage: 0, percentage: 0, status: 'Desconhecida' }
 
 interface ROSProps {
   isConnected: boolean
