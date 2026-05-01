@@ -2,14 +2,12 @@
 
 ## Development Notes
 
-Em desenvolvimento: Adicionar localização em tempo real do robô no mapa e adicionado lógica para não aparecer ao usuário
-
-Adicionado maximo de publicações com comando 0, 0 no TeleopServc
+Corrigido código da Bateria e modificado sua visualização
 
 ## Planos Atuais
 
 - Aprimorar o App.tsx
-    Adicionar localização do slam
+    Adicionar localização do slam; espera-se adicioná-lo após a navegação autônoma estiver em funcionamento
 
 - Personalização:
     Possivelmente colocar seleção de color theme na introdução, não somente no menu de configurações, contudo, preferencialmente ser salvo a opção via Backend

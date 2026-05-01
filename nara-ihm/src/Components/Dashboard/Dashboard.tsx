@@ -2,9 +2,10 @@ import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
 import { GlobalStore, ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
-import { DashboardAtom, TeleopAtom, RosapiAtom, MapAtom } from '../../contexts/Molecule';
+import { DashboardAtom, BatteryAtom, TeleopAtom, RosapiAtom, MapAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
 import { Teleoperation } from '../../services/TeleopService';
+import { BatteryView } from '../Battery';
 import './Dashboard.css'
 
 export const Dashboard = () => {
@@ -17,6 +18,7 @@ export const Dashboard = () => {
     const [StartTeleop] = useAtom(TeleopAtom)
     const [ShowRosapi] = useAtom(RosapiAtom)
     const [ShowMap] = useAtom(MapAtom)
+    const [isExpanded] = useAtom(BatteryAtom)
 
     // Develop: Ver se á outra maneira para selecionar se vai mudar o "main" ou o "firstside", tentei guardar uma string e jogar dentro do set mas não funcionou, porém talvez errei a sintaxe
 
@@ -52,8 +54,8 @@ export const Dashboard = () => {
             </div>
 
             <div className='Dashboard-side'>
-                <div className='Dashboard-side-status'>
-                    <h3>Bridge: {isConnected ? 'ONLINE': 'OFFLINE'}</h3>
+                <div className={`Dashboard-side-status ${isExpanded ? 'Increase' : null}`}>
+                    {userConfig.Environment === 1 ? <BatteryView/> : <h3> {isConnected ? (<span style={{ color: 'rgb(20, 202, 102)' }}>Bridge: Conectada</span>): (<span style={{ color: 'rgb(85, 190, 168)' }}>Bridge: Desconectada</span>)}</h3>}
                 </div>
 
                 <div className='Dashboard-side-container'>

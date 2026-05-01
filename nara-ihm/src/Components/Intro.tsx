@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { BatteryView } from './Battery';
 import { MessageLog } from './MessageLog';
 import './Intro.css'
 
@@ -71,6 +72,12 @@ export const Intro = () => {
         </div>
 
         <MessageLog/>
+
+        {isConnected ? 
+          <div className='Intro-Battery'>
+            <BatteryView/>
+          </div>
+        : (null)}
 
         {userConfig.Login !== true ? ( /* Tela de Login | 1/3 (Desenvolvedor) | 1/2 (Usuário) */
 
@@ -223,7 +230,7 @@ export const Intro = () => {
                     <p> {isConnected ? 'Robô conectado! Pressione o botão "continuar" para prosseguir' : 'Primeiramente, conecte-se ao robô antes de continuarmos'} <br/><br/> 
                       <span style={{ display: 'block', color: 'rgba(90, 162, 162, 0.96)', fontSize: '1rem', textAlign: 'justify'}}>
                         <strong> ➖ Conexão com o Robô: </strong> {isConnected === true ? <span style={{ color: 'rgba(48, 233, 150, 0.96)' }}>Online</span> : <span style={{ color: 'rgba(162, 90, 90, 0.96)' }}>Offline</span>} <br/><br/> 
-                        <strong> ➖ Estado da Bateria: </strong> {isConnected === true ? Battery.status : 'Conecte ao Robô!'} <br/> 
+                        <strong> ➖ Estado da Bateria: </strong> {isConnected === true ? Battery.status : 'Conecte ao Robô!'} <br/>
                       </span>
                     </p>
                   </div>
