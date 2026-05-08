@@ -13,8 +13,9 @@ export class ROS2Service {
   private ws: WebSocket | null = null;
   private listeners: { [topic: string]: ((message: unknown) => void)[] } = {};
   private unexpectedDisconnect: boolean | null = null;
+  private hostIP = window.location.hostname;
 
-  connect(url: string = 'ws://localhost:9090'): Promise<boolean> {
+  connect(url: string = `ws://${this.hostIP}:9090`): Promise<boolean> {
     return new Promise((resolve, reject) => {
 
       if(ROStore.getState().isConnected){ 

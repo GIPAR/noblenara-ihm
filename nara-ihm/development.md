@@ -2,7 +2,8 @@
 
 ## Development Notes
 
-Corrigido código da Bateria e modificado sua visualização
+Trocado forma de conexão com ws para permitir que tablets e celulares sem ROS se conectem
+Changes: ROS2Service
 
 ## Planos Atuais
 
