@@ -1,3 +1,4 @@
+import VoiceChat from "./Components/VoiceChat";
 import { useEffect, useRef } from 'react'
 import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
@@ -53,6 +54,7 @@ function App() {
     <div className={`App ${Theme}`}>
       <main>
         <MessageLog/>
+        <VoiceChat />
 
         <div className='App-header'> <h1>
           {Robot.robot === 0 ? ( "NARA - Robot HMI"  ):( null )}
