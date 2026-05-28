@@ -2,6 +2,13 @@ import { useState } from "react";
 import { speechService } from "../services/SpeechService";
 import { ROStore } from "../contexts/Store";
 
+function normalizeText(text: string) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 function createTwist(linearX: number, angularZ: number) {
   return {
     linear: { x: linearX, y: 0.0, z: 0.0 },
@@ -25,7 +32,7 @@ export default function VoiceChat() {
   }
 
   function interpretCommand(text: string) {
-    const command = text.toLowerCase();
+    const command = normalizeText(text);
     setLastCommand(text);
 
     if (command.includes("frente") || command.includes("andar")) {
@@ -33,7 +40,12 @@ export default function VoiceChat() {
       return "Movendo para frente.";
     }
 
-    if (command.includes("trás") || command.includes("ré")) {
+    if (
+    command.includes("re") ||
+    command.includes("tras") ||
+    command.includes("para tras") ||
+    command.includes("voltar")
+    ) {
       publishCmdVel(-0.3, 0.0);
       return "Movendo para trás.";
     }
