@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { speechService } from "../services/SpeechService";
 import { ROStore } from "../contexts/Store";
+import "./VoiceChat.css";
 
 function normalizeText(text: string) {
   return text
@@ -91,28 +92,24 @@ export default function VoiceChat() {
   }
 
   return (
-    <div
-  style={{
-    position: "absolute",
-    top: "10px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    zIndex: 9999,
-    background: "white",
-    padding: "12px",
-    border: "1px solid #444",
-    borderRadius: "8px",
-    pointerEvents: "auto",
-  }}
->
-      <h3>Controle por Voz</h3>
+  <div className="voice-chat-panel">
+    <h3 className="voice-chat-title">Controle por Voz</h3>
 
-      <button onClick={handleListen}>
-        {listening ? "Ouvindo..." : "Falar comando"}
-      </button>
+    <button className="voice-chat-button" onClick={handleListen}>
+      {listening ? "Ouvindo..." : "🎤 Falar comando"}
+    </button>
 
-      <p><strong>Último comando:</strong> {lastCommand || "Nenhum"}</p>
-      <p><strong>Resposta:</strong> {response || "Aguardando comando"}</p>
+    <div className="voice-chat-info">
+      <p>
+        <strong>Último comando:</strong>{" "}
+        <span className="voice-chat-status">{lastCommand || "Nenhum"}</span>
+      </p>
+
+      <p>
+        <strong>Resposta:</strong>{" "}
+        <span className="voice-chat-status">{response || "Aguardando comando"}</span>
+      </p>
     </div>
+  </div>
   );
 }
