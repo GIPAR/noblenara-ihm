@@ -32,41 +32,46 @@ export default function VoiceChat() {
     );
   }
 
-  function interpretCommand(text: string) {
-    const command = normalizeText(text);
-    setLastCommand(text);
-
-    if (command.includes("parar") || command.includes("pare")) {
-      publishCmdVel(0.0, 0.0);
-      return "Parando a cadeira.";
-    }
-
-    if (command.includes("direita")) {
-      publishCmdVel(0.0, -0.8);
-      return "Girando para a direita.";
-    }
-
-    if (command.includes("esquerda")) {
-      publishCmdVel(0.0, 0.8);
-      return "Girando para a esquerda.";
-    }
-
-    if (command.includes("frente") || command.includes("andar")) {
-      publishCmdVel(0.5, 0.0);
-      return "Movendo para frente.";
-    }
-
-    if (
-      command.includes("para tras") ||
-      command.includes("voltar") ||
-      command === "re"
-    ) {
-      publishCmdVel(-0.3, 0.0);
-      return "Movendo para trás.";
-    }
-
-    return "Comando não reconhecido.";
+function executeVoiceCommand(command: string): string {
+  if (command.includes("parar") || command.includes("pare")) {
+    publishCmdVel(0.0, 0.0);
+    return "Comando recebido. Parando a cadeira.";
   }
+
+  if (command.includes("direita")) {
+    publishCmdVel(0.0, -0.8);
+    return "Comando recebido. Girando para a direita.";
+  }
+
+  if (command.includes("esquerda")) {
+    publishCmdVel(0.0, 0.8);
+    return "Comando recebido. Girando para a esquerda.";
+  }
+
+  if (command.includes("frente") || command.includes("andar")) {
+    publishCmdVel(0.5, 0.0);
+    return "Comando recebido. Movendo para frente.";
+  }
+
+  if (
+    command.includes("para tras") ||
+    command.includes("voltar") ||
+    command === "re"
+  ) {
+    publishCmdVel(-0.3, 0.0);
+    return "Comando recebido. Movendo para trás.";
+  }
+
+  return "Comando não reconhecido.";
+}
+
+function interpretCommand(text: string): string {
+  const command = normalizeText(text);
+
+  setLastCommand(text);
+
+  return executeVoiceCommand(command);
+}
 
   function handleListen() {
     if (!speechService.supported()) {
