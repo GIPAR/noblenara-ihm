@@ -36,24 +36,9 @@ export default function VoiceChat() {
     const command = normalizeText(text);
     setLastCommand(text);
 
-    if (command.includes("frente") || command.includes("andar")) {
-      publishCmdVel(0.5, 0.0);
-      return "Movendo para frente.";
-    }
-
-    if (
-    command.includes("re") ||
-    command.includes("tras") ||
-    command.includes("para tras") ||
-    command.includes("voltar")
-    ) {
-      publishCmdVel(-0.3, 0.0);
-      return "Movendo para trás.";
-    }
-
-    if (command.includes("esquerda")) {
-      publishCmdVel(0.0, 0.8);
-      return "Girando para a esquerda.";
+    if (command.includes("parar") || command.includes("pare")) {
+      publishCmdVel(0.0, 0.0);
+      return "Parando a cadeira.";
     }
 
     if (command.includes("direita")) {
@@ -61,9 +46,23 @@ export default function VoiceChat() {
       return "Girando para a direita.";
     }
 
-    if (command.includes("parar") || command.includes("pare")) {
-      publishCmdVel(0.0, 0.0);
-      return "Parando a cadeira.";
+    if (command.includes("esquerda")) {
+      publishCmdVel(0.0, 0.8);
+      return "Girando para a esquerda.";
+    }
+
+    if (command.includes("frente") || command.includes("andar")) {
+      publishCmdVel(0.5, 0.0);
+      return "Movendo para frente.";
+    }
+
+    if (
+      command.includes("para tras") ||
+      command.includes("voltar") ||
+      command === "re"
+    ) {
+      publishCmdVel(-0.3, 0.0);
+      return "Movendo para trás.";
     }
 
     return "Comando não reconhecido.";
