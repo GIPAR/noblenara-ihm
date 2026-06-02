@@ -1,0 +1,127 @@
+export type VoiceCommandContext = {
+  batteryVoltage: number | null;
+  isConnected: boolean;
+  environment: number;
+  lastCommand: string;
+  publishCmdVel: (linearX: number, angularZ: number) => void;
+};
+
+function normalizeText(text: string) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function getEnvironmentName(environment: number) {
+  switch (environment) {
+    case 1:
+      return "cadeira real";
+    case 2:
+      return "cadeira virtual";
+    default:
+      return "ambiente ainda não selecionado";
+  }
+}
+
+function getAvailableCommands() {
+  return [
+    "frente",
+    "direita",
+    "esquerda",
+    "parar",
+    "para trás",
+    "voltar",
+    "status da bateria",
+    "status da conexão",
+    "último comando",
+    "ambiente atual",
+    "comandos disponíveis",
+    "ajuda",
+  ].join(", ");
+}
+
+export function executeVoiceCommand(
+  text: string,
+  context: VoiceCommandContext
+): string {
+  const command = normalizeText(text);
+
+  if (command.includes("parar") || command.includes("pare")) {
+    context.publishCmdVel(0.0, 0.0);
+    return "Comando recebido. Parando a cadeira.";
+  }
+
+  if (command.includes("direita")) {
+    context.publishCmdVel(0.0, -0.8);
+    return "Comando recebido. Girando para a direita.";
+  }
+
+  if (command.includes("esquerda")) {
+    context.publishCmdVel(0.0, 0.8);
+    return "Comando recebido. Girando para a esquerda.";
+  }
+
+  if (command.includes("frente") || command.includes("andar")) {
+    context.publishCmdVel(0.5, 0.0);
+    return "Comando recebido. Movendo para frente.";
+  }
+
+  if (
+    command.includes("para tras") ||
+    command.includes("voltar") ||
+    command === "re"
+  ) {
+    context.publishCmdVel(-0.3, 0.0);
+    return "Comando recebido. Movendo para trás.";
+  }
+
+  if (command.includes("bateria")) {
+    if (context.batteryVoltage === null) {
+      return "Ainda não recebi informações da bateria.";
+    }
+
+    return `A tensão atual da bateria é de ${context.batteryVoltage.toFixed(
+      1
+    )} volts.`;
+  }
+
+  if (
+    command.includes("status da conexao") ||
+    command.includes("conexao") ||
+    command.includes("bridge") ||
+    command.includes("ros")
+  ) {
+    return context.isConnected
+      ? "A conexão com o ROS está ativa."
+      : "A conexão com o ROS está offline.";
+  }
+
+  if (
+    command.includes("ultimo comando") ||
+    command.includes("ultimo comando executado")
+  ) {
+    return context.lastCommand
+      ? `O último comando foi ${context.lastCommand}.`
+      : "Nenhum comando foi executado ainda.";
+  }
+
+  if (
+    command.includes("ambiente") ||
+    command.includes("cadeira real") ||
+    command.includes("cadeira virtual")
+  ) {
+    return `Você está utilizando a ${getEnvironmentName(context.environment)}.`;
+  }
+
+  if (
+    command.includes("comandos disponiveis") ||
+    command.includes("listar comandos") ||
+    command.includes("o que voce faz") ||
+    command.includes("ajuda")
+  ) {
+    return `Os comandos disponíveis são: ${getAvailableCommands()}.`;
+  }
+
+  return "Comando não reconhecido. Tente dizer ajuda para ouvir os comandos disponíveis.";
+}
