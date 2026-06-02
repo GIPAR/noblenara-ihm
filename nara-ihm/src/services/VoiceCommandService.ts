@@ -38,7 +38,34 @@ function getAvailableCommands() {
     "ambiente atual",
     "comandos disponíveis",
     "ajuda",
+    "ir para recepção",
+    "ir para laboratório",
+    "quem é você",
+    "o que você pode fazer",
   ].join(", ");
+}
+
+function getNavigationDestination(command: string): string | null {
+  const destinations = [
+    "recepcao",
+    "laboratorio",
+    "sala",
+    "entrada",
+    "museu",
+  ];
+
+  for (const destination of destinations) {
+    if (
+      command.includes(`ir para ${destination}`) ||
+      command.includes(`va para ${destination}`) ||
+      command.includes(`me leve para ${destination}`) ||
+      command.includes(`navegar para ${destination}`)
+    ) {
+      return destination;
+    }
+  }
+
+  return null;
 }
 
 export function executeVoiceCommand(
@@ -121,6 +148,28 @@ export function executeVoiceCommand(
     command.includes("ajuda")
   ) {
     return `Os comandos disponíveis são: ${getAvailableCommands()}.`;
+  }
+
+  const destination = getNavigationDestination(command);
+
+  if (destination) {
+    return `Destino ${destination} solicitado. A navegação autônoma ainda será integrada.`;
+  }
+
+  if (
+  command.includes("quem e voce") ||
+  command.includes("quem voce e") ||
+  command.includes("se apresente")
+  ) {
+    return "Eu sou a assistente virtual da NARA.";
+  }
+
+  if (
+    command.includes("o que voce pode fazer") ||
+    command.includes("o que voce faz") ||
+    command.includes("suas funcoes")
+  ) {
+    return "Posso controlar a cadeira, informar o status do sistema e auxiliar na navegação.";
   }
 
   return "Comando não reconhecido. Tente dizer ajuda para ouvir os comandos disponíveis.";
