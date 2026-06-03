@@ -42,6 +42,8 @@ function getAvailableCommands() {
     "ir para laboratório",
     "quem é você",
     "o que você pode fazer",
+    "que horas são",
+    "qual a data de hoje",
   ].join(", ");
 }
 
@@ -170,6 +172,26 @@ export function executeVoiceCommand(
     command.includes("suas funcoes")
   ) {
     return "Posso controlar a cadeira, informar o status do sistema e auxiliar na navegação.";
+  }
+
+  if (
+  command.includes("que horas sao") ||
+  command.includes("qual a hora") ||
+  command.includes("horario")
+  ) {
+    const now = new Date();
+
+    return `Agora são ${now.getHours()} horas e ${now.getMinutes()} minutos.`;
+  }
+
+  if (
+    command.includes("data de hoje") ||
+    command.includes("que dia e hoje") ||
+    command.includes("dia de hoje")
+  ) {
+    const today = new Date();
+
+    return `Hoje é ${today.toLocaleDateString("pt-BR")}.`;
   }
 
   return "Comando não reconhecido. Tente dizer ajuda para ouvir os comandos disponíveis.";
