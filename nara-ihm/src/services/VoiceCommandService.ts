@@ -6,6 +6,14 @@ export type VoiceCommandContext = {
   publishCmdVel: (linearX: number, angularZ: number) => void;
 };
 
+import {
+  BATTERY_PATTERNS,
+  CONNECTION_PATTERNS,
+  ENVIRONMENT_PATTERNS,
+  HELP_PATTERNS,
+  matchesAny,
+} from "./VoicePatterns";
+
 function normalizeText(text: string) {
   return text
     .toLowerCase()
@@ -105,7 +113,7 @@ export function executeVoiceCommand(
     return "Comando recebido. Movendo para trás.";
   }
 
-  if (command.includes("bateria")) {
+  if (matchesAny(command, BATTERY_PATTERNS)) {
     if (context.batteryVoltage === null) {
       return "Ainda não recebi informações da bateria.";
     }
@@ -115,12 +123,7 @@ export function executeVoiceCommand(
     )} volts.`;
   }
 
-  if (
-    command.includes("status da conexao") ||
-    command.includes("conexao") ||
-    command.includes("bridge") ||
-    command.includes("ros")
-  ) {
+  if (matchesAny(command, CONNECTION_PATTERNS)) {
     return context.isConnected
       ? "A conexão com o ROS está ativa."
       : "A conexão com o ROS está offline.";
@@ -135,20 +138,11 @@ export function executeVoiceCommand(
       : "Nenhum comando foi executado ainda.";
   }
 
-  if (
-    command.includes("ambiente") ||
-    command.includes("cadeira real") ||
-    command.includes("cadeira virtual")
-  ) {
+  if (matchesAny(command, ENVIRONMENT_PATTERNS)) {
     return `Você está utilizando a ${getEnvironmentName(context.environment)}.`;
   }
 
-  if (
-    command.includes("comandos disponiveis") ||
-    command.includes("listar comandos") ||
-    command.includes("o que voce faz") ||
-    command.includes("ajuda")
-  ) {
+  if (matchesAny(command, HELP_PATTERNS)) {
     return `Os comandos disponíveis são: ${getAvailableCommands()}.`;
   }
 
