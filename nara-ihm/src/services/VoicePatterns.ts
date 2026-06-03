@@ -37,3 +37,21 @@ export const HELP_PATTERNS = [
   "o que voce pode fazer",
   "ajuda",
 ];
+
+export const NARA_IDENTITY_PATTERNS = [
+  "quem e voce",
+  "quem voce e",
+  "se apresente",
+  "o que e a nara",
+  "quem criou voce",
+  "qual e seu objetivo",
+];
+
+export const AUTONOMOUS_NAVIGATION_PATTERNS = [
+  "iniciar navegacao",
+  "parar navegacao",
+  "cancelar destino",
+  "cancelar navegacao",
+  "modo autonomo",
+  "ativar modo autonomo",
+];

@@ -11,6 +11,8 @@ import {
   CONNECTION_PATTERNS,
   ENVIRONMENT_PATTERNS,
   HELP_PATTERNS,
+  NARA_IDENTITY_PATTERNS,
+  AUTONOMOUS_NAVIGATION_PATTERNS,
   matchesAny,
 } from "./VoicePatterns";
 
@@ -188,5 +190,13 @@ export function executeVoiceCommand(
     return `Hoje é ${today.toLocaleDateString("pt-BR")}.`;
   }
 
-  return "Comando não reconhecido. Tente dizer ajuda para ouvir os comandos disponíveis.";
+  if (matchesAny(command, NARA_IDENTITY_PATTERNS)) {
+    return "Eu sou a assistente virtual da NARA, uma cadeira de rodas autônoma desenvolvida pelo GIPAR para apoiar estudos em mobilidade assistida e interação humano-robô.";
+  }
+
+  if (matchesAny(command, AUTONOMOUS_NAVIGATION_PATTERNS)) {
+    return "A navegação autônoma ainda será integrada ao assistente de voz.";
+  }
+
+  return "Desculpe, não entendi esse comando. Você pode dizer ajuda para conhecer minhas funcionalidades.";
 }
