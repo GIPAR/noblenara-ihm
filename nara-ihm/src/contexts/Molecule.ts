@@ -9,6 +9,8 @@ export const TeleopAtom = atom(false)
 
 export const MapAtom = atom(true)
 
+export const VoiceChatAtom = atom(false)
+
 // Átomos de Configurações;
 export const LocationAtom = atom({ link: 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/camera_user&type=mjpeg' })
 

@@ -1,3 +1,4 @@
+import VoiceChat from "./Components/VoiceChat";
 import { useEffect, useRef } from 'react'
 import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
@@ -9,6 +10,7 @@ import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from './contexts/Store'
 import { useSetAtom, useAtom } from 'jotai';
 import { LocationAtom, SpeedAtom, RobotAtom, ThemeAtom } from './contexts/Molecule';
+import { VoiceChatAtom } from "./contexts/Molecule";
 
 function App() {
   const connectionAttemptedRef = useRef(false);
@@ -19,6 +21,7 @@ function App() {
   const setMaxSpeed = useSetAtom(SpeedAtom)
   const [Theme] = useAtom(ThemeAtom)
   const [Robot] = useAtom(RobotAtom)
+  const [ShowVoiceChat] = useAtom(VoiceChatAtom)
 
   useEffect(() => {
     if (!connectionAttemptedRef.current) {
@@ -53,6 +56,7 @@ function App() {
     <div className={`App ${Theme}`}>
       <main>
         <MessageLog/>
+        {ShowVoiceChat ? <VoiceChat /> : null}
 
         <div className='App-header'> <h1>
           {Robot.robot === 0 ? ( "NARA - Robot HMI"  ):( null )}
