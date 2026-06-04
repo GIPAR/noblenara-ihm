@@ -138,8 +138,8 @@ export const Teleoperation = () => {
       }
 
       if(publishRef.current.n < publishRef.current.max){
-        ros.publishVelocity(velocity.linear, velocity.angular);
-        lastPublishRef.current = {linear: velocity.linear, angular: velocity.angular};
+      ros.publishVelocity(velocity.linear, velocity.angular);
+      lastPublishRef.current = {linear: velocity.linear, angular: velocity.angular};
       }
 
       setlinear(prev => (prev !== velocity.linear ? velocity.linear : prev));

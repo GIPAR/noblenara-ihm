@@ -2,6 +2,8 @@
 
 ## Development Notes
 
+Modificado background do Dashboard
+
 1. Merge e pequenas modificações da branch de Luiz
 2. Trocado forma de conexão com ws para permitir que tablets e celulares utilizem o ROS2 por meio de um host e pequenas mudanças de lógica
 
@@ -19,6 +21,17 @@ src/Components/Configuration.tsx
 ```
 
 ## Planos Atuais
+
+- Aprimorar o App.tsx
+    Aprimorar o frontend do rosapi; Possivelmente colocar no dashboard
+    Aprimorar o menu de configurações no Configuration.tsx (Component)
+    Adicionar visualização do mapa slam
+    Adicionar opção de visualizar localização
+    Possivelmente adicionar efeitos sonoros
+
+Possivelmente adicionar o manual e o automático do Teleop
+
+Criar um usuário sem privilégios de administrador, enquanto o backend não é criado
 
 - Adição de FUncionalidades:
     Adicionar localização do slam;

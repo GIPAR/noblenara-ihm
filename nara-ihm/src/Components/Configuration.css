@@ -27,6 +27,7 @@
   border: 1px solid rgba(0, 207, 226, 0.781);
   border-right: none;
   border-radius: 0.5rem;
+  background-color: #ffffff;
   position: absolute;
   top: 50%;
   z-index: 2;
@@ -36,7 +37,7 @@
   height: 100%;
   gap: 0.75rem;
   padding: 1.25rem 0.75rem;
-
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,7 +58,6 @@
   background-color: rgba(240, 255, 255, 0.841);
 }
 
-
 /* Menu de opções na parte superior */
 .configuration-options {
   width: 100%;
@@ -69,7 +69,6 @@
   justify-content: center;
 }
 .configuration-options > * { flex: 1; width: 0; } /* flex: 1; for the thingies to auto fill automatically */
-
 .configuration-options-button {
   height: 100%;
   border:1px solid #1e7888;
@@ -103,6 +102,7 @@
 .configuration-box-button.active {
   background: rgb(62, 158, 163);
 }
+.configuration-switch-slider.active{ right: 0rem; }
 .configuration-box-text {
   position: relative;
   width: 85%;
@@ -112,4 +112,13 @@
   padding: 1rem;
   color: rgb(19, 143, 162);
   font-weight: bold;
+}
+.configuration-box-button {
+  position: fixed;
+  width: 15%;
+  height: 2.5rem;
+  background-image: url('../assets/Menu/Slider.png');
+  background-size: contain; background-position: center; background-repeat: no-repeat;
+  z-index: 1;
+  cursor: pointer;
 }

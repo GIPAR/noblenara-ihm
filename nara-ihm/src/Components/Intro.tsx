@@ -1,28 +1,24 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { BatteryView } from './Battery';
 import { MessageLog } from './MessageLog';
 import './Intro.css'
 
 import { useStore } from 'zustand'
-import { GlobalStore, ROStore } from '../contexts/Store'
+import { GlobalStore } from '../contexts/Store'
 import { useSetAtom } from 'jotai';
 import { LogAtom } from '../contexts/Molecule'
 
 export const Intro = () => {
-  const User = useStore(GlobalStore, (s) => s.User)           //Variáveis Globais
-  const setUser = useStore(GlobalStore, (s) => s.setUser)
-  const userConfig = useStore(GlobalStore, (s) => s.userConfig)
-  const setuserConfig = useStore(GlobalStore, (s) => s.setuserConfig)
-  const ros = useStore(ROStore, (s) => s.ros)
-  const isConnected = useStore(ROStore, (s) => s.isConnected)
-  const Battery = useStore(ROStore, (s) => s.batteryData)
-  const setLogData = useSetAtom(LogAtom)
-
   const [isReturning, setIsReturning] = useState(false);      // Flag para detectar retorno
   const [LeaveIntro, setLeaveIntro] = useState(false);        // Flag para detectar saída
   const loginRef = useRef<HTMLDivElement>(null);              // Referência para a div principal
   const introsleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
   const [auxType, setauxType] = useState<boolean | null>(null);
+
+  const User = useStore(GlobalStore, (s) => s.User)           //Globais
+  const setUser = useStore(GlobalStore, (s) => s.setUser)
+  const userConfig = useStore(GlobalStore, (s) => s.userConfig)
+  const setuserConfig = useStore(GlobalStore, (s) => s.setuserConfig)
+  const setLogData = useSetAtom(LogAtom)
 
   useEffect(() => {  // Efeito para apressar a animação no retorno
     if (!userConfig.Login && isReturning && loginRef.current) {
@@ -36,11 +32,6 @@ export const Intro = () => {
     if(User.name == 'gipar' && User.password == 'usergipar'){
       setuserConfig({Login: true, Type: 0, Environment: 0});
       setIsReturning(false);  // Reseta para carregamento inicial
-      setLogData({msg: "Login realizado com sucesso!", id: Date.now(), error: false});
-    }
-    else if(User.name == 'nara' && User.password == 'usergipar'){
-      setuserConfig({Login: true, Type: false, Environment: 0}); // Ambiente é realmente settado no "HandleLeave", não aqui
-      setIsReturning(false);
       setLogData({msg: "Login realizado com sucesso!", id: Date.now(), error: false});
     }
     else{
@@ -73,13 +64,7 @@ export const Intro = () => {
 
         <MessageLog/>
 
-        {isConnected ? 
-          <div className='Intro-Battery'>
-            <BatteryView/>
-          </div>
-        : (null)}
-
-        {userConfig.Login !== true ? ( /* Tela de Login | 1/3 (Desenvolvedor) | 1/2 (Usuário) */
+        {userConfig.Login !== true ? ( /* Tela de Login 1/3 */
 
           <div className="Intro-login" ref={loginRef}>
             <div className='Intro-login-headerbar'>
@@ -121,7 +106,7 @@ export const Intro = () => {
           </div>
         ) : (
           <>
-          {userConfig.Type === 0 ? ( /* Desenvolvedores: Seleção de Modo 2/3 */
+          {userConfig.Type === 0 ? ( /* Seleção de Modo 2/3 */
             <>
               <div className="Intro-configbox">
                 <h2>Bem vindo, {User.name}!</h2>
@@ -131,7 +116,7 @@ export const Intro = () => {
                   <p> Selecione qual é o tipo de exibição desejado, sendo estes: <br/><br/> 
                     <span style={{ display: 'block', color: 'rgba(82, 119, 119, 0.86)', fontSize: '0.8rem', textAlign: 'justify'}}>
                       <strong> ➖ Usuário:</strong> Utilização comum do aplicativo com funcionalidades de controle <br/><br/> 
-                      <strong> ➖ Desenvolvedor:</strong> Permite o uso de ferramentas e exibições avançadas <br/> 
+                      <strong> ➖ Desenvolvedor:</strong> Permite o uso de ferramentas e exibições avançadas (Pending) <br/> 
                     </span>
                   </p>
                 </div>
@@ -175,10 +160,8 @@ export const Intro = () => {
                 <p>&laquo;</p>
               </div>
             </>
-          ) : (
+          ) : ( /* Seleção de Ambiente 3/3 ---> No futuro retire a seleção para usuário comum, por enquanto necessário para desenvolvimento */
             <> 
-            {userConfig.Type === true ? ( /* Desenvolvedores: Seleção de Ambiente 3/3 */
-              <>
               <div className={`Intro-circle`}>
                 <h3>Selecione o Ambiente</h3>
                 
@@ -212,61 +195,13 @@ export const Intro = () => {
               </div>
 
               <div className="Intro-backbutton"
-              onClick={() => {
-                setIsReturning(true);  // Marca que estamos retornando
-                setuserConfig({Login: true, Type: 0, Environment: 0});
-                setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
-              }}>
+                onClick={() => {
+                  setIsReturning(true);  // Marca que estamos retornando
+                  setuserConfig({Login: true, Type: 0, Environment: 0});
+                  setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
+                }}>
                 <p>&laquo;</p>
               </div>
-              </>
-            ) : ( /* Usuário Comum: Tela Auxiliar 2/2 */
-              <>
-                <div className="Intro-configbox">
-                  <h2>Bem vindo/a, {User.name}!</h2>
-                  <div className='Intro-second-image'></div>
-                
-                  <div className='Intro-configbox-partial'>
-                    <p> {isConnected ? 'Robô conectado! Pressione o botão "continuar" para prosseguir' : 'Primeiramente, conecte-se ao robô antes de continuarmos'} <br/><br/> 
-                      <span style={{ display: 'block', color: 'rgba(90, 162, 162, 0.96)', fontSize: '1rem', textAlign: 'justify'}}>
-                        <strong> ➖ Conexão com o Robô: </strong> {isConnected === true ? <span style={{ color: 'rgba(48, 233, 150, 0.96)' }}>Online</span> : <span style={{ color: 'rgba(162, 90, 90, 0.96)' }}>Offline</span>} <br/><br/> 
-                        <strong> ➖ Estado da Bateria: </strong> {isConnected === true ? Battery.status : 'Conecte ao Robô!'} <br/>
-                      </span>
-                    </p>
-                  </div>
-
-                  <div className='Intro-configbox-partial'>
-                    {isConnected === true ?
-                    <> 
-                      <div className='Intro-login-button relocate'
-                        onClick={() => {
-                          HandleLeave(1);
-                        }}>
-                        Continuar
-                      </div>
-                    </>
-                    : 
-                      <div className='Intro-login-button relocate'
-                        onClick={() => {
-                          ros.connect()
-                        }}> 
-                        Conectar-se ao Robô 
-                      </div>
-                    }
-                  </div>
-
-                </div>
-
-                <div className="Intro-backbutton"
-                  onClick={() => {
-                    setIsReturning(true);  // Marca que estamos retornando
-                    setuserConfig({Login: false, Type: 0, Environment: 0});
-                    setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
-                  }}>
-                  <p>&laquo;</p>
-                </div>
-              </>
-            )}
             </>
           )}
           </>

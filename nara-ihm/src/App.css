@@ -4,10 +4,13 @@ main {
 
 .App{
   min-height: 100vh;
+  color: rgb(0, 0, 0);
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
   animation: appEffect forwards 5.5s ease-in;
+  background: radial-gradient(circle, #ffffff, #eeeeeee0);
+
 }
 .App.light{
   background: radial-gradient(circle, #ffffff, #eeeeeee0);

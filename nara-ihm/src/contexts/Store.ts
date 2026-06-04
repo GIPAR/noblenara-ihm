@@ -23,7 +23,8 @@ export const GlobalStore = create<GlobalState>()((set) => ({
   logout: () => set({ userConfig: defaultuserConfig, User: nullUser }),
 }))
 
-
+//Ideia: usar User and SetUser para serem as variÁveis na hora de se "registrar", enquanto que Intro usa variÁvel local
+//Mas: Considerar o uso de outro método para backend instead
 
 // Loja 2/2 => Loja ROS
 
