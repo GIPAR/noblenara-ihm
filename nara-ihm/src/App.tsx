@@ -9,8 +9,7 @@ import './App.css';
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from './contexts/Store'
 import { useSetAtom, useAtom } from 'jotai';
-import { LocationAtom, SpeedAtom, RobotAtom, ThemeAtom } from './contexts/Molecule';
-import { VoiceChatAtom } from "./contexts/Molecule";
+import { LocationAtom, SpeedAtom, RobotAtom, ThemeAtom, VoiceChatAtom } from './contexts/Molecule';
 
 function App() {
   const connectionAttemptedRef = useRef(false);
