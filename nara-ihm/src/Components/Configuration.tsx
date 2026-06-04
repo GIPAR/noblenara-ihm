@@ -4,7 +4,7 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, RobotAtom, ThemeAtom, MapAtom } from '../contexts/Molecule'
+import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, RobotAtom, ThemeAtom, MapAtom, VoiceChatAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
@@ -18,6 +18,7 @@ export const ConfigurationMenu = () => {
     const [StartTeleop, setStartTeleop] = useAtom(TeleopAtom)
     const [Theme, setTheme] = useAtom(ThemeAtom)
     const [ShowMap, setShowMap] = useAtom(MapAtom)
+    const [ShowVoiceChat, setShowVoiceChat] = useAtom(VoiceChatAtom)
     const setRobotConfig = useSetAtom(RobotAtom)
     const setLogData = useSetAtom(LogAtom)
 
@@ -80,8 +81,17 @@ export const ConfigurationMenu = () => {
             </div>
 
             <div className='configuration-box'>
-              <div className={`configuration-box-button ${ShowMap ? 'active' : ''} `} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowMap(!ShowMap)}}}> </div>
+              <div className={`configuration-box-button ${ShowMap ? 'active' : ''} `} onClick={() => {if(isConnected == false && ShowMap == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowMap(!ShowMap)}}}> </div>
               <div className='configuration-box-text'> {ShowMap ? 'Desativar Mapa SLAM' : 'Ativar Mapa Slam'} </div>
+            </div>
+            </>
+            : null}
+
+            {ConfigOption === 2 ?
+            <>
+            <div className='configuration-box'>
+              <div className={`configuration-box-button ${ShowVoiceChat ? 'active' : ''}`} onClick={() => setShowVoiceChat(!ShowVoiceChat)}> </div>
+              <div className='configuration-box-text'> {ShowVoiceChat ? 'Desativar Controle por Voz' : 'Ativar Controle por Voz'} </div>
             </div>
             </>
             : null}

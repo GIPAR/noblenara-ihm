@@ -2,15 +2,33 @@
 
 ## Development Notes
 
-Corrigido código da Bateria e modificado sua visualização
+1. Merge e pequenas modificações da branch de Luiz
+2. Trocado forma de conexão com ws para permitir que tablets e celulares utilizem o ROS2 por meio de um host e pequenas mudanças de lógica
+
+### Arquivos Principais Modificados - Controle de Voz
+
+```text
+src/Components/VoiceChat.tsx
+src/Components/VoiceChat.css
+src/services/SpeechService.ts
+src/services/VoiceCommandService.ts
+src/services/VoicePatterns.ts
+src/contexts/Molecule.ts
+src/App.tsx
+src/Components/Configuration.tsx
+```
 
 ## Planos Atuais
 
-- Aprimorar o App.tsx
-    Adicionar localização do slam; espera-se adicioná-lo após a navegação autônoma estiver em funcionamento
+- Adição de FUncionalidades:
+    Adicionar localização do slam;
+    Adicionar forma de mudar manualmente os tópicos
 
-- Personalização:
-    Possivelmente colocar seleção de color theme na introdução, não somente no menu de configurações, contudo, preferencialmente ser salvo a opção via Backend
+- Mudanças Gerais:
+    Adicionar mudanças do mehrere (múltiplos robôs)
+    Adicionar forma de advertise e unadvertise, que permite trocar as políticas de durabilidade e reabilidade de publicações (não precisa ter callback no unadvertise)
+
+Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
 
 ## Notas
 
