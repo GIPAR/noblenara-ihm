@@ -32,9 +32,7 @@ export const ConfigurationMenu = () => {
         <div className='Configuration'>
           <div className={`configuration-button ${ShowMenu ? 'enabled' : 'disabled'}`} onClick={() => setShowMenu(!ShowMenu)}>{"<"}</div>
 
-          <div className={`configuration-panel ${ShowMenu ? 'show' : 'hide'}`}>
-
-            <div className={`configuration-panel-background ${Theme === 'light' ? 'light' : 'dark'}`}></div>
+          <div className={`configuration-panel ${ShowMenu ? 'show' : 'hide'} ${Theme === 'light' ? 'light' : 'dark'}`}>
 
             <div className='configuration-options'>
               <div className='configuration-options-button' onClick={() => setConfigOption(1)}>Principal</div>
@@ -45,9 +43,28 @@ export const ConfigurationMenu = () => {
 
             {ConfigOption === 1 ?
             <>
+            <div className='configuration-header'>
+              <h1>Opções de Conexão</h1>
+            </div>
+
             <div className='configuration-box'>
               <div className={`configuration-box-button ${isConnected ? 'active' : ''} `} onClick={() => ros.connect()}> </div>
               <div className='configuration-box-text'> {isConnected ? 'Conectado ao ROS2!' : 'Conectar-se ao ROS2'} </div>
+            </div>
+
+            <div className='configuration-box'>
+              <div className='configuration-box-button' onClick={ros.disconnect}> </div>
+              <div className='configuration-box-text'> Desconectar </div>
+            </div>
+
+            <div className='configuration-box'>
+              <div className='configuration-box-button' onClick={() => { 
+                logout(); setShowMenu(false); setShowRosapi(false); setLogData({msg: "Retornado a tela Inicial", id: Date.now(), error: false}); }}> </div>
+              <div className='configuration-box-text'> Deslogar </div>
+            </div>
+
+            <div className='configuration-header'>
+              <h1>Opções do Robô</h1>
             </div>
 
             <div className='configuration-box'>
@@ -59,44 +76,37 @@ export const ConfigurationMenu = () => {
               <div className='configuration-box-button' onClick={ros.stopRobot}> </div>
               <div className='configuration-box-text'> Parar Robô </div>
             </div>
-
-            <div className='configuration-box'>
-              <div className='configuration-box-button' onClick={ros.disconnect}> </div>
-              <div className='configuration-box-text'> Desconectar Robô </div>
-            </div>
-
-            <div className='configuration-box'>
-              <div className='configuration-box-button' onClick={() => { 
-                logout(); setShowMenu(false); setShowRosapi(false); setLogData({msg: "Retornado a tela Inicial", id: Date.now(), error: false}); }}> </div>
-              <div className='configuration-box-text'> Deslogar </div>
-            </div>
             </>
             : null}
 
-            {ConfigOption === 2 && userConfig.Type === true ?
+            {userConfig.Type === true && ConfigOption === 2 ?
             <>
+            <div className='configuration-header'>
+              <h1>Ferramentas Gerais</h1>
+            </div>
+
             <div className='configuration-box'>
-              <div className={`configuration-box-button ${ShowRosapi ? 'active' : ''} `} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowRosapi(!ShowRosapi)}}}> </div>
-              <div className='configuration-box-text'> {ShowRosapi ? 'Desativar Menu ROS' : 'Ativar Menu ROS'} </div>
+              <div className={`configuration-box-button ${ShowVoiceChat ? 'active' : ''}`} onClick={() => setShowVoiceChat(!ShowVoiceChat)}> </div>
+              <div className='configuration-box-text'> {ShowVoiceChat ? 'Desativar Controle por Voz' : 'Ativar Controle por Voz'} </div>
+            </div>
+
+            <div className='configuration-header'>
+              <h1>Ferramentas do ROS2</h1>
             </div>
 
             <div className='configuration-box'>
               <div className={`configuration-box-button ${ShowMap ? 'active' : ''} `} onClick={() => {if(isConnected == false && ShowMap == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowMap(!ShowMap)}}}> </div>
               <div className='configuration-box-text'> {ShowMap ? 'Desativar Mapa SLAM' : 'Ativar Mapa Slam'} </div>
             </div>
-            </>
-            : null}
 
-            {ConfigOption === 2 ?
-            <>
             <div className='configuration-box'>
-              <div className={`configuration-box-button ${ShowVoiceChat ? 'active' : ''}`} onClick={() => setShowVoiceChat(!ShowVoiceChat)}> </div>
-              <div className='configuration-box-text'> {ShowVoiceChat ? 'Desativar Controle por Voz' : 'Ativar Controle por Voz'} </div>
+              <div className={`configuration-box-button ${ShowRosapi ? 'active' : ''} `} onClick={() => {if(isConnected == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowRosapi(!ShowRosapi)}}}> </div>
+              <div className='configuration-box-text'> {ShowRosapi ? 'Desativar Menu ROS' : 'Ativar Menu ROS'} </div>
             </div>
             </>
             : null}
 
-            {ConfigOption === 3 === true ?
+            {ConfigOption === 3 ?
             <>
             <div className='configuration-box'>
               <div className={`configuration-box-button ${Theme === 'light' ? 'active' : ''} `} onClick={() => { if(Theme === 'light'){ setTheme('dark') } else{ setTheme('light') }}}> </div>

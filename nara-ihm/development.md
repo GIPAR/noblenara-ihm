@@ -2,21 +2,8 @@
 
 ## Development Notes
 
-1. Merge e pequenas modificações da branch de Luiz
-2. Trocado forma de conexão com ws para permitir que tablets e celulares utilizem o ROS2 por meio de um host e pequenas mudanças de lógica
-
-### Arquivos Principais Modificados - Controle de Voz
-
-```text
-src/Components/VoiceChat.tsx
-src/Components/VoiceChat.css
-src/services/SpeechService.ts
-src/services/VoiceCommandService.ts
-src/services/VoicePatterns.ts
-src/contexts/Molecule.ts
-src/App.tsx
-src/Components/Configuration.tsx
-```
+1. Modificado menu de configurações
+Changes: Configuration.tsx e Configuration.css
 
 ## Planos Atuais
 
