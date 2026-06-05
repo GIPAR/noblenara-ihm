@@ -1,4 +1,5 @@
 import VoiceChat from "./Components/VoiceChat";
+import LLMAssistant from "./Components/LLMAssistant";
 import { useEffect, useRef } from 'react'
 import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
@@ -56,6 +57,7 @@ function App() {
       <main>
         <MessageLog/>
         {ShowVoiceChat ? <VoiceChat /> : null}
+        <LLMAssistant />
 
         <div className='App-header'> <h1>
           {Robot.robot === 0 ? ( "NARA - Robot HMI"  ):( null )}
