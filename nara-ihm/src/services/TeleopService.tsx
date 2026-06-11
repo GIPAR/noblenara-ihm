@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useStore } from 'zustand'
 import { ROStore } from '../contexts/Store';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { LogAtom, SpeedAtom, TeleopAtom } from '../contexts/Molecule';
+import { LogAtom, SpeedLimitAtom, TeleopAtom } from '../contexts/Molecule';
 import '../Components/Teleop.css';
 
 export const Teleoperation = () => {
@@ -23,7 +23,7 @@ export const Teleoperation = () => {
 
     const ros = useStore(ROStore, (s) => s.ros)
     const isConnected = useStore(ROStore, (s) => s.isConnected)
-    const MaxSpeed = useAtomValue(SpeedAtom)
+    const MaxSpeed = useAtomValue(SpeedLimitAtom)
     const setLogData = useSetAtom(LogAtom)
     const setStartTeleop = useSetAtom(TeleopAtom)
 
@@ -98,62 +98,77 @@ export const Teleoperation = () => {
       valueRef.current = { x: 0, y: 0 };
     }, []);
 
+    // useEffect(() => {
+    //   if(isConnected == false){
+    //     setStartTeleop(false);
+    //     return;
+    //   }
+      
+
+    //   if( ros.advertise('/noblenara/alfa/cmd_vel', 'geometry_msgs/Twist', 'best_effort', 'volatile', 1) === false){
+    //     setLogData({msg: "Impossível de manejar o tópico!", id: Date.now(), error: true});
+    //     setStartTeleop(false);
+    //     return;
+    //    }
+
+    //   return () => {
+    //     ros.unadvertise('/noblenara/alfa/cmd_vel')
+    //   };
+    // }, [])
 
     useEffect(() => {
-    if(isConnected == false){
-      setLogData({msg: "Não há conexão com o ROS!", id: Date.now(), error: true});
-      setStartTeleop(false);
-      return;
-    }
-
-    const HandleKeyDown = (e: KeyboardEvent) => keysRef.current.add(e.key.toLowerCase());
-    const HandleKeyUp = (e: KeyboardEvent) => keysRef.current.delete(e.key.toLowerCase());
-
-    window.addEventListener('keydown', HandleKeyDown);
-    window.addEventListener('keyup', HandleKeyUp);
-
-    const PeriodicPublisher = setInterval(() => {
-      let velocity = { linear: 0, angular: 0};
-      const keys = keysRef.current;
-
-      if(keys.has(' ')){ 
-        ros.stopRobot(); 
-      }
-      else if(valueRef.current.x !== 0 || valueRef.current.y !== 0){
-        velocity.linear = valueRef.current.y * MaxSpeed.linear;
-        velocity.angular = -valueRef.current.x * MaxSpeed.angular;
-      }
-      else{
-        if(keys.has('w')){velocity.linear = MaxSpeed.linear}
-        if(keys.has('a')){velocity.angular = MaxSpeed.angular}
-        if(keys.has('s')){velocity.linear = -MaxSpeed.linear}
-        if(keys.has('d')){velocity.angular = -MaxSpeed.angular}
+      if(isConnected == false){
+        setLogData({msg: "Não há conexão com o ROS!", id: Date.now(), error: true});
+        setStartTeleop(false);
+        return;
       }
 
-      if(velocity.linear === 0 && velocity.angular === 0){
-        publishRef.current.n = publishRef.current.n + 1; 
-      }
-      else{
-        publishRef.current.n = 0;
-      }
+      const HandleKeyDown = (e: KeyboardEvent) => keysRef.current.add(e.key.toLowerCase());
+      const HandleKeyUp = (e: KeyboardEvent) => keysRef.current.delete(e.key.toLowerCase());
 
-      if(publishRef.current.n < publishRef.current.max){
-        ros.publishVelocity(velocity.linear, velocity.angular);
-        lastPublishRef.current = {linear: velocity.linear, angular: velocity.angular};
-      }
+      window.addEventListener('keydown', HandleKeyDown);
+      window.addEventListener('keyup', HandleKeyUp);
 
-      setlinear(prev => (prev !== velocity.linear ? velocity.linear : prev));
-      setangular(prev => (prev !== velocity.angular ? velocity.angular : prev));
-      
-    }, 100);
+      const PeriodicPublisher = setInterval(() => {
+        let velocity = { linear: 0, angular: 0};
+        const keys = keysRef.current;
 
-    return () => {
-      window.removeEventListener('keydown', HandleKeyDown);
-      window.removeEventListener('keyup', HandleKeyUp);
-      ros.stopRobot();
-      clearInterval(PeriodicPublisher);
-    };
+        if(keys.has(' ')){ 
+          ros.stopRobot(); 
+        }
+        else if(valueRef.current.x !== 0 || valueRef.current.y !== 0){
+          velocity.linear = valueRef.current.y * MaxSpeed.linear;
+          velocity.angular = -valueRef.current.x * MaxSpeed.angular;
+        }
+        else{
+          if(keys.has('w')){velocity.linear = MaxSpeed.linear}
+          if(keys.has('a')){velocity.angular = MaxSpeed.angular}
+          if(keys.has('s')){velocity.linear = -MaxSpeed.linear}
+          if(keys.has('d')){velocity.angular = -MaxSpeed.angular}
+        }
 
+        if(velocity.linear === 0 && velocity.angular === 0){
+          publishRef.current.n = publishRef.current.n + 1; 
+        }
+        else{
+          publishRef.current.n = 0;
+        }
+
+        if(publishRef.current.n < publishRef.current.max){
+          ros.publishVelocity(velocity.linear, velocity.angular);
+          lastPublishRef.current = {linear: velocity.linear, angular: velocity.angular};
+        }
+
+        setlinear(prev => (prev !== velocity.linear ? velocity.linear : prev));
+        setangular(prev => (prev !== velocity.angular ? velocity.angular : prev));
+      }, 100);
+
+      return () => {
+        window.removeEventListener('keydown', HandleKeyDown);
+        window.removeEventListener('keyup', HandleKeyUp);
+        ros.stopRobot();
+        clearInterval(PeriodicPublisher);
+      };
     },[isConnected, setLogData, MaxSpeed, ros, setStartTeleop]);
 
 

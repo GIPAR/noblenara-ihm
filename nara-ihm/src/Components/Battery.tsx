@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
-import { useAtom, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { ROStore } from '../contexts/Store';
-import { BatteryAtom, LogAtom, RobotAtom } from '../contexts/Molecule';
+import { BatteryAtom, LogAtom } from '../contexts/Molecule';
 import './Battery.css'
 
 type BatteryMessage = {
@@ -16,14 +16,15 @@ export const BatteryView = () => {
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const ros = useStore(ROStore, (s) => s.ros)
     const Message = useStore(ROStore, (s) => s.batteryData)
+    const project = useStore(ROStore, (state) => state.robotData.project)
+    const battery_topic = useStore(ROStore, (state) => state.robotData.topic_battery)
     const setMessage = useStore(ROStore, (s) => s.setbatteryData)
-    const [RobotState] = useAtom(RobotAtom)
     const setLogData = useSetAtom(LogAtom)
     const setisExpanded = useSetAtom(BatteryAtom)
 
     // UseEffect para lógica da Bateria para a NARA
     useEffect(() => {
-        if(!isConnected || RobotState.robot !== 0) return;
+        if(!isConnected || project !== 'noblenara') return;
 
         const HandleStatus = (voltage: number) => {
             if(voltage >= 25) { return 'Carregada' }
@@ -34,7 +35,7 @@ export const BatteryView = () => {
         }
 
         const Battery_sub = ros.subscribe(
-            '/noblenara/battery_status',
+            battery_topic,
             'sensor_msgs/msg/BatteryState',
             (message) => { 
                 const battery = message as BatteryMessage
@@ -46,7 +47,7 @@ export const BatteryView = () => {
         return() => {
             Battery_sub.unsubscribe();
         };
-        }, [isConnected, ros, setMessage, RobotState.robot]);
+        }, [isConnected, ros, setMessage, project]);
 
 
         useEffect(() => {

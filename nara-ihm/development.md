@@ -2,20 +2,23 @@
 
 ## Development Notes
 
-1. Modificado menu de configurações
-Changes: Configuration.tsx e Configuration.css
+1. Desenvolvimento do Menu de Configurações com Customização do Projeto e Prefixos de Tópicos
+
+0 - Desenvolvimento da localização (Não terminado)
+Changes: Map.tsx
+
+0 - Desenvolvimento de método de advertise e unadvertise no cmd_vel
+Changes: ROS2Service.ts, TeleopService.tsx
+
+Lembrar de modificar o VoiceChat para integrar com a IHM na parte da Bateria
 
 ## Planos Atuais
 
-- Adição de FUncionalidades:
+- Adição de Funcionalidades:
     Adicionar localização do slam;
-    Adicionar forma de mudar manualmente os tópicos
 
 - Mudanças Gerais:
-    Adicionar mudanças do mehrere (múltiplos robôs)
-    Adicionar forma de advertise e unadvertise, que permite trocar as políticas de durabilidade e reabilidade de publicações (não precisa ter callback no unadvertise)
-
-Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
+    Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
 
 ## Notas
 

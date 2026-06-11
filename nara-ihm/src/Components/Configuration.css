@@ -78,7 +78,7 @@
   width: calc(var(--box-width) * 1);
   height: 1.6rem;
   padding: 0 0 0 0.5rem;
-  display: flex; align-items: center; justify-content: left;
+  /* display: flex; align-items: center; justify-content: left; */
   border-bottom: 1px solid rgb(11, 75, 85);
 }
 .configuration-header h1 {
@@ -113,4 +113,11 @@
   padding: 1rem;
   color: rgb(19, 143, 162);
   font-weight: bold;
+  white-space: nowrap;
+}
+.configuration-box-input {
+  border-radius: 1rem;
+  outline: none;
+  color: rgb(11, 87, 99);
+  border-color: rgb(17, 180, 180);
 }
