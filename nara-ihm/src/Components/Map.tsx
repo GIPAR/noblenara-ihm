@@ -8,17 +8,15 @@ type MapMessage = {
     info: { width: number, height: number, resolution: number, origin: { position: { x: number, y: number, z: number } } };
 }
 
-// type TfMessage = {
-//     transforms: {
+// type PoseMessage = {
 //         header: { frame_id: string };
-//         child_frame_id: string;
-//         transform: { translation: { x: number, y: number, z: number }, rotation: { z: number, w: number } };
-//     }[];
+//         pose: { pose: { position: { x: 0, y: 0, z: 0 }, orientation: { x: 0, y: 0, z: 0, w: 0 } } };
 // }
 
 export const Map = () => {
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const ros = useStore(ROStore, (s) => s.ros)
+    const map_topic = useStore(ROStore, (s) => s.robotData.topic_map)
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const occupancyRef = useRef<Int8Array | null>(null);
@@ -73,7 +71,7 @@ export const Map = () => {
         if(!isConnected) return;
 
         const Map_sub = ros.subscribe(
-            '/map',
+            map_topic,
             'nav_msgs/msg/OccupancyGrid',
             (message) => { 
                 const Map = message as MapMessage
@@ -93,8 +91,8 @@ export const Map = () => {
             }
         );
 
-        // const Tf_sub = ros.subscribe(
-        //     '/tf',
+        // const pose_sub = ros.subscribe(
+        //     '/noblenara/mirai/pose',
         //     'tf2_msgs/msg/TFMessage',
         //     (message) => { 
         //         const Tf = message as TfMessage

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
-import { useAtom, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { ROStore } from '../contexts/Store';
-import { BatteryAtom, LogAtom, RobotAtom } from '../contexts/Molecule';
+import { BatteryAtom, LogAtom } from '../contexts/Molecule';
 import './Battery.css'
 
 type BatteryMessage = {
@@ -16,14 +16,15 @@ export const BatteryView = () => {
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const ros = useStore(ROStore, (s) => s.ros)
     const Message = useStore(ROStore, (s) => s.batteryData)
+    const project = useStore(ROStore, (state) => state.robotData.project)
+    const battery_topic = useStore(ROStore, (state) => state.robotData.topic_battery)
     const setMessage = useStore(ROStore, (s) => s.setbatteryData)
-    const [RobotState] = useAtom(RobotAtom)
     const setLogData = useSetAtom(LogAtom)
     const setisExpanded = useSetAtom(BatteryAtom)
 
     // UseEffect para lógica da Bateria para a NARA
     useEffect(() => {
-        if(!isConnected || RobotState.robot !== 0) return;
+        if(!isConnected || project !== 'noblenara') return;
 
         const HandleStatus = (voltage: number) => {
             if(voltage >= 25) { return 'Carregada' }
@@ -34,7 +35,7 @@ export const BatteryView = () => {
         }
 
         const Battery_sub = ros.subscribe(
-            '/noblenara/battery_status',
+            battery_topic,
             'sensor_msgs/msg/BatteryState',
             (message) => { 
                 const battery = message as BatteryMessage
@@ -46,7 +47,7 @@ export const BatteryView = () => {
         return() => {
             Battery_sub.unsubscribe();
         };
-        }, [isConnected, ros, setMessage, RobotState.robot]);
+        }, [isConnected, ros, setMessage, project]);
 
 
         useEffect(() => {
@@ -75,7 +76,7 @@ export const BatteryView = () => {
                 </div>
                 
                 <div className='Battery-icon' onClick={() => { setisExpanded(prev => !prev) }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="40" y1="64" x2="216" y2="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="40" y1="192" x2="144" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="184" y1="192" x2="232" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="208" y1="168" x2="208" y2="216" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="40" y1="64" x2="216" y2="64" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="40" y1="192" x2="144" y2="192" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="184" y1="192" x2="232" y2="192" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/><line x1="208" y1="168" x2="208" y2="216" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
                 </div>
 
                 <div className='Battery-stack'>

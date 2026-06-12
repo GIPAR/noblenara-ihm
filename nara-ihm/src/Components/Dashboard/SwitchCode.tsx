@@ -1,12 +1,14 @@
 import { useRef } from 'react'
-import { useAtom, useSetAtom } from 'jotai'
-import { LocationAtom, LogAtom } from '../../contexts/Molecule'
+import { useStore } from 'zustand'
+import { useSetAtom } from 'jotai'
+import { ROStore } from '../../contexts/Store'
+import { LogAtom } from '../../contexts/Molecule'
 import { RosapiMenu } from '../Rosapi'
 import { Map } from '../Map'
 
 
 export const SwitchCode = ({which}: {which: number}) => {
-    const [CameraURL] = useAtom(LocationAtom)
+    const CameraURL = useStore(ROStore, (s) => s.Link)
     const setLogData = useSetAtom(LogAtom)
     const cameraLoadedRef = useRef<{ main: boolean | null; minor: boolean | null }>({  main: null,  minor: null });
 
