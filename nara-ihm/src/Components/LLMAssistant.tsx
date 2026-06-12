@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { askGemini } from "../services/LLMService";
 import "./LLMAssistant.css";
+import { useStore } from "zustand";
+import { ChatStore } from "../contexts/Store";
 
 export default function LLMAssistant() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("Faça uma pergunta para a assistente.");
   const [loading, setLoading] = useState(false);
+
+  const setHistory = useStore(ChatStore, (s) => s.setHistory)
 
   async function handleAsk() {
     if (!question.trim() || loading) return;
@@ -14,6 +18,9 @@ export default function LLMAssistant() {
 
     const response = await askGemini(question);
 
+    setHistory( 'user', question )
+    setHistory( 'assistant', response )
+    
     setAnswer(response);
     setLoading(false);
   }

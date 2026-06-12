@@ -50,3 +50,31 @@ export const ROStore = create<ROSProps>()((set) => ({
   batteryData: defaultbatteryConfig,
   setbatteryData: ( newconfig ) => set({ batteryData: newconfig })
 }))
+
+
+
+// Loja 3/3 => Loja chatBot
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
+const defaultHistory: Message[] = [];
+
+interface ChatProps {
+  History: typeof defaultHistory;
+  setHistory: ( role: "user" | "assistant", content: string ) => void
+}
+
+export const ChatStore = create<ChatProps>((set, get) => ({
+  History: defaultHistory,
+
+  setHistory: ( role: "user" | "assistant", content: string ) => {
+    const History = get().History;
+
+    set({
+      History: [...History, { role: role, content: content }],
+    });
+
+  },
+}));
