@@ -28,8 +28,19 @@ export const GlobalStore = create<GlobalState>()((set) => ({
 // Loja 2/2 => Loja ROS
 
 const defaultbatteryConfig = { voltage: 0, percentage: 0, status: 'Desconhecida' }
-const defaultrobotData = { project: 'noblenara', prefix: '', topic_cmd_vel: '/noblenara/alfa/cmd_vel', topic_camera_link: '/noblenara/alfa/camera_link/image', topic_camera_user: '/noblenara/alfa/camera_user', topic_map: '/noblenara/alfa/map', topic_battery: '/noblenara/alfa/battery_status' }
-const defaultLink = { link: 'http://localhost:8080/stream?topic=/noblenara/alfa/camera_link/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/alfa/camera_user&type=mjpeg' }
+const defaultrobotData = {
+  project: 'noblenara',
+  prefix: '',
+  topic_cmd_vel: '/noblenara/cmd_vel',
+  topic_camera_link: '/noblenara/camera_link/image',
+  topic_camera_user: '/noblenara/camera_user',
+  topic_map: '/noblenara/alfa/map',
+  topic_battery: '/noblenara/battery_status'
+}
+const defaultLink = {
+  link: 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg',
+  user: 'http://localhost:8080/stream?topic=/noblenara/camera_user&type=mjpeg'
+}
 
 interface ROSProps {
   isConnected: boolean
