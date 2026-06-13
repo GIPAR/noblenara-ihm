@@ -34,6 +34,7 @@
 /* --- Primeiro Elemento do Grid: Texto --- */
 .Battery-text{
     width: 90%;
+    height: 1.6rem;
     overflow-x: scroll;
 }
 .Battery h3{
@@ -42,8 +43,8 @@
 
 /* --- Segundo Elemento do Grid: Ícone e Stack de Informações --- */
 .Battery-icon{
-    width: 10%;
-    height: 100%;
+    width: 1.6rem;
+    height: 1.6rem;
     cursor: pointer;
 }
 .Battery-stack{

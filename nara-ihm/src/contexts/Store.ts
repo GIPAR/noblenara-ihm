@@ -28,30 +28,77 @@ export const GlobalStore = create<GlobalState>()((set) => ({
 // Loja 2/2 => Loja ROS
 
 const defaultbatteryConfig = { voltage: 0, percentage: 0, status: 'Desconhecida' }
+const defaultrobotData = { project: 'noblenara', prefix: '', topic_cmd_vel: '/noblenara/alfa/cmd_vel', topic_camera_link: '/noblenara/alfa/camera_link/image', topic_camera_user: '/noblenara/alfa/camera_user', topic_map: '/noblenara/alfa/map', topic_battery: '/noblenara/alfa/battery_status' }
+const defaultLink = { link: 'http://localhost:8080/stream?topic=/noblenara/alfa/camera_link/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/alfa/camera_user&type=mjpeg' }
 
 interface ROSProps {
   isConnected: boolean
   setisConnected: ( newState: boolean ) => void
 
   ros: ROS2Service
-  rosapiData: Record<string, string | string[] | number | boolean>,
-  setrosapiData: ( newState: Record<string, string | string[] | number | boolean>, ) => void,
-  batteryData: typeof defaultbatteryConfig,
+  rosapiData: Record<string, string | string[] | number | boolean>
+  setrosapiData: ( newState: Record<string, string | string[] | number | boolean>, ) => void
+  batteryData: typeof defaultbatteryConfig
   setbatteryData: ( newconfig: typeof defaultbatteryConfig ) => void
+  robotData: typeof defaultrobotData
+  setrobotData: ( newData: typeof defaultrobotData ) => void
+
+  Link: typeof defaultLink
+  setLink: ( newLink: typeof defaultLink ) => void
+  
+  computeTopics: () => void
+  computeLinks: () => void
 }
 
-export const ROStore = create<ROSProps>()((set) => ({
+export const ROStore = create<ROSProps>()((set, get) => ({
   isConnected: false,
   setisConnected: ( newState: boolean ) => set({ isConnected: newState }),
 
   ros: new ROS2Service(),
   rosapiData: {} as Record<string, string | string[] | number | boolean>,
-  setrosapiData: (newState: Record<string, string | string[] | number | boolean>) => set({ rosapiData: newState }),
+  setrosapiData: ( newState: Record<string, string | string[] | number | boolean>) => set({ rosapiData: newState }),
   batteryData: defaultbatteryConfig,
-  setbatteryData: ( newconfig ) => set({ batteryData: newconfig })
+
+  setbatteryData: ( newconfig ) => set({ batteryData: newconfig }),
+  robotData: defaultrobotData,
+  setrobotData: ( newData ) => set({ robotData: newData }),
+
+  Link: defaultLink,
+  setLink: ( newLink ) => set({ Link: newLink }),
+
+  computeTopics: () => {
+    const { robotData } = get()
+
+    if( robotData.prefix.startsWith('/') || robotData.prefix === '' ){
+      set({ robotData: { ...robotData,
+        topic_cmd_vel: `/${robotData.project}${robotData.prefix}/cmd_vel`, 
+        topic_camera_link: `/${robotData.project}${robotData.prefix}/camera_link/image`,
+        topic_camera_user: `/${robotData.project}${robotData.prefix}/camera_user`,
+        topic_map: `/${robotData.project}${robotData.prefix}/map`,
+        topic_battery: `/${robotData.project}${robotData.prefix}/battery_status`,
+      } })
+    }
+    else{
+      set({ robotData: { ...robotData,
+        topic_cmd_vel: `/${robotData.project}/${robotData.prefix}/cmd_vel`,
+        topic_camera_link: `/${robotData.project}/${robotData.prefix}/camera_link/image`,
+        topic_camera_user: `/${robotData.project}/${robotData.prefix}/camera_user`,
+        topic_map: `/${robotData.project}/${robotData.prefix}/map`,
+        topic_battery: `/${robotData.project}/${robotData.prefix}/battery_status`
+      } })
+    }
+  },
+
+  computeLinks: () => {
+    const { robotData } = get()
+    const hostIP = get().ros.hostIP
+
+    set({ Link: {
+      link: `http://${hostIP}:8080/stream?topic=${robotData.topic_camera_link}&type=mjpeg`,
+      user: `http://${hostIP}:8080/stream?topic=${robotData.topic_camera_user}&type=mjpeg`
+    } })
+  },
 }))
-
-
 
 // Loja 3/3 => Loja chatBot
 interface Message {
@@ -75,6 +122,5 @@ export const ChatStore = create<ChatProps>((set, get) => ({
     set({
       History: [...History, { role: role, content: content }],
     });
-
   },
 }));
