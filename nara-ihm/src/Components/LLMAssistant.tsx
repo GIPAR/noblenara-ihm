@@ -3,6 +3,7 @@ import { askGemini } from "../services/LLMService";
 import "./LLMAssistant.css";
 import { useStore } from "zustand";
 import { ChatStore, ROStore } from "../contexts/Store";
+import { speechService } from "../services/SpeechService";
 
 export default function LLMAssistant() {
   const [question, setQuestion] = useState("");
@@ -59,18 +60,53 @@ export default function LLMAssistant() {
     setBatteryData,
   ]);
 
-  async function handleAsk() {
-    if (!question.trim() || loading) return;
+  async function askAssistant(userQuestion: string) {
+    if (!userQuestion.trim() || loading) return;
 
     setLoading(true);
 
-    const response = await askGemini(question);
+    const response = await askGemini(userQuestion);
 
-    setHistory("user", question);
+    setHistory("user", userQuestion);
     setHistory("assistant", response);
 
+    setQuestion(userQuestion);
     setAnswer(response);
     setLoading(false);
+
+    speechService.speak(response);
+  }
+
+  async function handleAsk() {
+    await askAssistant(question);
+  }
+
+  function handleVoiceAsk() {
+    if (!speechService.supported()) {
+      const unsupportedMessage =
+        "Reconhecimento de voz não suportado neste navegador.";
+
+      setAnswer(unsupportedMessage);
+      speechService.speak(unsupportedMessage);
+      return;
+    }
+
+    setLoading(true);
+    setAnswer("Ouvindo pergunta...");
+
+    speechService.startListening(
+      async (text) => {
+        setLoading(false);
+        await askAssistant(text);
+      },
+      () => {
+        const errorMessage = "Erro ao reconhecer a fala.";
+
+        setLoading(false);
+        setAnswer(errorMessage);
+        speechService.speak(errorMessage);
+      }
+    );
   }
 
   return (
@@ -92,6 +128,14 @@ export default function LLMAssistant() {
 
       <button className="llm-assistant-button" onClick={handleAsk}>
         {loading ? "Consultando..." : "Perguntar"}
+      </button>
+
+      <button
+        className="llm-assistant-button"
+        onClick={handleVoiceAsk}
+        disabled={loading}
+      >
+        🎤 Perguntar por voz
       </button>
 
       <div className="llm-assistant-answer">
