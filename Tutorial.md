@@ -1,4 +1,4 @@
-# Tutorial - 04/06/2026
+# Tutorial - 17/06/2026
 
 Documento que organiza e ajunta as explicações das diferentes funcionalidades da IHM
 
