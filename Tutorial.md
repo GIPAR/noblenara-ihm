@@ -108,3 +108,73 @@ Depois, na IHM, diga:
 ```text
 status da bateria
 ```
+
+### Assistente Inteligente
+
+#### Configuração Inicial
+
+1. Obtenha uma chave Gemini no Google AI Studio.
+2. Crie um arquivo `.env` na pasta `nara-ihm`.
+3. Adicione:
+
+```env
+VITE_GEMINI_API_KEY=sua_chave_aqui
+```
+
+4. Reinicie a aplicação:
+
+```bash
+npm run dev
+```
+
+---
+
+#### Perguntas por Texto
+
+Digite uma pergunta no campo "Assistente IA" e clique em "Perguntar".
+
+Exemplos:
+
+* Qual ambiente estou utilizando?
+* Qual é o status da conexão?
+* Qual é o status da bateria?
+* O que é ROS2?
+
+---
+
+#### Perguntas por Voz
+
+Clique em:
+
+```text
+🎤 Perguntar por voz
+```
+
+Faça a pergunta utilizando o microfone.
+
+O sistema irá:
+
+1. Reconhecer a fala;
+2. Consultar o Gemini;
+3. Exibir a resposta;
+4. Reproduzir a resposta por voz.
+
+---
+
+#### Limitações Conhecidas
+
+##### Firefox
+
+O Firefox pode não oferecer suporte ao reconhecimento de voz utilizado pela aplicação.
+
+Nesse caso, apenas consultas por texto estarão disponíveis.
+
+##### Chave não configurada
+
+Caso apareça a mensagem:
+
+```text
+A chave da API Gemini não está configurada neste ambiente.
+```
+
+verifique se o arquivo `.env` foi criado corretamente e reinicie o servidor Vite.
