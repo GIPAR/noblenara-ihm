@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { askGemini } from "../services/LLMService";
+import { executeVoiceCommand } from "../services/VoiceCommandService";
+import { isRobotCommand } from "../services/CommandRouterService";
+import { speechService } from "../services/SpeechService";
 import "./LLMAssistant.css";
 import { useStore } from "zustand";
-import { ChatStore, ROStore } from "../contexts/Store";
-import { speechService } from "../services/SpeechService";
+import { ChatStore, GlobalStore, ROStore } from "../contexts/Store";
+
+function createTwist(linearX: number, angularZ: number) {
+  return {
+    linear: { x: linearX, y: 0.0, z: 0.0 },
+    angular: { x: 0.0, y: 0.0, z: angularZ },
+  };
+}
 
 export default function LLMAssistant() {
   const [question, setQuestion] = useState("");
@@ -15,7 +24,9 @@ export default function LLMAssistant() {
   const ros = useStore(ROStore, (s) => s.ros);
   const isConnected = useStore(ROStore, (s) => s.isConnected);
   const robotData = useStore(ROStore, (s) => s.robotData);
+  const batteryData = useStore(ROStore, (s) => s.batteryData);
   const setBatteryData = useStore(ROStore, (s) => s.setbatteryData);
+  const userConfig = useStore(GlobalStore, (s) => s.userConfig);
 
   useEffect(() => {
     if (!isConnected) return;
@@ -53,19 +64,34 @@ export default function LLMAssistant() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [
-    isConnected,
-    ros,
-    robotData.topic_battery,
-    setBatteryData,
-  ]);
+  }, [isConnected, ros, robotData.topic_battery, setBatteryData]);
+
+  function publishCmdVel(linearX: number, angularZ: number) {
+    ros.publish(
+      robotData.topic_cmd_vel,
+      "geometry_msgs/msg/Twist",
+      createTwist(linearX, angularZ)
+    );
+  }
 
   async function askAssistant(userQuestion: string) {
     if (!userQuestion.trim() || loading) return;
 
     setLoading(true);
 
-    const response = await askGemini(userQuestion);
+    let response: string;
+
+    if (isRobotCommand(userQuestion)) {
+      response = executeVoiceCommand(userQuestion, {
+        batteryVoltage: batteryData.voltage > 0 ? batteryData.voltage : null,
+        isConnected,
+        environment: userConfig.Environment,
+        lastCommand: question,
+        publishCmdVel,
+      });
+    } else {
+      response = await askGemini(userQuestion);
+    }
 
     setHistory("user", userQuestion);
     setHistory("assistant", response);
@@ -123,11 +149,11 @@ export default function LLMAssistant() {
             handleAsk();
           }
         }}
-        placeholder="Digite uma pergunta"
+        placeholder="Digite uma pergunta ou comando"
       />
 
       <button className="llm-assistant-button" onClick={handleAsk}>
-        {loading ? "Consultando..." : "Perguntar"}
+        {loading ? "Processando..." : "Enviar"}
       </button>
 
       <button
@@ -135,14 +161,12 @@ export default function LLMAssistant() {
         onClick={handleVoiceAsk}
         disabled={loading}
       >
-        🎤 Perguntar por voz
+        🎤 Falar com a NARA
       </button>
 
       <div className="llm-assistant-answer">
         {loading ? (
-          <p className="llm-assistant-loading">
-            Consultando Gemini...
-          </p>
+          <p className="llm-assistant-loading">Processando...</p>
         ) : (
           <p>{answer}</p>
         )}
