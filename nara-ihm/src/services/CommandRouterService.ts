@@ -6,41 +6,76 @@ function normalizeText(text: string) {
 }
 
 const robotCommandKeywords = [
+  // movimento para frente
   "frente",
   "andar",
   "avancar",
-  "avançar",
-  "direita",
-  "esquerda",
-  "parar",
-  "pare",
+  "avance",
+  "seguir em frente",
+  "ir para frente",
+  "mover para frente",
+  "mova para frente",
+  "pode avancar",
+  "pode andar",
+  "siga em frente",
+
+  // ré
   "para tras",
-  "para trás",
   "voltar",
   "re",
-  "ré",
+  "mover para tras",
+  "mova para tras",
+  "andar para tras",
+  "dar re",
+  "retornar",
+
+  // direita
+  "direita",
+  "virar para direita",
+  "vire para direita",
+  "girar para direita",
+  "gire para direita",
+  "dobrar para direita",
+
+  // esquerda
+  "esquerda",
+  "virar para esquerda",
+  "vire para esquerda",
+  "girar para esquerda",
+  "gire para esquerda",
+  "dobrar para esquerda",
+
+  // parar
+  "parar",
+  "pare",
+  "parar agora",
+  "pare agora",
+  "interromper",
+  "interrompa",
+  "cancelar movimento",
+  "parar movimento",
+  "ficar parado",
+
+  // consultas
   "status da bateria",
   "bateria",
+  "nivel da bateria",
+  "carga da bateria",
   "status da conexao",
-  "status da conexão",
   "conexao",
-  "conexão",
   "ambiente atual",
   "ambiente",
   "ultimo comando",
-  "último comando",
   "comandos disponiveis",
-  "comandos disponíveis",
   "ajuda",
+
+  // navegação futura
   "ir para",
   "va para",
-  "vá para",
   "me leve para",
   "navegar para",
   "modo autonomo",
-  "modo autônomo",
   "cancelar navegacao",
-  "cancelar navegação",
 ];
 
 export function isRobotCommand(text: string): boolean {
