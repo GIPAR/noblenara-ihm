@@ -1,4 +1,4 @@
-# Tutorial - 17/06/2026
+# Tutorial - 20/06/2026
 
 Documento que organiza e ajunta as explicações das diferentes funcionalidades da IHM
 
@@ -160,6 +160,59 @@ O sistema irá:
 4. Reproduzir a resposta por voz.
 
 ---
+
+#### Comandos em Linguagem Natural
+
+O assistente é capaz de interpretar diferentes formas de expressar uma mesma intenção.
+
+Exemplos:
+
+##### Movimento para frente
+
+* frente
+* pode avançar um pouco?
+* siga em frente
+* mova para frente
+
+##### Movimento para trás
+
+* voltar
+* retorne um pouco
+* mova para trás
+
+##### Giro para direita
+
+* direita
+* vire para a direita
+* gire para a direita
+
+##### Giro para esquerda
+
+* esquerda
+* vire para a esquerda
+* gire para a esquerda
+
+##### Parada
+
+* parar
+* pare agora
+* interrompa o movimento
+
+---
+
+#### Memória Conversacional
+
+O assistente mantém um histórico recente das interações realizadas.
+
+Exemplo:
+
+Usuário:
+Quem foi Nikola Tesla?
+
+Usuário:
+Quando ele nasceu?
+
+O assistente consegue utilizar o histórico para compreender que a segunda pergunta está relacionada à primeira.
 
 #### Limitações Conhecidas
 
