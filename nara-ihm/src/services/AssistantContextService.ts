@@ -1,4 +1,4 @@
-import { GlobalStore, ROStore } from "../contexts/Store";
+import { ChatStore, GlobalStore, ROStore } from "../contexts/Store";
 
 function getEnvironmentName(environment: number) {
   if (environment === 1) return "ambiente real";
@@ -23,8 +23,23 @@ export function getNARAContext() {
   };
 }
 
+function getConversationHistory() {
+  const history = ChatStore.getState().History;
+
+  return history
+    .slice(-6)
+    .map((message) => {
+      const role =
+        message.role === "user" ? "Usuário" : "Assistente";
+
+      return `${role}: ${message.content}`;
+    })
+    .join("\n");
+}
+
 export function buildNARAContextPrompt(question: string) {
   const context = getNARAContext();
+  const conversationHistory = getConversationHistory();
 
   return `
 Você é a assistente virtual da NARA, uma cadeira de rodas autônoma.
@@ -49,6 +64,9 @@ Regras:
 - Não use Markdown.
 - Se a pergunta for sobre bateria, conexão, ambiente, robô selecionado ou tópicos, use o contexto acima.
 - Se a informação não estiver disponível, diga isso com clareza.
+
+Histórico recente da conversa:
+${conversationHistory || "Sem histórico anterior."}
 
 Pergunta do usuário:
 ${question}
