@@ -18,6 +18,7 @@ export default function LLMAssistant() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("Faça uma pergunta para a assistente.");
   const [loading, setLoading] = useState(false);
+  const [source, setSource] = useState<"nara" | "gemini" | "system">("system");
 
   const setHistory = useStore(ChatStore, (s) => s.setHistory);
 
@@ -89,8 +90,10 @@ export default function LLMAssistant() {
         lastCommand: question,
         publishCmdVel,
       });
+      setSource("nara");
     } else {
       response = await askGemini(userQuestion);
+      setSource("gemini");
     }
 
     setHistory("user", userQuestion);
@@ -112,6 +115,7 @@ export default function LLMAssistant() {
       const unsupportedMessage =
         "Reconhecimento de voz não suportado neste navegador.";
 
+      setSource("system");
       setAnswer(unsupportedMessage);
       speechService.speak(unsupportedMessage);
       return;
@@ -163,6 +167,12 @@ export default function LLMAssistant() {
       >
         🎤 Falar com a NARA
       </button>
+
+      <div className={`llm-assistant-source ${source}`}>
+        {source === "nara" && "NARA"}
+        {source === "gemini" && "Gemini"}
+        {source === "system" && "Sistema"}
+      </div>
 
       <div className="llm-assistant-answer">
         {loading ? (
