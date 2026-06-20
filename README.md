@@ -87,15 +87,20 @@ Caso necessário, instale também a biblioteca do Gemini:
 npm install @google/genai
 ```
 
-### Funcionalidades
+### Funcionalidades Atuais
 
-O assistente possui acesso ao contexto atual da NARA através da Store da aplicação, incluindo:
-
-* Estado da conexão ROS2;
-* Ambiente selecionado;
-* Dados da bateria;
-* Histórico de conversação;
-* Informações do robô atualmente conectado.
+* Controle da cadeira por comandos de voz;
+* Controle da cadeira por comandos em linguagem natural;
+* Integração com ROS2;
+* Integração com Gemini;
+* Consulta ao estado da bateria;
+* Consulta ao estado da conexão ROS2;
+* Consulta ao ambiente selecionado;
+* Histórico conversacional;
+* Perguntas por texto;
+* Perguntas por voz;
+* Respostas por texto;
+* Respostas por voz.
 
 ### Navegadores
 
@@ -105,6 +110,30 @@ O assistente possui acesso ao contexto atual da NARA através da Store da aplica
 | Firefox       | Parcial  |
 
 No Firefox, as funcionalidades baseadas em reconhecimento de voz podem não estar disponíveis devido às limitações da Web Speech API.
+
+### Histórico Conversacional
+
+O assistente inteligente mantém um histórico recente das interações realizadas pelo usuário.
+
+As últimas mensagens são armazenadas na Store da aplicação utilizando Zustand e enviadas juntamente com o contexto da NARA para o modelo Gemini.
+
+Isso permite que o assistente compreenda perguntas de acompanhamento sem a necessidade de repetir o assunto anterior.
+
+Exemplo:
+
+Usuário:
+Quem foi Nikola Tesla?
+
+Assistente:
+Nikola Tesla foi um inventor e engenheiro sérvio-americano...
+
+Usuário:
+Quando ele nasceu?
+
+Assistente:
+Nikola Tesla nasceu em 10 de julho de 1856.
+
+Nesse caso, o assistente utiliza o histórico da conversa para compreender que "ele" se refere a Nikola Tesla.
 
 ## 4 - Regras de Projeto
 
