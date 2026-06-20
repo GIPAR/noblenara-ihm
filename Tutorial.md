@@ -214,6 +214,8 @@ Quando ele nasceu?
 
 O assistente consegue utilizar o histórico para compreender que a segunda pergunta está relacionada à primeira.
 
+---
+
 #### Limitações Conhecidas
 
 ##### Firefox
