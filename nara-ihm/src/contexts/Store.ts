@@ -28,8 +28,19 @@ export const GlobalStore = create<GlobalState>()((set) => ({
 // Loja 2/2 => Loja ROS
 
 const defaultbatteryConfig = { voltage: 0, percentage: 0, status: 'Desconhecida' }
-const defaultrobotData = { project: 'noblenara', prefix: '', topic_cmd_vel: '/noblenara/alfa/cmd_vel', topic_camera_link: '/noblenara/alfa/camera_link/image', topic_camera_user: '/noblenara/alfa/camera_user', topic_map: '/noblenara/alfa/map', topic_battery: '/noblenara/alfa/battery_status' }
-const defaultLink = { link: 'http://localhost:8080/stream?topic=/noblenara/alfa/camera_link/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/alfa/camera_user&type=mjpeg' }
+const defaultrobotData = {
+  project: 'noblenara',
+  prefix: '',
+  topic_cmd_vel: '/noblenara/cmd_vel',
+  topic_camera_link: '/noblenara/camera_link/image',
+  topic_camera_user: '/noblenara/camera_user',
+  topic_map: '/noblenara/alfa/map',
+  topic_battery: '/noblenara/battery_status'
+}
+const defaultLink = {
+  link: 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg',
+  user: 'http://localhost:8080/stream?topic=/noblenara/camera_user&type=mjpeg'
+}
 
 interface ROSProps {
   isConnected: boolean
@@ -58,6 +69,7 @@ export const ROStore = create<ROSProps>()((set, get) => ({
   rosapiData: {} as Record<string, string | string[] | number | boolean>,
   setrosapiData: ( newState: Record<string, string | string[] | number | boolean>) => set({ rosapiData: newState }),
   batteryData: defaultbatteryConfig,
+
   setbatteryData: ( newconfig ) => set({ batteryData: newconfig }),
   robotData: defaultrobotData,
   setrobotData: ( newData ) => set({ robotData: newData }),
@@ -84,7 +96,6 @@ export const ROStore = create<ROSProps>()((set, get) => ({
         topic_camera_user: `/${robotData.project}/${robotData.prefix}/camera_user`,
         topic_map: `/${robotData.project}/${robotData.prefix}/map`,
         topic_battery: `/${robotData.project}/${robotData.prefix}/battery_status`
-        
       } })
     }
   },
@@ -99,3 +110,28 @@ export const ROStore = create<ROSProps>()((set, get) => ({
     } })
   },
 }))
+
+// Loja 3/3 => Loja chatBot
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
+const defaultHistory: Message[] = [];
+
+interface ChatProps {
+  History: typeof defaultHistory;
+  setHistory: ( role: "user" | "assistant", content: string ) => void
+}
+
+export const ChatStore = create<ChatProps>((set, get) => ({
+  History: defaultHistory,
+
+  setHistory: ( role: "user" | "assistant", content: string ) => {
+    const History = get().History;
+
+    set({
+      History: [...History, { role: role, content: content }],
+    });
+  },
+}));

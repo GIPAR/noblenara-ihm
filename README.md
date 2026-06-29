@@ -59,7 +59,30 @@ Caso a ***simulação*** da NARA estiver instalada, pode-se rodar este único co
 ros2 launch smartwheelchair bridgelaunch.xml
 ```
 
-### Regras de Projeto 🚀📋
+## 3 - Assistente Inteligente (Gemini)
+
+A IHM da NARA possui integração com o modelo Gemini para consultas em linguagem natural.
+
+### Configuração
+
+Crie um arquivo `.env` na pasta raiz do projeto:
+
+```env
+VITE_GEMINI_API_KEY=sua_chave_gemini_aqui
+```
+
+A chave pode ser obtida através do Google AI Studio.
+
+### Navegadores
+
+| Navegador     | Suporte  |
+| ------------- | -------- |
+| Google Chrome | Completo |
+| Firefox       | Parcial  |
+
+No Firefox, as funcionalidades baseadas em reconhecimento de voz podem não estar disponíveis devido às limitações da Web Speech API.
+
+## 4 - Regras de Projeto
 
 Para a plena organização e desenvolvimento do projeto, todos os Commits de *novas* contribuições devem ser feitas fora do branch principal:
 

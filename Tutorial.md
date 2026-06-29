@@ -1,4 +1,4 @@
-# Tutorial - 04/06/2026
+# Tutorial - 20/06/2026
 
 Documento que organiza e ajunta as explicações das diferentes funcionalidades da IHM
 
@@ -108,3 +108,128 @@ Depois, na IHM, diga:
 ```text
 status da bateria
 ```
+
+### Assistente Inteligente
+
+#### Configuração Inicial
+
+1. Obtenha uma chave Gemini no Google AI Studio.
+2. Crie um arquivo `.env` na pasta `nara-ihm`.
+3. Adicione:
+
+```env
+VITE_GEMINI_API_KEY=sua_chave_aqui
+```
+
+4. Reinicie a aplicação:
+
+```bash
+npm run dev
+```
+
+---
+
+#### Perguntas por Texto
+
+Digite uma pergunta no campo "Assistente IA" e clique em "Perguntar".
+
+Exemplos:
+
+* Qual ambiente estou utilizando?
+* Qual é o status da conexão?
+* Qual é o status da bateria?
+* O que é ROS2?
+
+---
+
+#### Perguntas por Voz
+
+Clique em:
+
+```text
+🎤 Perguntar por voz
+```
+
+Faça a pergunta utilizando o microfone.
+
+O sistema irá:
+
+1. Reconhecer a fala;
+2. Consultar o Gemini;
+3. Exibir a resposta;
+4. Reproduzir a resposta por voz.
+
+---
+
+#### Comandos em Linguagem Natural
+
+O assistente é capaz de interpretar diferentes formas de expressar uma mesma intenção.
+
+Exemplos:
+
+##### Movimento para frente
+
+* frente
+* pode avançar um pouco?
+* siga em frente
+* mova para frente
+
+##### Movimento para trás
+
+* voltar
+* retorne um pouco
+* mova para trás
+
+##### Giro para direita
+
+* direita
+* vire para a direita
+* gire para a direita
+
+##### Giro para esquerda
+
+* esquerda
+* vire para a esquerda
+* gire para a esquerda
+
+##### Parada
+
+* parar
+* pare agora
+* interrompa o movimento
+
+---
+
+#### Memória Conversacional
+
+O assistente mantém um histórico recente das interações realizadas.
+
+Exemplo:
+
+Usuário:
+Quem foi Nikola Tesla?
+
+Usuário:
+Quando ele nasceu?
+
+O assistente consegue utilizar o histórico para compreender que a segunda pergunta está relacionada à primeira.
+
+---
+
+#### Limitações Conhecidas
+
+##### Firefox
+
+O Firefox pode não oferecer suporte ao reconhecimento de voz utilizado pela aplicação.
+
+Nesse caso, apenas consultas por texto estarão disponíveis.
+
+##### Chave não configurada
+
+Caso apareça a mensagem:
+
+```text
+A chave da API Gemini não está configurada neste ambiente.
+```
+
+verifique se o arquivo `.env` foi criado corretamente e reinicie o servidor Vite.

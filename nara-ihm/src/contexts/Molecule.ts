@@ -11,6 +11,8 @@ export const MapAtom = atom(true)
 
 export const VoiceChatAtom = atom(false)
 
+export const ShowAssistantAtom = atom(true)
+
 // Átomos de Configurações;
 export const DashboardAtom = atom({ main: 1, firstside: 2 })
 

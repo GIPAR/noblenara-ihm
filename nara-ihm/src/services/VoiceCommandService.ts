@@ -101,7 +101,16 @@ export function executeVoiceCommand(
     return "Comando recebido. Girando para a esquerda.";
   }
 
-  if (command.includes("frente") || command.includes("andar")) {
+  if (
+      command.includes("frente") ||
+      command.includes("andar") ||
+      command.includes("avancar") ||
+      command.includes("avance") ||
+      command.includes("seguir em frente") ||
+      command.includes("ir para frente") ||
+      command.includes("mover para frente") ||
+      command.includes("mova para frente")
+    ) {
     context.publishCmdVel(0.5, 0.0);
     return "Comando recebido. Movendo para frente.";
   }
@@ -109,6 +118,8 @@ export function executeVoiceCommand(
   if (
     command.includes("para tras") ||
     command.includes("voltar") ||
+    command.includes("retorne") ||
+    command.includes("retornar") ||
     command === "re"
   ) {
     context.publishCmdVel(-0.3, 0.0);

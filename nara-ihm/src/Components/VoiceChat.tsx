@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { speechService } from "../services/SpeechService";
 import { executeVoiceCommand } from "../services/VoiceCommandService";
 import { ROStore, GlobalStore } from "../contexts/Store";
@@ -20,42 +20,25 @@ export default function VoiceChat() {
   const ros = ROStore((state) => state.ros);
   const isConnected = ROStore((state) => state.isConnected);
   const userConfig = GlobalStore((state) => state.userConfig);
+  const robotData = ROStore((state) => state.robotData);
+  const batteryData = ROStore((state) => state.batteryData);
 
   const [listening, setListening] = useState(false);
   const [lastCommand, setLastCommand] = useState("");
   const [response, setResponse] = useState("");
-  const [batteryVoltage, setBatteryVoltage] = useState<number | null>(null);
   const historyRef = useRef<HistoryItem[]>([]);
 
   function publishCmdVel(linearX: number, angularZ: number) {
     ros.publish(
-      "/noblenara/cmd_vel",
+      robotData.topic_cmd_vel,
       "geometry_msgs/msg/Twist",
       createTwist(linearX, angularZ)
     );
   }
 
-  useEffect(() => {
-    const subscription = ros.subscribe(
-      "/noblenara/battery_status",
-      "sensor_msgs/msg/BatteryState",
-      (message: unknown) => {
-        const battery = message as { voltage?: number };
-
-        if (typeof battery.voltage === "number") {
-          setBatteryVoltage(battery.voltage);
-        }
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [ros]);
-
   function interpretCommand(text: string): string {
     const answer = executeVoiceCommand(text, {
-      batteryVoltage,
+      batteryVoltage: batteryData.voltage > 0 ? batteryData.voltage : null,
       isConnected,
       environment: userConfig.Environment,
       lastCommand,
