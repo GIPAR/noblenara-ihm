@@ -73,35 +73,6 @@ VITE_GEMINI_API_KEY=sua_chave_gemini_aqui
 
 A chave pode ser obtida através do Google AI Studio.
 
-### Instalação
-
-Instale as dependências:
-
-```bash
-npm install
-```
-
-Caso necessário, instale também a biblioteca do Gemini:
-
-```bash
-npm install @google/genai
-```
-
-### Funcionalidades Atuais
-
-* Controle da cadeira por comandos de voz;
-* Controle da cadeira por comandos em linguagem natural;
-* Integração com ROS2;
-* Integração com Gemini;
-* Consulta ao estado da bateria;
-* Consulta ao estado da conexão ROS2;
-* Consulta ao ambiente selecionado;
-* Histórico conversacional;
-* Perguntas por texto;
-* Perguntas por voz;
-* Respostas por texto;
-* Respostas por voz.
-
 ### Navegadores
 
 | Navegador     | Suporte  |
@@ -110,30 +81,6 @@ npm install @google/genai
 | Firefox       | Parcial  |
 
 No Firefox, as funcionalidades baseadas em reconhecimento de voz podem não estar disponíveis devido às limitações da Web Speech API.
-
-### Histórico Conversacional
-
-O assistente inteligente mantém um histórico recente das interações realizadas pelo usuário.
-
-As últimas mensagens são armazenadas na Store da aplicação utilizando Zustand e enviadas juntamente com o contexto da NARA para o modelo Gemini.
-
-Isso permite que o assistente compreenda perguntas de acompanhamento sem a necessidade de repetir o assunto anterior.
-
-Exemplo:
-
-Usuário:
-Quem foi Nikola Tesla?
-
-Assistente:
-Nikola Tesla foi um inventor e engenheiro sérvio-americano...
-
-Usuário:
-Quando ele nasceu?
-
-Assistente:
-Nikola Tesla nasceu em 10 de julho de 1856.
-
-Nesse caso, o assistente utiliza o histórico da conversa para compreender que "ele" se refere a Nikola Tesla.
 
 ## 4 - Regras de Projeto
 
