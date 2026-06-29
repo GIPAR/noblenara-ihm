@@ -10,7 +10,7 @@ import './App.css';
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from './contexts/Store'
 import { useAtom } from 'jotai';
-import { ThemeAtom, VoiceChatAtom } from './contexts/Molecule';
+import { ThemeAtom, VoiceChatAtom, ShowAssistantAtom } from './contexts/Molecule';
 
 function App() {
   const connectionAttemptedRef = useRef(false);
@@ -20,6 +20,7 @@ function App() {
   const robotData = useStore(ROStore, (state) => state.robotData)
   const [Theme] = useAtom(ThemeAtom)
   const [ShowVoiceChat] = useAtom(VoiceChatAtom)
+  const [ShowAssistant] = useAtom(ShowAssistantAtom)
 
   useEffect(() => {
     if (!connectionAttemptedRef.current) {
@@ -46,8 +47,10 @@ function App() {
     <div className={`App ${Theme}`}>
       <main>
         <MessageLog/>
+
         {ShowVoiceChat ? <VoiceChat /> : null}
-        <LLMAssistant />
+
+        {ShowAssistant ? <LLMAssistant /> : null}
 
         <div className='App-header'> <h1>
           {robotData.project === "noblenara" ? ( "NARA - Robot HMI"  ):( null )}

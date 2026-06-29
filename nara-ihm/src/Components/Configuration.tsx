@@ -4,7 +4,7 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, ThemeAtom, MapAtom, VoiceChatAtom, SpeedLimitAtom } from '../contexts/Molecule'
+import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, ThemeAtom, MapAtom, VoiceChatAtom, SpeedLimitAtom, ShowAssistantAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
@@ -25,6 +25,7 @@ export const ConfigurationMenu = () => {
     const [Theme, setTheme] = useAtom(ThemeAtom)
     const [ShowMap, setShowMap] = useAtom(MapAtom)
     const [ShowVoiceChat, setShowVoiceChat] = useAtom(VoiceChatAtom)
+    const [ShowAssistant, setShowAssistant] = useAtom(ShowAssistantAtom)
     const [MaxSpeed, setMaxSpeed] = useAtom(SpeedLimitAtom)
     const setLogData = useSetAtom(LogAtom)
 
@@ -85,7 +86,9 @@ export const ConfigurationMenu = () => {
             </>
             : null}
 
-            {userConfig.Type === true && ConfigOption === 2 ?
+
+
+            {ConfigOption === 2 ?
             <>
             <div className='configuration-header'>
               <h1>Ferramentas Gerais</h1>
@@ -96,10 +99,17 @@ export const ConfigurationMenu = () => {
               <div className='configuration-box-text'> {ShowVoiceChat ? 'Desativar Controle por Voz' : 'Ativar Controle por Voz'} </div>
             </div>
 
+            <div className='configuration-box'>
+              <div className={`configuration-box-button ${ShowAssistant ? 'active' : ''}`} onClick={() => setShowAssistant(!ShowAssistant)}> </div>
+              <div className='configuration-box-text'> {ShowAssistant ? 'Desativar Assistente' : 'Ativar Assistente'} </div>
+            </div>
+
             <div className='configuration-header'>
               <h1>Ferramentas do ROS2</h1>
             </div>
 
+            {userConfig.Type === true ? 
+            <>
             <div className='configuration-box'>
               <div className={`configuration-box-button ${ShowMap ? 'active' : ''} `} onClick={() => {if(isConnected == false && ShowMap == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowMap(!ShowMap)}}}> </div>
               <div className='configuration-box-text'> {ShowMap ? 'Desativar Mapa SLAM' : 'Ativar Mapa Slam'} </div>
@@ -111,6 +121,10 @@ export const ConfigurationMenu = () => {
             </div>
             </>
             : null}
+
+            </>
+            : null}
+
 
             {ConfigOption === 3 ?
             <>
@@ -124,6 +138,7 @@ export const ConfigurationMenu = () => {
             </div>
             </>
             : null}
+
 
             {ConfigOption === 4 && userConfig.Type === true ?
             <>
