@@ -4,7 +4,7 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, ThemeAtom, MapAtom, VoiceChatAtom, SpeedLimitAtom, ShowAssistantAtom } from '../contexts/Molecule'
+import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, ThemeAtom, ShowMapAtom, VoiceChatAtom, SpeedLimitAtom, ShowAssistantAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
@@ -23,7 +23,7 @@ export const ConfigurationMenu = () => {
     const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
     const [StartTeleop, setStartTeleop] = useAtom(TeleopAtom)
     const [Theme, setTheme] = useAtom(ThemeAtom)
-    const [ShowMap, setShowMap] = useAtom(MapAtom)
+    const [ShowMap, setShowMap] = useAtom(ShowMapAtom)
     const [ShowVoiceChat, setShowVoiceChat] = useAtom(VoiceChatAtom)
     const [ShowAssistant, setShowAssistant] = useAtom(ShowAssistantAtom)
     const [MaxSpeed, setMaxSpeed] = useAtom(SpeedLimitAtom)
@@ -223,6 +223,13 @@ export const ConfigurationMenu = () => {
             <div className='configuration-box'>
               <input type="text" placeholder="Tópico do Mapa SLAM" value={ robotData.topic_map }
                 onChange={(e) => setrobotData({ ...robotData, topic_map: e.target.value })}
+                className="configuration-box-input"
+              />
+            </div>
+
+            <div className='configuration-box'>
+              <input type="text" placeholder="Tópico da Posição" value={ robotData.topic_pose }
+                onChange={(e) => setrobotData({ ...robotData, topic_pose: e.target.value })}
                 className="configuration-box-input"
               />
             </div>

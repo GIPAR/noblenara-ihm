@@ -35,6 +35,7 @@ const defaultrobotData = {
   topic_camera_link: '/noblenara/camera_link/image',
   topic_camera_user: '/noblenara/camera_user',
   topic_map: '/noblenara/alfa/map',
+  topic_pose: '/noblenara/alfa/pose',
   topic_battery: '/noblenara/battery_status'
 }
 const defaultLink = {
@@ -86,6 +87,7 @@ export const ROStore = create<ROSProps>()((set, get) => ({
         topic_camera_link: `/${robotData.project}${robotData.prefix}/camera_link/image`,
         topic_camera_user: `/${robotData.project}${robotData.prefix}/camera_user`,
         topic_map: `/${robotData.project}${robotData.prefix}/map`,
+        topic_pose: `/${robotData.project}${robotData.prefix}/pose`,
         topic_battery: `/${robotData.project}${robotData.prefix}/battery_status`,
       } })
     }
@@ -95,6 +97,7 @@ export const ROStore = create<ROSProps>()((set, get) => ({
         topic_camera_link: `/${robotData.project}/${robotData.prefix}/camera_link/image`,
         topic_camera_user: `/${robotData.project}/${robotData.prefix}/camera_user`,
         topic_map: `/${robotData.project}/${robotData.prefix}/map`,
+        topic_pose: `/${robotData.project}/${robotData.prefix}/pose`,
         topic_battery: `/${robotData.project}/${robotData.prefix}/battery_status`
       } })
     }
@@ -111,7 +114,10 @@ export const ROStore = create<ROSProps>()((set, get) => ({
   },
 }))
 
+
+
 // Loja 3/3 => Loja chatBot
+
 interface Message {
   role: "user" | "assistant";
   content: string;

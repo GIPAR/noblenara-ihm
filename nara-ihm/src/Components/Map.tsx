@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import './Map.css'
 import { useStore } from 'zustand'
 import { ROStore } from '../contexts/Store'
@@ -8,38 +8,74 @@ type MapMessage = {
     info: { width: number, height: number, resolution: number, origin: { position: { x: number, y: number, z: number } } };
 }
 
-// type PoseMessage = {
-//         header: { frame_id: string };
-//         pose: { pose: { position: { x: 0, y: 0, z: 0 }, orientation: { x: 0, y: 0, z: 0, w: 0 } } };
-// }
+type PoseMessage = {
+        header: { frame_id: string };
+        pose: { pose: { position: { x: 0, y: 0, z: 0 }, orientation: { x: 0, y: 0, z: 0, w: 0 } } };
+}
 
 export const Map = () => {
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const ros = useStore(ROStore, (s) => s.ros)
     const map_topic = useStore(ROStore, (s) => s.robotData.topic_map)
+    const pose_topic = useStore(ROStore, (s) => s.robotData.topic_pose)
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const occupancyRef = useRef<Int8Array | null>(null);
     const infoRef = useRef<MapMessage['info'] | null>(null);
 
-    // const robotRef = useRef({ translation: { x: 0, y: 0, z: 0 }, rotation: { z: 0, w: 0 } });
-    // const navRef = useRef<HTMLDivElement>(null);
+    const navRef = useRef<HTMLDivElement>(null);
+    const robotPoseRef = useRef({ translation: { x: 0, y: 0, z: 0 }, rotation: { z: 0, w: 0 } });
+    const robotCommandRef = useRef({ x: 0, y: 0, r: 0})
 
-    const lastUpdated = useRef({ map: 0, tf: 0 });
+    const lastUpdated = useRef({ map: 0 });
+    const [receivedMap, setreceivedMap] = useState(false)
 
-    // const updateNavigator = () => {
-    //     const info = infoRef.current;
-    //     const nav = navRef.current;
-    //     const canvas = canvasRef.current;
-    //     if(!info || !nav || !canvas) return;
+    const handlePointerDown = (e: React.PointerEvent) => {
+        const data = occupancyRef.current;
+        const info = infoRef.current;
+        const canvas = canvasRef.current;
+        if(!canvas || !info || !data) return;
 
-    //     let pixelsMove = { x: 0, y: 0};
+        let OriginPixels = { x: 0, y: 0};
+        let CommandPixels = { x: 0, y: 0}
 
-    //     pixelsMove.x = info.width + (info.origin.position.x / info.resolution);
-    //     pixelsMove.y = -(info.origin.position.y / info.resolution);
+        OriginPixels.x = (info.origin.position.x / info.resolution);
+        OriginPixels.y = -(info.origin.position.y / info.resolution);
 
-    //     nav.style.transform = `translate(calc(-50% + ${pixelsMove.x}px + ${canvas.offsetLeft}px), calc(-50% + ${pixelsMove.y}px)) rotate(-45deg)`;
-    // }
+        const rect = canvas.getBoundingClientRect();
+        CommandPixels.x = OriginPixels.x - (e.clientX - rect.right)
+        CommandPixels.y = (e.clientY - rect.top) - OriginPixels.y
+
+        robotCommandRef.current.x = CommandPixels.x * info.resolution
+        robotCommandRef.current.y = CommandPixels.y * info.resolution
+
+        e.preventDefault();
+        e.currentTarget.setPointerCapture(e.pointerId);
+
+        console.log(robotCommandRef.current.x, ':::', robotCommandRef.current.y)
+    };
+
+    const updateNavigator = () => {
+        const info = infoRef.current;
+        const nav = navRef.current;
+        const canvas = canvasRef.current;
+        if(!info || !nav || !canvas) return;
+
+        let OriginPixels = { x: 0, y: 0};
+        let pixelsMove = { x: 0, y: 0};
+        let rotation
+
+        OriginPixels.x = info.width + (info.origin.position.x / info.resolution);
+        OriginPixels.y = -(info.origin.position.y / info.resolution);
+
+        pixelsMove.x = -(robotPoseRef.current.translation.x / info.resolution);
+        pixelsMove.y = (robotPoseRef.current.translation.y / info.resolution);
+
+        rotation = - Math.atan2(2 * (robotPoseRef.current.rotation.w * robotPoseRef.current.rotation.z), 1 - 2 * (robotPoseRef.current.rotation.z * robotPoseRef.current.rotation.z));
+        rotation = rotation - (Math.PI / 4);
+
+        nav.style.transform = `translate(calc(-50% + ${OriginPixels.x}px + ${pixelsMove.x}px + ${canvas.offsetLeft}px), calc(-50% + ${pixelsMove.y}px + ${OriginPixels.y}px)) rotate(${rotation}rad)`;
+    }
 
     const Paint = () => {
         const data = occupancyRef.current;
@@ -87,46 +123,40 @@ export const Map = () => {
 
                     Paint();
                     lastUpdated.current.map = Date.now();
+                    setreceivedMap(true);
                 }
             }
         );
 
-        // const pose_sub = ros.subscribe(
-        //     '/noblenara/mirai/pose',
-        //     'tf2_msgs/msg/TFMessage',
-        //     (message) => { 
-        //         const Tf = message as TfMessage
+        const Pose_sub = ros.subscribe(
+            pose_topic,
+            'geometry_msgs/msg/PoseWithCovarianceStamped', // POSSIVELMENTE NORMALIZAR TODOS OS TIPOS DE POSE POSSÍVEIS
+            (message) => { 
+                const Pose = message as PoseMessage
 
-        //         for(let i = 0; i < Tf.transforms.length; i++) {
-        //             Tf.transforms[i]
-
-        //             if(Tf.transforms[i].child_frame_id === 'odom' && Tf.transforms[i].header.frame_id === 'map' && Date.now() > lastUpdated.current.tf + 1000){
-        //                 console.log('Mensagem Recebida na segunda logic!');
-        //                 robotRef.current = Tf.transforms[i].transform;
-        //                 lastUpdated.current.tf = Date.now();
-
-        //                 updateNavigator();
-        //             }
-        //         }
-
-        //     }
-        // );
+                robotPoseRef.current = { translation: Pose.pose.pose.position, rotation: Pose.pose.pose.orientation  }
+                updateNavigator();
+                // lastUpdated.current.robot = Date.now();
+            }
+        );
 
 
         return() => {
             Map_sub.unsubscribe();
-            // Tf_sub.unsubscribe();
+            Pose_sub.unsubscribe();
         };
-            }, [isConnected, ros]);
+            }, [isConnected, ros, pose_topic, map_topic]);
 
 
     return(
         <div className='Map'>
-            <canvas className='Map-canvas' ref={canvasRef} width={ infoRef.current?.width } height={ infoRef.current?.height }> </canvas>
+            <canvas className='Map-canvas' onPointerDown={handlePointerDown} ref={canvasRef} width={ infoRef.current?.width } height={ infoRef.current?.height }> </canvas>
 
-            {/* <div className='Map-navigator' ref={navRef}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M152,152,234.35,129a8,8,0,0,0,.27-15.21l-176-65.28A8,8,0,0,0,48.46,58.63l65.28,176a8,8,0,0,0,15.21-.27Z" opacity="0.1"/><path d="M152,152,234.35,129a8,8,0,0,0,.27-15.21l-176-65.28A8,8,0,0,0,48.46,58.63l65.28,176a8,8,0,0,0,15.21-.27Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
-            </div> */}
+            {  receivedMap === true ?
+                <div className='Map-navigator' ref={navRef}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><path d="M152,152,234.35,129a8,8,0,0,0,.27-15.21l-176-65.28A8,8,0,0,0,48.46,58.63l65.28,176a8,8,0,0,0,15.21-.27Z" opacity="0.1"/><path d="M152,152,234.35,129a8,8,0,0,0,.27-15.21l-176-65.28A8,8,0,0,0,48.46,58.63l65.28,176a8,8,0,0,0,15.21-.27Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/></svg>
+                </div>  
+            : null }
         </div>
         
     )

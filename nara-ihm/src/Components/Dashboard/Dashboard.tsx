@@ -2,7 +2,7 @@ import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
 import { GlobalStore, ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
-import { DashboardAtom, BatteryAtom, TeleopAtom, RosapiAtom, MapAtom } from '../../contexts/Molecule';
+import { DashboardAtom, BatteryAtom, TeleopAtom, RosapiAtom, ShowMapAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
 import { Teleoperation } from '../../services/TeleopService';
 import { BatteryView } from '../Battery';
@@ -17,7 +17,7 @@ export const Dashboard = () => {
     const [Selection, setSelection] = useAtom(DashboardAtom)
     const [StartTeleop] = useAtom(TeleopAtom)
     const [ShowRosapi] = useAtom(RosapiAtom)
-    const [ShowMap] = useAtom(MapAtom)
+    const [ShowMap] = useAtom(ShowMapAtom)
     const [isExpanded] = useAtom(BatteryAtom)
 
     // Develop: Ver se á outra maneira para selecionar se vai mudar o "main" ou o "firstside", tentei guardar uma string e jogar dentro do set mas não funcionou, porém talvez errei a sintaxe
