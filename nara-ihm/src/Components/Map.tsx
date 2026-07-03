@@ -34,25 +34,31 @@ export const Map = () => {
         const data = occupancyRef.current;
         const info = infoRef.current;
         const canvas = canvasRef.current;
+        const robot = robotPoseRef.current;
         if(!canvas || !info || !data) return;
 
         let OriginPixels = { x: 0, y: 0};
-        let CommandPixels = { x: 0, y: 0}
+        let CommandPixels = { x: 0, y: 0};
+        let rotationCommand = { degrees: 0, qz: 0, qw: 0 };
 
         OriginPixels.x = (info.origin.position.x / info.resolution);
         OriginPixels.y = -(info.origin.position.y / info.resolution);
 
         const rect = canvas.getBoundingClientRect();
-        CommandPixels.x = OriginPixels.x - (e.clientX - rect.right)
-        CommandPixels.y = (e.clientY - rect.top) - OriginPixels.y
+        CommandPixels.x = OriginPixels.x - (e.clientX - rect.right);
+        CommandPixels.y = (e.clientY - rect.top) - OriginPixels.y;
 
-        robotCommandRef.current.x = CommandPixels.x * info.resolution
-        robotCommandRef.current.y = CommandPixels.y * info.resolution
+        robotCommandRef.current.x = CommandPixels.x * info.resolution;
+        robotCommandRef.current.y = CommandPixels.y * info.resolution;
+
+        rotationCommand.degrees = Math.atan2(robotCommandRef.current.x - robot.translation.x, robotCommandRef.current.y - robot.translation.y) - (Math.PI / 2)
+        rotationCommand.qz = Math.sin(rotationCommand.degrees / 2);
+        rotationCommand.qw = Math.cos(rotationCommand.degrees / 2);
 
         e.preventDefault();
         e.currentTarget.setPointerCapture(e.pointerId);
-
-        console.log(robotCommandRef.current.x, ':::', robotCommandRef.current.y)
+        
+        // console.log(robotCommandRef.current.x, ':::', robotCommandRef.current.y, 'robot:::', rotationCommand.degrees);
     };
 
     const updateNavigator = () => {
@@ -63,7 +69,7 @@ export const Map = () => {
 
         let OriginPixels = { x: 0, y: 0};
         let pixelsMove = { x: 0, y: 0};
-        let rotation
+        let rotation = 0;
 
         OriginPixels.x = info.width + (info.origin.position.x / info.resolution);
         OriginPixels.y = -(info.origin.position.y / info.resolution);
@@ -144,6 +150,7 @@ export const Map = () => {
         return() => {
             Map_sub.unsubscribe();
             Pose_sub.unsubscribe();
+            setreceivedMap(false);
         };
             }, [isConnected, ros, pose_topic, map_topic]);
 
