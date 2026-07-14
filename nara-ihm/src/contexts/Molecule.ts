@@ -7,7 +7,7 @@ export const RosapiAtom = atom(false)
 
 export const TeleopAtom = atom(false)
 
-export const MapAtom = atom(true)
+export const ShowMapAtom = atom(true)
 
 export const VoiceChatAtom = atom(false)
 

@@ -2,23 +2,21 @@
 
 ## Development Notes
 
-1. Desenvolvimento do Menu de Configurações com Customização do Projeto e Prefixos de Tópicos
+1. Desenvolvimento da localização: adição de rotação e publicação
+Changes: Map.tsx, Store.ts, Configuration.tsx, Map.css
 
-0 - Desenvolvimento da localização (Não terminado)
-Changes: Map.tsx
-
-0 - Desenvolvimento de método de advertise e unadvertise no cmd_vel
-Changes: ROS2Service.ts, TeleopService.tsx
-
-Lembrar de modificar o VoiceChat para integrar com a IHM na parte da Bateria
+2. Atualização do Tutorial
+Changes: Tutorial.md
 
 ## Planos Atuais
 
 - Adição de Funcionalidades:
-    Adicionar localização do slam;
+    Adicionar setting de MaxSpeed no Configuration.tsx
 
 - Mudanças Gerais:
     Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
+
+Verificar a normalização de todos os Poses posiveis no Map.tsx
 
 ## Notas
 
