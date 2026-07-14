@@ -5,6 +5,9 @@
 1. Desenvolvimento da localização: adição de rotação e publicação
 Changes: Map.tsx, Store.ts, Configuration.tsx, Map.css
 
+2. Atualização do Tutorial
+Changes: Tutorial.md
+
 ## Planos Atuais
 
 - Adição de Funcionalidades:
