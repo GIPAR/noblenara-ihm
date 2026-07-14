@@ -233,6 +233,20 @@ export const ConfigurationMenu = () => {
                 className="configuration-box-input"
               />
             </div>
+
+            <div className='configuration-box'>
+              <input type="text" placeholder="Tópico do Comando de Nav2" value={ robotData.topic_goal_pose }
+                onChange={(e) => setrobotData({ ...robotData, topic_goal_pose: e.target.value })}
+                className="configuration-box-input"
+              />
+            </div>
+
+            <div className='configuration-box'>
+              <input type="text" placeholder="Frame do Mapa" value={ robotData.frame_map }
+                onChange={(e) => setrobotData({ ...robotData, frame_map: e.target.value })}
+                className="configuration-box-input"
+              />
+            </div>
             </>
             : null}
 

@@ -1,7 +1,9 @@
 import { useRef, useEffect, useState } from 'react'
 import './Map.css'
 import { useStore } from 'zustand'
+import { useSetAtom } from 'jotai' 
 import { ROStore } from '../contexts/Store'
+import { LogAtom } from '../contexts/Molecule'
 
 type MapMessage = {
     data: Int8Array;
@@ -14,32 +16,42 @@ type PoseMessage = {
 }
 
 export const Map = () => {
+    // Variáveis do ROS2
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const ros = useStore(ROStore, (s) => s.ros)
     const map_topic = useStore(ROStore, (s) => s.robotData.topic_map)
     const pose_topic = useStore(ROStore, (s) => s.robotData.topic_pose)
+    const goal_pose_topic = useStore(ROStore, (s) => s.robotData.topic_goal_pose)
+    const frame_map = useStore(ROStore, (s) => s.robotData.frame_map)
 
+    // Variáveis do Mapa
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const occupancyRef = useRef<Int8Array | null>(null);
     const infoRef = useRef<MapMessage['info'] | null>(null);
 
+    // Variáveis da Navegação
     const navRef = useRef<HTMLDivElement>(null);
     const robotPoseRef = useRef({ translation: { x: 0, y: 0, z: 0 }, rotation: { z: 0, w: 0 } });
-    const robotCommandRef = useRef({ x: 0, y: 0, r: 0})
 
+    // Variáveis Diversas
+    const [publishedCommand, setpublishedCommand] = useState(false);
+    const [receivedMap, setreceivedMap] = useState(false);
     const lastUpdated = useRef({ map: 0 });
-    const [receivedMap, setreceivedMap] = useState(false)
+    const setLogData = useSetAtom(LogAtom)
 
     const handlePointerDown = (e: React.PointerEvent) => {
-        const data = occupancyRef.current;
         const info = infoRef.current;
         const canvas = canvasRef.current;
         const robot = robotPoseRef.current;
-        if(!canvas || !info || !data) return;
+        if(!canvas || !info || !isConnected) return;
+
+        e.preventDefault();
+        e.currentTarget.setPointerCapture(e.pointerId);
 
         let OriginPixels = { x: 0, y: 0};
         let CommandPixels = { x: 0, y: 0};
-        let rotationCommand = { degrees: 0, qz: 0, qw: 0 };
+        let rotationCommand = { degrees: 0 };
+        let robotCommand = { header: { frame_id: frame_map }, pose: { position: { x: 0, y: 0, z: 0 }, orientation: { z: 0, w: 0 } } }
 
         OriginPixels.x = (info.origin.position.x / info.resolution);
         OriginPixels.y = -(info.origin.position.y / info.resolution);
@@ -48,17 +60,16 @@ export const Map = () => {
         CommandPixels.x = OriginPixels.x - (e.clientX - rect.right);
         CommandPixels.y = (e.clientY - rect.top) - OriginPixels.y;
 
-        robotCommandRef.current.x = CommandPixels.x * info.resolution;
-        robotCommandRef.current.y = CommandPixels.y * info.resolution;
+        robotCommand.pose.position.x = CommandPixels.x * info.resolution;
+        robotCommand.pose.position.y = CommandPixels.y * info.resolution;
 
-        rotationCommand.degrees = Math.atan2(robotCommandRef.current.x - robot.translation.x, robotCommandRef.current.y - robot.translation.y) - (Math.PI / 2)
-        rotationCommand.qz = Math.sin(rotationCommand.degrees / 2);
-        rotationCommand.qw = Math.cos(rotationCommand.degrees / 2);
+        rotationCommand.degrees = Math.atan2(robotCommand.pose.position.x - robot.translation.x, -(robotCommand.pose.position.y - robot.translation.y)) - (Math.PI / 2)
+        robotCommand.pose.orientation.z = Math.sin(rotationCommand.degrees / 2);
+        robotCommand.pose.orientation.w = Math.cos(rotationCommand.degrees / 2);
 
-        e.preventDefault();
-        e.currentTarget.setPointerCapture(e.pointerId);
-        
-        // console.log(robotCommandRef.current.x, ':::', robotCommandRef.current.y, 'robot:::', rotationCommand.degrees);
+        ros.publish(goal_pose_topic, 'geometry_msgs/msg/PoseStamped', robotCommand);
+        setpublishedCommand(true);
+        setLogData({msg: `Publicado Comando para a Posição:  'x: ${robotCommand.pose.position.x}' ::: 'y: ${robotCommand.pose.position.y}'`, id: Date.now(), error: false});
     };
 
     const updateNavigator = () => {
@@ -157,6 +168,12 @@ export const Map = () => {
 
     return(
         <div className='Map'>
+            {   publishedCommand === false && isConnected === true ?
+                <div className='Map-tutorial'>
+                    Pressione no lugar desejado para publicar o comando de Navegação
+                </div>
+            : null }
+
             <canvas className='Map-canvas' onPointerDown={handlePointerDown} ref={canvasRef} width={ infoRef.current?.width } height={ infoRef.current?.height }> </canvas>
 
             {  receivedMap === true ?

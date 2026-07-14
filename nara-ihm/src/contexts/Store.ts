@@ -31,12 +31,16 @@ const defaultbatteryConfig = { voltage: 0, percentage: 0, status: 'Desconhecida'
 const defaultrobotData = {
   project: 'noblenara',
   prefix: '',
-  topic_cmd_vel: '/noblenara/cmd_vel',
-  topic_camera_link: '/noblenara/camera_link/image',
-  topic_camera_user: '/noblenara/camera_user',
+
+  topic_cmd_vel: '/noblenara/alfa/cmd_vel',
+  topic_camera_link: '/noblenara/alfa/camera_link/image',
+  topic_camera_user: '/noblenara/alfa/camera_user',
   topic_map: '/noblenara/alfa/map',
   topic_pose: '/noblenara/alfa/pose',
-  topic_battery: '/noblenara/battery_status'
+  topic_goal_pose: '/noblenara/alfa/goal_pose',
+  topic_battery: '/noblenara/alfa/battery_status',
+
+  frame_map: 'noblenara/alfa/map'
 }
 const defaultLink = {
   link: 'http://localhost:8080/stream?topic=/noblenara/camera_link/image&type=mjpeg',
@@ -88,7 +92,10 @@ export const ROStore = create<ROSProps>()((set, get) => ({
         topic_camera_user: `/${robotData.project}${robotData.prefix}/camera_user`,
         topic_map: `/${robotData.project}${robotData.prefix}/map`,
         topic_pose: `/${robotData.project}${robotData.prefix}/pose`,
+        topic_goal_pose: `/${robotData.project}${robotData.prefix}/goal_pose`,
         topic_battery: `/${robotData.project}${robotData.prefix}/battery_status`,
+
+        frame_map: `${robotData.project}${robotData.prefix}/map`,
       } })
     }
     else{
@@ -98,7 +105,10 @@ export const ROStore = create<ROSProps>()((set, get) => ({
         topic_camera_user: `/${robotData.project}/${robotData.prefix}/camera_user`,
         topic_map: `/${robotData.project}/${robotData.prefix}/map`,
         topic_pose: `/${robotData.project}/${robotData.prefix}/pose`,
-        topic_battery: `/${robotData.project}/${robotData.prefix}/battery_status`
+        topic_goal_pose: `/${robotData.project}/${robotData.prefix}/goal_pose`,
+        topic_battery: `/${robotData.project}/${robotData.prefix}/battery_status`,
+
+        frame_map: `${robotData.project}/${robotData.prefix}/map`,
       } })
     }
   },

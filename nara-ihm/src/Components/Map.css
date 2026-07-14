@@ -4,9 +4,32 @@
     height: 25vh;
     border: 1px solid rgb(14, 223, 101);
     overflow: scroll;
+    container-type: size;
 }
 .Map-canvas{
     transform: scaleX(-1);
+}
+.Map-tutorial{
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    z-index: 10;
+    bottom: 0;
+    pointer-events: none;
+
+    border: 1px solid rgb(43, 180, 112);
+    border-left: none; border-right: none;
+    background: rgba(255, 255, 255, 0.473);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    color: rgb(22, 134, 65); 
+    font-size: clamp(0.4rem, 3cqi + 3cqb, 1.6rem);
+    font-weight: bold;
+    text-align: center;
+    animation: invisibleEffect 6s ease-in-out forwards 12s reverse;
 }
 .Map-navigator{
     position: absolute;

@@ -2,13 +2,8 @@
 
 ## Development Notes
 
-1. Desenvolvimento da localização
-Changes: Map.tsx, Store.ts, Configuration.tsx
-
-Falta adicionar a orientação!
-
-2. Renomeado Átomo de Ativação do Mapa
-Changes: Configuration.tsx e Dashboard.tsx
+1. Desenvolvimento da localização: adição de rotação e publicação
+Changes: Map.tsx, Store.ts, Configuration.tsx, Map.css
 
 ## Planos Atuais
 
