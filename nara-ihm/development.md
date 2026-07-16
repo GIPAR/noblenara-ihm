@@ -2,11 +2,13 @@
 
 ## Development Notes
 
-1. Desenvolvimento da localização: adição de rotação e publicação
-Changes: Map.tsx, Store.ts, Configuration.tsx, Map.css
+1. Organização e modificado o Código da Introdução e removido Environment Select, posto a sub-variável "Intro"
+Changes: Store.ts, App.tsx, Intro.tsx, Intro.css, Configuration.tsx
 
-2. Atualização do Tutorial
-Changes: Tutorial.md
+2. Adicionado átomo de ativação de Bateria ||| Falta Adicionar no Menu de Configurações
+Changes: Molecule.tsx, Dashboard.tsx
+
+LLMAssitant.tsx, AssistantContextService.ts, VoiceCommandService.ts, VoicePattern.ts, VoiceChat.tsx, AssistantContext; removido environment
 
 ## Planos Atuais
 

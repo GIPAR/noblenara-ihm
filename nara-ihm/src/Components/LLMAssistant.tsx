@@ -5,7 +5,7 @@ import { isRobotCommand } from "../services/CommandRouterService";
 import { speechService } from "../services/SpeechService";
 import "./LLMAssistant.css";
 import { useStore } from "zustand";
-import { ChatStore, GlobalStore, ROStore } from "../contexts/Store";
+import { ChatStore, ROStore } from "../contexts/Store";
 
 function createTwist(linearX: number, angularZ: number) {
   return {
@@ -26,8 +26,7 @@ export default function LLMAssistant() {
   const isConnected = useStore(ROStore, (s) => s.isConnected);
   const robotData = useStore(ROStore, (s) => s.robotData);
   const batteryData = useStore(ROStore, (s) => s.batteryData);
-  const setBatteryData = useStore(ROStore, (s) => s.setbatteryData);
-  const userConfig = useStore(GlobalStore, (s) => s.userConfig);
+  const setBatteryData = useStore(ROStore, (s) => s.setbatteryData);  
 
   useEffect(() => {
     if (!isConnected) return;
@@ -86,7 +85,6 @@ export default function LLMAssistant() {
       response = executeVoiceCommand(userQuestion, {
         batteryVoltage: batteryData.voltage > 0 ? batteryData.voltage : null,
         isConnected,
-        environment: userConfig.Environment,
         lastCommand: question,
         publishCmdVel,
       });

@@ -9,6 +9,8 @@ export const TeleopAtom = atom(false)
 
 export const ShowMapAtom = atom(true)
 
+export const ShowBatteryAtom = atom(true)
+
 export const VoiceChatAtom = atom(false)
 
 export const ShowAssistantAtom = atom(true)

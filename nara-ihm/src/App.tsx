@@ -39,7 +39,7 @@ function App() {
 
 // setCameraURL({link: 'http://localhost:8080/stream?topic=/zed/zed_node/rgb/color/rect/image&type=mjpeg', user: 'http://localhost:8080/stream?topic=/noblenara/camera_usuario&type=mjpeg'});
 
-  if(userConfig.Environment === 0){ //Renderiza a Introdução enquanto a variável === 0
+  if(userConfig.Intro === true){ //Renderiza a Introdução
     return <Intro />;
   }
 

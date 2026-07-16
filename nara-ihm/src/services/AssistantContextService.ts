@@ -1,14 +1,7 @@
-import { ChatStore, GlobalStore, ROStore } from "../contexts/Store";
-
-function getEnvironmentName(environment: number) {
-  if (environment === 1) return "ambiente real";
-  if (environment === 2) return "ambiente virtual";
-  return "ambiente não identificado";
-}
+import { ChatStore, ROStore } from "../contexts/Store";
 
 export function getNARAContext() {
   const rosState = ROStore.getState();
-  const globalState = GlobalStore.getState();
 
   return {
     rosConnected: rosState.isConnected,
@@ -19,7 +12,6 @@ export function getNARAContext() {
     batteryVoltage: rosState.batteryData.voltage,
     batteryPercentage: rosState.batteryData.percentage,
     batteryStatus: rosState.batteryData.status,
-    environment: getEnvironmentName(globalState.userConfig.Environment),
   };
 }
 
@@ -50,7 +42,6 @@ Contexto atual:
 - Conexão com ROS2: ${context.rosConnected ? "conectada" : "desconectada"}
 - Robô selecionado: ${context.robotProject}
 - Namespace/prefixo do robô: ${context.robotPrefix}
-- Ambiente atual: ${context.environment}
 - Tópico de velocidade: ${context.cmdVelTopic}
 - Tópico de bateria: ${context.batteryTopic}
 - Tensão da bateria: ${context.batteryVoltage > 0 ? `${context.batteryVoltage} V` : "sem informação"}

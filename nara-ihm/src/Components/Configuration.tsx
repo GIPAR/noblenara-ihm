@@ -108,7 +108,7 @@ export const ConfigurationMenu = () => {
               <h1>Ferramentas do ROS2</h1>
             </div>
 
-            {userConfig.Type === true ? 
+            {userConfig.isAdmin === true ? 
             <>
             <div className='configuration-box'>
               <div className={`configuration-box-button ${ShowMap ? 'active' : ''} `} onClick={() => {if(isConnected == false && ShowMap == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowMap(!ShowMap)}}}> </div>
@@ -140,7 +140,7 @@ export const ConfigurationMenu = () => {
             : null}
 
 
-            {ConfigOption === 4 && userConfig.Type === true ?
+            {ConfigOption === 4 && userConfig.isAdmin === true ?
             <>
             <div className='configuration-header'>
               <h1>Opções de Projeto</h1>

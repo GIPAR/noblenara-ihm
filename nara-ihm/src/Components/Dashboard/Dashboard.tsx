@@ -2,7 +2,7 @@ import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
 import { GlobalStore, ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
-import { DashboardAtom, BatteryAtom, TeleopAtom, RosapiAtom, ShowMapAtom } from '../../contexts/Molecule';
+import { DashboardAtom, BatteryAtom, TeleopAtom, RosapiAtom, ShowMapAtom, ShowBatteryAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
 import { Teleoperation } from '../../services/TeleopService';
 import { BatteryView } from '../Battery';
@@ -19,6 +19,7 @@ export const Dashboard = () => {
     const [ShowRosapi] = useAtom(RosapiAtom)
     const [ShowMap] = useAtom(ShowMapAtom)
     const [isExpanded] = useAtom(BatteryAtom)
+    const [ShowBattery] = useAtom(ShowBatteryAtom)
 
     // Develop: Ver se á outra maneira para selecionar se vai mudar o "main" ou o "firstside", tentei guardar uma string e jogar dentro do set mas não funcionou, porém talvez errei a sintaxe
 
@@ -55,7 +56,7 @@ export const Dashboard = () => {
 
             <div className='Dashboard-side'>
                 <div className={`Dashboard-side-status ${isExpanded ? 'Increase' : null}`}>
-                    {userConfig.Environment === 1 ? <BatteryView/> : <h3> {isConnected ? (<span style={{ color: 'rgb(20, 202, 102)' }}>Bridge: Conectada</span>): (<span style={{ color: 'rgb(85, 190, 168)' }}>Bridge: Desconectada</span>)}</h3>}
+                    {ShowBattery === true ? <BatteryView/> : <h3> {isConnected ? (<span style={{ color: 'rgb(20, 202, 102)' }}>Bridge: Conectada</span>): (<span style={{ color: 'rgb(85, 190, 168)' }}>Bridge: Desconectada</span>)}</h3>}
                 </div>
 
                 <div className='Dashboard-side-container'>
@@ -75,7 +76,7 @@ export const Dashboard = () => {
                 
                 {ShowRosapi === true ? <div className='Dashboard-side-container'> <SwitchCode which={3}/> </div> : null}
 
-                {ShowMap === true && userConfig.Type === true ?
+                {ShowMap === true && userConfig.isAdmin === true ?
                 <div className='Dashboard-side-container'>
                     <SwitchCode which={4}/>
                 </div>

@@ -19,17 +19,6 @@ export const CONNECTION_PATTERNS = [
   "ros",
 ];
 
-export const ENVIRONMENT_PATTERNS = [
-  "ambiente atual",
-  "qual ambiente",
-  "onde estou",
-  "cadeira real",
-  "cadeira virtual",
-  "simulacao",
-  "virtual",
-  "real",
-];
-
 export const HELP_PATTERNS = [
   "comandos disponiveis",
   "listar comandos",
