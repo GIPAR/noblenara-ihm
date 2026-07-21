@@ -1,8 +1,10 @@
 /* Painel das configurações do lado direito */
 
 .Configuration{
-  --box-width: 22rem;
+  /* --box-width: 20vw; */
+  --box-width: max(20vw, 200px);
   font-family: Georgia, 'Times New Roman', Times, serif;
+  container-type: size;
 }
 
 .configuration-button {
@@ -15,7 +17,7 @@
 
   display: flex;
   align-items: center;
-  font-size: 3rem;
+  font-size: clamp(1.5rem, 5cqi + 5cqh, 3rem);
   color: rgb(0, 223, 164);
   cursor: pointer;
   transition: all ease-in-out 1s;
@@ -24,18 +26,19 @@
 .configuration-button.enabled { transform: translate(0%, -50%); right: var(--box-width); }
 
 .configuration-panel {
+  position: absolute;
   border: 1px solid rgba(0, 207, 226, 0.781);
   border-right: none;
   border-radius: 0.5rem;
-  position: absolute;
+  width: var(--box-width);
+  height: 100%;
+  gap: 1rem;
+  padding: 0 0 0.5rem 0;
+  overflow-y: scroll;
+
   top: 50%;
   z-index: 2;
   transform: translateY(-50%);
-
-  width: var(--box-width);
-  height: 100%;
-  gap: 0.75rem;
-  padding: 0 0 0.5rem 0;
 
   display: flex;
   flex-direction: column;
@@ -51,19 +54,21 @@
 
 /* Menu de opções na parte superior */
 .configuration-options {
-  width: 100%;
-  height: 10vh;
   position: relative;
+  width: 100%;
+  height: 8vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex-shrink: 0;
+  container-type: size;
 }
 .configuration-options > * { flex: 1; width: 0; } /* flex: 1; for the thingies to auto fill automatically */
 
 .configuration-options-button {
   height: 100%;
-  border:1px solid #1e7888;
-  font-size: 0.8rem;
+  border: 1px solid #1e7888;
+  font-size: clamp(0.4rem, 3.5cqi + 4cqh, 1rem);
   font-weight: bold;
   color: rgb(0, 103, 163);
   display: flex;
@@ -76,26 +81,35 @@
 /* Conteúdo Principal */
 .configuration-header {
   width: calc(var(--box-width) * 1);
-  height: 1.6rem;
+  height: max(2.6vh, 15px);
   padding: 0 0 0 0.5rem;
-  /* display: flex; align-items: center; justify-content: left; */
+  display: flex; align-items: center; justify-content: center;
   border-bottom: 1px solid rgb(11, 75, 85);
+  container-type: size;
+  flex-shrink: 0;
 }
+.configuration-header.borderless { border: none; text-decoration: underline;  }
 .configuration-header h1 {
-  font-size: 1.2rem;
+  font-size: clamp(0.6rem, 7cqi + 6cqh, 1.2rem);
+  color: rgb(0, 103, 163);
+}
+.configuration-header h2 {
+  font-size: clamp(0.5rem, 5.8cqi + 5.5cqh, 1rem);
   color: rgb(0, 103, 163);
 }
 
 .configuration-box {
-  width: calc(var(--box-width) * 0.7);
-  height: 2.5rem;
+  width: calc(var(--box-width) * 0.8);
+  height: 3vh;
   display: flex; align-items: center; justify-content: right;
-  font-size: 1rem;
+  container-type: size;
+  flex-shrink: 0;
 }
+.configuration-box.input { justify-content: center; }
 .configuration-box-button {
   position: fixed;
-  width: 1.7rem;
-  height: 1.7rem;
+  width: 3.0vh;
+  height: 3.0vh;
   border: 1px solid rgb(2, 152, 134);
   border-radius: 5rem;
   z-index: 1;
@@ -107,17 +121,21 @@
 .configuration-box-text {
   position: relative;
   width: 85%;
-  height: 2.5rem;
+  height: 100%;
   right: 15%;
   display: flex; align-items: center; justify-content: center;
-  padding: 1rem;
   color: rgb(19, 143, 162);
+  font-size: clamp(0.4rem, 6cqi + 6cqh, 1rem);
   font-weight: bold;
   white-space: nowrap;
 }
 .configuration-box-input {
   border-radius: 1rem;
+  height: clamp(10px, 9cqi + 9cqh, 80%);
+  width: 70%;
   outline: none;
   color: rgb(11, 87, 99);
   border-color: rgb(17, 180, 180);
+  text-align: center;
+  font-size: clamp(0.4rem, 3.5cqi + 3.5cqh, 1rem);;
 }

@@ -2,13 +2,11 @@
 
 ## Development Notes
 
-1. Organização e modificado o Código da Introdução e removido Environment Select, posto a sub-variável "Intro"
-Changes: Store.ts, App.tsx, Intro.tsx, Intro.css, Configuration.tsx
+1. Normalizado o menu de opções, o header da hmi, ícones e o Status da Bateria para melhor estabilidade em diferentes resoluções
+Changes: Configuration.css, App.css, Dashboard.tsx, Dashboard.css, Battery.css
 
-2. Adicionado átomo de ativação de Bateria ||| Falta Adicionar no Menu de Configurações
-Changes: Molecule.tsx, Dashboard.tsx
-
-LLMAssitant.tsx, AssistantContextService.ts, VoiceCommandService.ts, VoicePattern.ts, VoiceChat.tsx, AssistantContext; removido environment
+2. Adicionado ativação e desativação da visualização de bateria no menu de configurações
+Changes: Configuration.tsx
 
 ## Planos Atuais
 
@@ -16,9 +14,11 @@ LLMAssitant.tsx, AssistantContextService.ts, VoiceCommandService.ts, VoicePatter
     Adicionar setting de MaxSpeed no Configuration.tsx
 
 - Mudanças Gerais:
-    Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
+    Talvez fazer o mapa SLAM ficar no meio da tela
+    Adicionar forma de colocar câmeras ou mapas adicionais na tela
 
-Verificar a normalização de todos os Poses posiveis no Map.tsx
+- Adições Gerais:
+    Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
 
 ## Notas
 
