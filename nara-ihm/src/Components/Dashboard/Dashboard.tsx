@@ -2,7 +2,7 @@ import { SwitchCode } from './SwitchCode';
 import { useStore } from 'zustand';
 import { GlobalStore, ROStore } from '../../contexts/Store';
 import { useAtom } from 'jotai'
-import { DashboardAtom, BatteryAtom, TeleopAtom, RosapiAtom, ShowMapAtom, ShowBatteryAtom } from '../../contexts/Molecule';
+import { DashboardAtom, BatteryAtom, ShowTeleopAtom, ShowRosapiAtom, ShowMapAtom, ShowBatteryAtom } from '../../contexts/Molecule';
 import { useState } from 'react';
 import { Teleoperation } from '../../services/TeleopService';
 import { BatteryView } from '../Battery';
@@ -15,8 +15,8 @@ export const Dashboard = () => {
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const userConfig = useStore(GlobalStore, (s) => s.userConfig)
     const [Selection, setSelection] = useAtom(DashboardAtom)
-    const [StartTeleop] = useAtom(TeleopAtom)
-    const [ShowRosapi] = useAtom(RosapiAtom)
+    const [StartTeleop] = useAtom(ShowTeleopAtom)
+    const [ShowRosapi] = useAtom(ShowRosapiAtom)
     const [ShowMap] = useAtom(ShowMapAtom)
     const [isExpanded] = useAtom(BatteryAtom)
     const [ShowBattery] = useAtom(ShowBatteryAtom)

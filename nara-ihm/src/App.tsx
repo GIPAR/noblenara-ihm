@@ -10,7 +10,7 @@ import './App.css';
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from './contexts/Store'
 import { useAtom } from 'jotai';
-import { ThemeAtom, VoiceChatAtom, ShowAssistantAtom } from './contexts/Molecule';
+import { ThemeAtom, ShowVoiceChatAtom, ShowAssistantAtom } from './contexts/Molecule';
 
 function App() {
   const connectionAttemptedRef = useRef(false);
@@ -19,7 +19,7 @@ function App() {
   const ros = useStore(ROStore, (s) => s.ros)
   const robotData = useStore(ROStore, (state) => state.robotData)
   const [Theme] = useAtom(ThemeAtom)
-  const [ShowVoiceChat] = useAtom(VoiceChatAtom)
+  const [ShowVoiceChat] = useAtom(ShowVoiceChatAtom)
   const [ShowAssistant] = useAtom(ShowAssistantAtom)
 
   useEffect(() => {
@@ -53,8 +53,8 @@ function App() {
         {ShowAssistant ? <LLMAssistant /> : null}
 
         <div className='App-header'> <h1>
-          {robotData.project === "noblenara" ? ( "NARA - Robot HMI"  ):( null )}
-          {robotData.project === "RoboticsLLM" ? ( "RoboticsLLM - HMI"  ):( null )}
+          {robotData.project === "noblenara" ? ( "NARA - Robot HMI" ):( null )}
+          {robotData.project === "RoboticsLLM" ? ( "RoboticsLLM - HMI" ):( null )}
         </h1></div>
 
         <ConfigurationMenu/>

@@ -2,11 +2,8 @@
 
 ## Development Notes
 
-1. Normalizado o menu de opções, o header da hmi, ícones e o Status da Bateria para melhor estabilidade em diferentes resoluções
-Changes: Configuration.css, App.css, Dashboard.tsx, Dashboard.css, Battery.css
-
-2. Adicionado ativação e desativação da visualização de bateria no menu de configurações
-Changes: Configuration.tsx
+1. Organizado os nomes das moléculas
+Changes: Molecule.ts, Configuration.tsx, Dashboard.tsx, Rosapi.tsx, TeleopService.tsx, App.tsx
 
 ## Planos Atuais
 

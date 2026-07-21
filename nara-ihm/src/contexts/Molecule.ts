@@ -1,17 +1,17 @@
 import { atom } from 'jotai'
 
 // Átomos de Ativação;
-export const MenuAtom = atom(false)
+export const ShowMenuAtom = atom(false)
 
-export const RosapiAtom = atom(false)
+export const ShowRosapiAtom = atom(false)
 
-export const TeleopAtom = atom(false)
+export const ShowTeleopAtom = atom(false)
 
 export const ShowMapAtom = atom(true)
 
 export const ShowBatteryAtom = atom(true)
 
-export const VoiceChatAtom = atom(false)
+export const ShowVoiceChatAtom = atom(false)
 
 export const ShowAssistantAtom = atom(true)
 

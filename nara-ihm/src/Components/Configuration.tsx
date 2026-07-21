@@ -4,7 +4,7 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, ThemeAtom, ShowMapAtom, VoiceChatAtom, SpeedLimitAtom, ShowAssistantAtom, ShowBatteryAtom } from '../contexts/Molecule'
+import { LogAtom, ShowMenuAtom, ShowTeleopAtom, ShowRosapiAtom, ThemeAtom, ShowMapAtom, ShowVoiceChatAtom, SpeedLimitAtom, ShowAssistantAtom, ShowBatteryAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
@@ -19,12 +19,12 @@ export const ConfigurationMenu = () => {
     const setLink = useStore(ROStore, (state) => state.setLink)
     const compute = useStore(ROStore, (state) => state.computeTopics)
     const computeLinks = useStore(ROStore, (state) => state.computeLinks)
-    const [ShowMenu, setShowMenu]= useAtom(MenuAtom)
-    const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
-    const [StartTeleop, setStartTeleop] = useAtom(TeleopAtom)
+    const [ShowMenu, setShowMenu]= useAtom(ShowMenuAtom)
+    const [ShowRosapi, setShowRosapi] = useAtom(ShowRosapiAtom)
+    const [StartTeleop, setStartTeleop] = useAtom(ShowTeleopAtom)
     const [Theme, setTheme] = useAtom(ThemeAtom)
     const [ShowMap, setShowMap] = useAtom(ShowMapAtom)
-    const [ShowVoiceChat, setShowVoiceChat] = useAtom(VoiceChatAtom)
+    const [ShowVoiceChat, setShowVoiceChat] = useAtom(ShowVoiceChatAtom)
     const [ShowAssistant, setShowAssistant] = useAtom(ShowAssistantAtom)
     const [MaxSpeed, setMaxSpeed] = useAtom(SpeedLimitAtom)
     const [ShowBattery, setShowBattery] = useAtom(ShowBatteryAtom)
