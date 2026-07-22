@@ -2,11 +2,8 @@
 
 ## Development Notes
 
-1. Desenvolvimento da localização: adição de rotação e publicação
-Changes: Map.tsx, Store.ts, Configuration.tsx, Map.css
-
-2. Atualização do Tutorial
-Changes: Tutorial.md
+1. Organizado os nomes das moléculas
+Changes: Molecule.ts, Configuration.tsx, Dashboard.tsx, Rosapi.tsx, TeleopService.tsx, App.tsx
 
 ## Planos Atuais
 
@@ -14,9 +11,11 @@ Changes: Tutorial.md
     Adicionar setting de MaxSpeed no Configuration.tsx
 
 - Mudanças Gerais:
-    Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
+    Talvez fazer o mapa SLAM ficar no meio da tela
+    Adicionar forma de colocar câmeras ou mapas adicionais na tela
 
-Verificar a normalização de todos os Poses posiveis no Map.tsx
+- Adições Gerais:
+    Desenvolver Posteriormente o tutorial em uma versão mais atualizada da IHM
 
 ## Notas
 

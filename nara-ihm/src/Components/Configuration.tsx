@@ -4,7 +4,7 @@ import './Configuration.css'
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
 import { useAtom, useSetAtom } from 'jotai'
-import { LogAtom, MenuAtom, TeleopAtom, RosapiAtom, ThemeAtom, ShowMapAtom, VoiceChatAtom, SpeedLimitAtom, ShowAssistantAtom } from '../contexts/Molecule'
+import { LogAtom, ShowMenuAtom, ShowTeleopAtom, ShowRosapiAtom, ThemeAtom, ShowMapAtom, ShowVoiceChatAtom, SpeedLimitAtom, ShowAssistantAtom, ShowBatteryAtom } from '../contexts/Molecule'
 
 export const ConfigurationMenu = () => {
     const [ConfigOption, setConfigOption] = useState(1)
@@ -19,14 +19,15 @@ export const ConfigurationMenu = () => {
     const setLink = useStore(ROStore, (state) => state.setLink)
     const compute = useStore(ROStore, (state) => state.computeTopics)
     const computeLinks = useStore(ROStore, (state) => state.computeLinks)
-    const [ShowMenu, setShowMenu]= useAtom(MenuAtom)
-    const [ShowRosapi, setShowRosapi] = useAtom(RosapiAtom)
-    const [StartTeleop, setStartTeleop] = useAtom(TeleopAtom)
+    const [ShowMenu, setShowMenu]= useAtom(ShowMenuAtom)
+    const [ShowRosapi, setShowRosapi] = useAtom(ShowRosapiAtom)
+    const [StartTeleop, setStartTeleop] = useAtom(ShowTeleopAtom)
     const [Theme, setTheme] = useAtom(ThemeAtom)
     const [ShowMap, setShowMap] = useAtom(ShowMapAtom)
-    const [ShowVoiceChat, setShowVoiceChat] = useAtom(VoiceChatAtom)
+    const [ShowVoiceChat, setShowVoiceChat] = useAtom(ShowVoiceChatAtom)
     const [ShowAssistant, setShowAssistant] = useAtom(ShowAssistantAtom)
     const [MaxSpeed, setMaxSpeed] = useAtom(SpeedLimitAtom)
+    const [ShowBattery, setShowBattery] = useAtom(ShowBatteryAtom)
     const setLogData = useSetAtom(LogAtom)
 
     useEffect(() => {
@@ -104,11 +105,16 @@ export const ConfigurationMenu = () => {
               <div className='configuration-box-text'> {ShowAssistant ? 'Desativar Assistente' : 'Ativar Assistente'} </div>
             </div>
 
+            <div className='configuration-box'>
+              <div className={`configuration-box-button ${ShowBattery ? 'active' : ''}`} onClick={() => setShowBattery(!ShowBattery)}> </div>
+              <div className='configuration-box-text'> {ShowBattery ? 'Esconder Visualização da Carga' : 'Visualização da Carga'} </div>
+            </div>
+
             <div className='configuration-header'>
               <h1>Ferramentas do ROS2</h1>
             </div>
 
-            {userConfig.Type === true ? 
+            {userConfig.isAdmin === true ? 
             <>
             <div className='configuration-box'>
               <div className={`configuration-box-button ${ShowMap ? 'active' : ''} `} onClick={() => {if(isConnected == false && ShowMap == false){setLogData({msg: "Primeiramente conecte ao ROS!", id: Date.now(), error: true});} else{setShowMap(!ShowMap)}}}> </div>
@@ -140,7 +146,7 @@ export const ConfigurationMenu = () => {
             : null}
 
 
-            {ConfigOption === 4 && userConfig.Type === true ?
+            {ConfigOption === 4 && userConfig.isAdmin === true ?
             <>
             <div className='configuration-header'>
               <h1>Opções de Projeto</h1>
@@ -165,8 +171,11 @@ export const ConfigurationMenu = () => {
               <h1>Configurações do Robô</h1>
             </div>
 
-            <div className='configuration-box'>
-              <div className='configuration-box-text'> Prefixo: </div>
+            <div className='configuration-header borderless'>
+              <h2>Prefixo</h2>
+            </div>
+
+            <div className='configuration-box input'>
               <input type="text" placeholder="Namespace do Robô" value={robotData.prefix}
                 onChange={(e) => {
                     setrobotData({ ...robotData, prefix: e.target.value })
@@ -178,70 +187,82 @@ export const ConfigurationMenu = () => {
               />
             </div>
 
-            <div className='configuration-box'>
+            <div className='configuration-header borderless'>
+              <h2>Tópicos</h2>
+            </div>
+
+            <div className='configuration-box input'>
               <input type="text" placeholder="Tópico do cmd_vel" value={robotData.topic_cmd_vel}
                 onChange={(e) => setrobotData({ ...robotData, topic_cmd_vel: e.target.value })}
                 className="configuration-box-input"
               />
             </div>
 
-            <div className='configuration-box'>
+            <div className='configuration-box input'>
               <input type="text" placeholder="Tópico da Câmera Link" value={robotData.topic_camera_link}
                 onChange={(e) => setrobotData({ ...robotData, topic_camera_link: e.target.value })}
                 className="configuration-box-input"
               />
             </div>
 
-            <div className='configuration-box'>
+            <div className='configuration-box input'>
               <input type="text" placeholder="Tópico da Câmera User" value={robotData.topic_camera_user}
                 onChange={(e) => setrobotData({ ...robotData, topic_camera_user: e.target.value })}
                 className="configuration-box-input"
               />
             </div>
 
-            <div className='configuration-box'>
-              <input type="text" placeholder="Endereço da Câmera Link" value={ Link.link }
-                onChange={(e) => setLink({ ...Link, link: e.target.value })}
-                className="configuration-box-input"
-              />
-            </div>
-
-            <div className='configuration-box'>
-              <input type="text" placeholder="Endereço da Câmera User" value={ Link.user }
-                onChange={(e) => setLink({ ...Link, user: e.target.value })}
-                className="configuration-box-input"
-              />
-            </div>
-
-            <div className='configuration-box'>
+            <div className='configuration-box input'>
               <input type="text" placeholder="Tópico da Bateria" value={ robotData.topic_battery }
                 onChange={(e) => setrobotData({ ...robotData, topic_battery: e.target.value })}
                 className="configuration-box-input"
               />
             </div>
 
-            <div className='configuration-box'>
+            <div className='configuration-box input'>
               <input type="text" placeholder="Tópico do Mapa SLAM" value={ robotData.topic_map }
                 onChange={(e) => setrobotData({ ...robotData, topic_map: e.target.value })}
                 className="configuration-box-input"
               />
             </div>
 
-            <div className='configuration-box'>
+            <div className='configuration-box input'>
               <input type="text" placeholder="Tópico da Posição" value={ robotData.topic_pose }
                 onChange={(e) => setrobotData({ ...robotData, topic_pose: e.target.value })}
                 className="configuration-box-input"
               />
             </div>
 
-            <div className='configuration-box'>
+            <div className='configuration-box input'>
               <input type="text" placeholder="Tópico do Comando de Nav2" value={ robotData.topic_goal_pose }
                 onChange={(e) => setrobotData({ ...robotData, topic_goal_pose: e.target.value })}
                 className="configuration-box-input"
               />
             </div>
 
-            <div className='configuration-box'>
+            <div className='configuration-header borderless'>
+              <h2>Endereço das Câmeras</h2>
+            </div>
+
+            <div className='configuration-box input'>
+              <input type="text" placeholder="Endereço da Câmera Link" value={ Link.link }
+                onChange={(e) => setLink({ ...Link, link: e.target.value })}
+                className="configuration-box-input"
+              />
+            </div>
+
+            <div className='configuration-box input'>
+              <input type="text" placeholder="Endereço da Câmera User" value={ Link.user }
+                onChange={(e) => setLink({ ...Link, user: e.target.value })}
+                className="configuration-box-input"
+              />
+            </div>
+
+            <div className='configuration-header borderless'>
+              <h2>Frames</h2>
+            </div>
+
+            <div className='configuration-box input'>
               <input type="text" placeholder="Frame do Mapa" value={ robotData.frame_map }
                 onChange={(e) => setrobotData({ ...robotData, frame_map: e.target.value })}
                 className="configuration-box-input"

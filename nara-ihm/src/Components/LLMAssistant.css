@@ -1,17 +1,17 @@
 .llm-assistant-panel {
   position: fixed;
-  left: 24px;
-  bottom: 24px;
+  --box-width: 15vw;
+  width: var(--box-width);
+  left: calc(var(--box-width) * 2 / 3 );
+  bottom: 50%;
+  transform: translate(-50%, 50%);
   z-index: 9999;
-  width: 340px;
-  max-height: 420px;
   background: rgba(255, 255, 255, 0.96);
   border: 2px solid #00d68f;
   border-radius: 12px;
   padding: 14px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   pointer-events: auto;
-  font-family: sans-serif;
 }
 
 .llm-assistant-title {

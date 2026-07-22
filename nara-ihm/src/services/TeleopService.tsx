@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useStore } from 'zustand'
 import { ROStore } from '../contexts/Store';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { LogAtom, SpeedLimitAtom, TeleopAtom } from '../contexts/Molecule';
+import { LogAtom, SpeedLimitAtom, ShowTeleopAtom } from '../contexts/Molecule';
 import '../Components/Teleop.css';
 
 export const Teleoperation = () => {
@@ -25,7 +25,7 @@ export const Teleoperation = () => {
     const isConnected = useStore(ROStore, (s) => s.isConnected)
     const MaxSpeed = useAtomValue(SpeedLimitAtom)
     const setLogData = useSetAtom(LogAtom)
-    const setStartTeleop = useSetAtom(TeleopAtom)
+    const setStartTeleop = useSetAtom(ShowTeleopAtom)
 
 
     const handlePointerDown = useCallback((e: React.PointerEvent) => {

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { speechService } from "../services/SpeechService";
 import { executeVoiceCommand } from "../services/VoiceCommandService";
-import { ROStore, GlobalStore } from "../contexts/Store";
+import { ROStore } from "../contexts/Store";
 import "./VoiceChat.css";
 
 type HistoryItem = {
@@ -19,7 +19,6 @@ function createTwist(linearX: number, angularZ: number) {
 export default function VoiceChat() {
   const ros = ROStore((state) => state.ros);
   const isConnected = ROStore((state) => state.isConnected);
-  const userConfig = GlobalStore((state) => state.userConfig);
   const robotData = ROStore((state) => state.robotData);
   const batteryData = ROStore((state) => state.batteryData);
 
@@ -40,7 +39,6 @@ export default function VoiceChat() {
     const answer = executeVoiceCommand(text, {
       batteryVoltage: batteryData.voltage > 0 ? batteryData.voltage : null,
       isConnected,
-      environment: userConfig.Environment,
       lastCommand,
       publishCmdVel,
     });

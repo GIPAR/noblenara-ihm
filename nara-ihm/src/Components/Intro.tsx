@@ -5,8 +5,8 @@ import './Intro.css'
 
 import { useStore } from 'zustand'
 import { GlobalStore, ROStore } from '../contexts/Store'
-import { useSetAtom } from 'jotai';
-import { LogAtom } from '../contexts/Molecule'
+import { useAtom, useSetAtom } from 'jotai';
+import { LogAtom, ShowBatteryAtom } from '../contexts/Molecule'
 
 export const Intro = () => {
   const User = useStore(GlobalStore, (s) => s.User)           //Variáveis Globais
@@ -16,13 +16,13 @@ export const Intro = () => {
   const ros = useStore(ROStore, (s) => s.ros)
   const isConnected = useStore(ROStore, (s) => s.isConnected)
   const Battery = useStore(ROStore, (s) => s.batteryData)
+  const [ShowBattery, setShowBattery] = useAtom(ShowBatteryAtom)
   const setLogData = useSetAtom(LogAtom)
 
   const [isReturning, setIsReturning] = useState(false);      // Flag para detectar retorno
   const [LeaveIntro, setLeaveIntro] = useState(false);        // Flag para detectar saída
   const loginRef = useRef<HTMLDivElement>(null);              // Referência para a div principal
   const introsleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-  const [auxType, setauxType] = useState<boolean | null>(null);
 
   useEffect(() => {  // Efeito para apressar a animação no retorno
     if (!userConfig.Login && isReturning && loginRef.current) {
@@ -34,12 +34,12 @@ export const Intro = () => {
 
   const HandleLogin = useCallback(() => {
     if(User.name == 'gipar' && User.password == 'usergipar'){
-      setuserConfig({Login: true, Type: 0, Environment: 0});
+      setuserConfig({Login: true, isAdmin: true, Intro: true});
       setIsReturning(false);  // Reseta para carregamento inicial
       setLogData({msg: "Login realizado com sucesso!", id: Date.now(), error: false});
     }
     else if(User.name == 'nara' && User.password == 'usergipar'){
-      setuserConfig({Login: true, Type: false, Environment: 0}); // Ambiente é realmente settado no "HandleLeave", não aqui
+      setuserConfig({Login: true, isAdmin: false, Intro: true}); // Ambiente é realmente settado no "HandleLeave", não aqui
       setIsReturning(false);
       setLogData({msg: "Login realizado com sucesso!", id: Date.now(), error: false});
     }
@@ -58,10 +58,10 @@ export const Intro = () => {
     return () => {window.removeEventListener('keydown', HandleKey);};
   }, [userConfig.Login, HandleLogin]);
 
-  const HandleLeave = async (whichEnv: number) => {
+  const HandleLeave = async () => {
     setLeaveIntro(true);
     await introsleep(3600);
-    setuserConfig({...userConfig, Environment: whichEnv});
+    setuserConfig({...userConfig, Intro: false});
   }
 
   return (
@@ -79,7 +79,7 @@ export const Intro = () => {
           </div>
         : (null)}
 
-        {userConfig.Login !== true ? ( /* Tela de Login | 1/3 (Desenvolvedor) | 1/2 (Usuário) */
+        {userConfig.Login !== true ? ( /* Tela de Login */
 
           <div className="Intro-login" ref={loginRef}>
             <div className='Intro-login-headerbar'>
@@ -121,152 +121,102 @@ export const Intro = () => {
           </div>
         ) : (
           <>
-          {userConfig.Type === 0 ? ( /* Desenvolvedores: Seleção de Modo 2/3 */
+          {userConfig.isAdmin === true ? ( /* Desenvolvedores: Seleção de Configurações Iniciais */
             <>
               <div className="Intro-configbox">
-                <h2>Bem vindo, {User.name}!</h2>
-                <div className='Intro-second-image'></div>
+                <div className='Intro-configbox-headerbar'>
+                  <h2>Bem vindo/a, {User.name}!</h2>
+                </div>
                 
-                <div className='Intro-configbox-partial'>
-                  <p> Selecione qual é o tipo de exibição desejado, sendo estes: <br/><br/> 
-                    <span style={{ display: 'block', color: 'rgba(82, 119, 119, 0.86)', fontSize: '0.8rem', textAlign: 'justify'}}>
-                      <strong> ➖ Usuário:</strong> Utilização comum do aplicativo com funcionalidades de controle <br/><br/> 
-                      <strong> ➖ Desenvolvedor:</strong> Permite o uso de ferramentas e exibições avançadas <br/> 
-                    </span>
-                  </p>
-                </div>
+                <div className='Intro-second-image'></div>
+              
+                <h3>Selecione as Configurações Iniciais, pressione o botão "Continuar" quando finalizado <br/><br/></h3>
 
-                <div className='Intro-configbox-partial'>
-                  <div className='Intro-select-box'>
-                    <div className={`Intro-select ${auxType === false ? 'checked' : ''}`}
-                      onClick={() => {if(auxType !== false){setauxType(false)} else{setauxType(null)}} } >
-                      { auxType === false ? <div className='Intro-select-image'></div> : null }
-                    </div>
-                    <h3>Usuário</h3>
-                  </div>
+                <div className='Intro-configbox-textwrapper'>
+                  <p> <span> <strong> ➖ Mostrar Estado da Bateria: </strong></span></p>
 
-                  <div className='Intro-select-box'>
-                    <div className={`Intro-select ${auxType === true ? 'checked' : ''}`}
-                      onClick={() =>{if(auxType !== true){setauxType(true)} else{setauxType(null)}}}>
-                      { auxType === true ? <div className='Intro-select-image'></div> : null }
-                    </div>
-                    <h3>Desenvolvedor</h3>
+                  <div className={`Intro-configbox-slider ${ShowBattery ? 'active' : null }`} onClick={() => setShowBattery(!ShowBattery)}>
+                    <div className={`Intro-configbox-slider-dot ${ShowBattery ? 'active' : null }`}></div>
                   </div>
                 </div>
 
-                <div className='Intro-login-button relocate'
+                <span><br/></span>
+
+                <div className='Intro-configbox-textwrapper'>
+                  <p> <span> <strong> ➖ Visualização de Usuário: </strong></span></p>
+                  
+                  <div className={`Intro-configbox-slider ${userConfig.isAdmin ? null : 'active' }`} 
+                    onClick={() => {setuserConfig({...userConfig, isAdmin: !userConfig.isAdmin}); setLogData({msg: "Desativado temporariamente os privilégios de Pesquisador!", id: Date.now(), error: false});}}>
+                    <div className={`Intro-configbox-slider-dot ${userConfig.isAdmin ? null : userConfig.isAdmin }`}></div>
+                  </div>
+                </div>
+
+                <div className='Intro-login-button'
+                 onClick={() => {
+                   HandleLeave();
+                 }}>
+                 Continuar
+                </div>
+              </div>
+
+              <div className="Intro-backbutton"
                   onClick={() => {
-                    if(auxType !== null){
-                      setLogData({msg: `Modo ${auxType === false ? 'Usuário' : 'Desenvolvedor'} selecionado!`, id: Date.now(), error: false});
-                      setuserConfig({Login: true, Type: auxType, Environment: 0});
-                      setauxType(null);}
-                    else{ setLogData({msg: `Selecione o tipo de exibição!`, id: Date.now(), error: true}) }
+                    setIsReturning(true);  // Marca que estamos retornando
+                    setuserConfig({Login: false, isAdmin: false, Intro: true});
+                    setLogData({msg: "Retornado para a tela inicial", id: Date.now(), error: false});
                   }}>
-                  <p>Continuar</p>
+                  <p>&laquo;</p>
+              </div>
+            </>
+          ) : ( /* Usuário Comum: Tela Auxiliar */
+            <> 
+              <div className="Intro-configbox">
+                <div className='Intro-configbox-headerbar'>
+                  <h2>Bem vindo/a, {User.name}!</h2>
                 </div>
+
+                <div className='Intro-second-image'></div>
+              
+                <h3>{isConnected ? 'Robô conectado! Pressione o botão "continuar" para prosseguir' : 'Primeiramente, conecte-se ao robô antes de continuarmos'} <br/> <br/></h3>
+
+                <div className='Intro-configbox-textwrapper'>
+                  <p> <span> <strong> ➖ Conexão com o Robô: </strong> {isConnected === true ? <span style={{ color: 'rgba(48, 233, 150, 0.96)' }}>Online</span> : <span style={{ color: 'rgba(162, 90, 90, 0.96)' }}>Offline</span>} </span></p>
+                </div>
+
+                <span><br/></span>
+
+                <div className='Intro-configbox-textwrapper'>
+                  <p> <span> <strong> ➖ Estado da Bateria: </strong> {isConnected === true ? Battery.status : 'Conecte ao Robô!'} </span></p>
+                </div>
+
+
+                {isConnected === true ?
+                <> 
+                  <div className='Intro-login-button'
+                    onClick={() => {
+                      HandleLeave();
+                    }}>
+                    Continuar
+                  </div>
+                </>
+                : 
+                  <div className='Intro-login-button'
+                    onClick={() => {
+                      ros.connect()
+                    }}> 
+                    Conectar-se ao Robô 
+                  </div>
+                }
               </div>
 
               <div className="Intro-backbutton"
                 onClick={() => {
                   setIsReturning(true);  // Marca que estamos retornando
-                  setuserConfig({Login: false, Type: 0, Environment: 0});
-                  setLogData({msg: "Retornado para a tela inicial", id: Date.now(), error: false});
+                  setuserConfig({Login: false, isAdmin: false, Intro: true});
+                  setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
                 }}>
                 <p>&laquo;</p>
               </div>
-            </>
-          ) : (
-            <> 
-            {userConfig.Type === true ? ( /* Desenvolvedores: Seleção de Ambiente 3/3 */
-              <>
-              <div className={`Intro-circle`}>
-                <h3>Selecione o Ambiente</h3>
-                
-                <div className={`Intro-rectangle`}>
-                  <div className='Intro-rectangle-partial left'
-                  onClick={() => {
-                    setLogData({msg: "Ambiente físico selecionado!", id: Date.now(), error: false});
-                    HandleLeave(1);
-                  }}>
-                    <span style={{color: 'rgb(72, 201, 176)'}}><h4> Físico </h4></span>
-                  </div>
-
-                  <div className='Intro-rectangle-partial right'
-                  onClick={() => {
-                    setLogData({msg: "Ambiente virtual selecionado!", id: Date.now(), error: false});
-                    HandleLeave(2);
-                  }}>
-                    <span style={{color: 'rgb(132, 196, 240)'}}><h4> Virtual </h4></span>
-                  </div>
-
-                  <div className='Intro-lines left'>
-                    <h5># Ambiente Real</h5>
-                    <p>Interface para o robô e seus sensores físicos</p>
-                  </div>
-
-                  <div className='Intro-lines right'>
-                    <h5># Ambiente Simulado</h5>
-                    <p>Interface para a simulação do robô no Gazebo</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="Intro-backbutton"
-              onClick={() => {
-                setIsReturning(true);  // Marca que estamos retornando
-                setuserConfig({Login: true, Type: 0, Environment: 0});
-                setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
-              }}>
-                <p>&laquo;</p>
-              </div>
-              </>
-            ) : ( /* Usuário Comum: Tela Auxiliar 2/2 */
-              <>
-                <div className="Intro-configbox">
-                  <h2>Bem vindo/a, {User.name}!</h2>
-                  <div className='Intro-second-image'></div>
-                
-                  <div className='Intro-configbox-partial'>
-                    <p> {isConnected ? 'Robô conectado! Pressione o botão "continuar" para prosseguir' : 'Primeiramente, conecte-se ao robô antes de continuarmos'} <br/><br/> 
-                      <span style={{ display: 'block', color: 'rgba(90, 162, 162, 0.96)', fontSize: '1rem', textAlign: 'justify'}}>
-                        <strong> ➖ Conexão com o Robô: </strong> {isConnected === true ? <span style={{ color: 'rgba(48, 233, 150, 0.96)' }}>Online</span> : <span style={{ color: 'rgba(162, 90, 90, 0.96)' }}>Offline</span>} <br/><br/> 
-                        <strong> ➖ Estado da Bateria: </strong> {isConnected === true ? Battery.status : 'Conecte ao Robô!'} <br/>
-                      </span>
-                    </p>
-                  </div>
-
-                  <div className='Intro-configbox-partial'>
-                    {isConnected === true ?
-                    <> 
-                      <div className='Intro-login-button relocate'
-                        onClick={() => {
-                          HandleLeave(1);
-                        }}>
-                        Continuar
-                      </div>
-                    </>
-                    : 
-                      <div className='Intro-login-button relocate'
-                        onClick={() => {
-                          ros.connect()
-                        }}> 
-                        Conectar-se ao Robô 
-                      </div>
-                    }
-                  </div>
-
-                </div>
-
-                <div className="Intro-backbutton"
-                  onClick={() => {
-                    setIsReturning(true);  // Marca que estamos retornando
-                    setuserConfig({Login: false, Type: 0, Environment: 0});
-                    setLogData({msg: "Retornado para a seleção de modos", id: Date.now(), error: false});
-                  }}>
-                  <p>&laquo;</p>
-                </div>
-              </>
-            )}
             </>
           )}
           </>

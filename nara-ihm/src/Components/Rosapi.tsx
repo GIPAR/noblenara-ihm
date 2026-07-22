@@ -1,16 +1,11 @@
 import { useStore } from 'zustand';
-import { useAtom } from 'jotai'
 
 import { ROStore } from '../contexts/Store';
-import { RosapiAtom } from '../contexts/Molecule';
 import './Rosapi.css'
 
 export const RosapiMenu = () => {
     const ros = useStore(ROStore, (s) => s.ros)
     const Data = useStore(ROStore, (s) => s.rosapiData)
-    const [ShowRosapi] = useAtom(RosapiAtom)
-
-    if(ShowRosapi === false){return}
 
     return (
         <div className='rosapi'>
