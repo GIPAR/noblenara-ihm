@@ -1,7 +1,6 @@
 export type VoiceCommandContext = {
   batteryVoltage: number | null;
   isConnected: boolean;
-  environment: number;
   lastCommand: string;
   publishCmdVel: (linearX: number, angularZ: number) => void;
 };
@@ -9,7 +8,6 @@ export type VoiceCommandContext = {
 import {
   BATTERY_PATTERNS,
   CONNECTION_PATTERNS,
-  ENVIRONMENT_PATTERNS,
   HELP_PATTERNS,
   NARA_IDENTITY_PATTERNS,
   AUTONOMOUS_NAVIGATION_PATTERNS,
@@ -21,17 +19,6 @@ function normalizeText(text: string) {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
-}
-
-function getEnvironmentName(environment: number) {
-  switch (environment) {
-    case 1:
-      return "cadeira real";
-    case 2:
-      return "cadeira virtual";
-    default:
-      return "ambiente ainda não selecionado";
-  }
 }
 
 function getAvailableCommands() {
@@ -149,10 +136,6 @@ export function executeVoiceCommand(
     return context.lastCommand
       ? `O último comando foi ${context.lastCommand}.`
       : "Nenhum comando foi executado ainda.";
-  }
-
-  if (matchesAny(command, ENVIRONMENT_PATTERNS)) {
-    return `Você está utilizando a ${getEnvironmentName(context.environment)}.`;
   }
 
   if (matchesAny(command, HELP_PATTERNS)) {

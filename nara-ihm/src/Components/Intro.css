@@ -35,16 +35,14 @@ main {
 
 .Intro-title{
   position: absolute;
-  transform: translate(-50%, -50%);
-
+  transform: translate(-50%, 0%);
   display: flex;
   align-items: center;
   justify-content: center;
   animation: positionEffect 3.5s ease-in-out both 3.5s;
 }
 .Intro-title h1{
-  font-size: 5rem;
-  padding: 2rem;
+  font-size: clamp(0.4rem, 3cqi + 3cqb, 5rem);
   background: linear-gradient(110deg, #0eff1a, #00ffc8, #0e98c2cb);
   -webkit-background-clip: text;
   background-clip: text;
@@ -66,34 +64,36 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 3rem 3rem;
-  width: 40%;
-  height: auto;
+  width: 50vw;
+  height: 20%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 2vh;
   --anim-duration: 3s;
   --anim-delay: 4.5s;
   animation: invisibleEffect var(--anim-duration) ease-in-out both var(--anim-delay);
+  container-type: size;
 }
 .Intro-login-wrapper{
   width: 100%;
 }
 .Intro-login-label {
   position: absolute;
-  width: 10%;
-  padding: 0.2rem 0.5rem;
-  left: -4rem;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 10vw;
+  height: 5vh;
+  transform: translate(-100%, 0%);
 }
 .Intro-login-label h6 {
   color: rgb(47, 211, 211); 
-  font-size: 1.6rem;
+  font-size: clamp(0.4rem, 4cqi + 4cqh, 1.6rem);
   font-weight: bold;
   text-align: center;
 }
@@ -101,22 +101,30 @@ main {
   position: absolute;
   width: 15rem;
   height: 15rem;
-  left: 100%;
+  left: 110%;
   background-image: url('../assets/Intro/undraw_five-year-plan_7hwj.svg');
   background-size: 100%; background-position: center; background-repeat: no-repeat;
 }
 .Intro-login-headerbar {
-  width: 60%;
   position: absolute;
+  width: 60%;
+  height: 5vh;
   top: 0%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  text-align: center;
+  transform: translate(-50%, -100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: inline;
+  white-space: nowrap;
+}
+.Intro-login-headerbar p {
+  font-size: clamp(1.2rem, 3cqi + 3cqh, 2rem);
   color: rgb(73, 253, 253);
 }
 .Intro-login-bar {
   width: 100%;
+  height: 5vh;
   background: rgba(195, 253, 255, 0.226);
   border-radius: 0.9rem;
   border: 1px solid rgba(54, 207, 207, 0.781);
@@ -137,63 +145,61 @@ main {
 
 .Intro-login-button {
   position: absolute;
-  bottom: -1.5rem;
+  bottom: 0;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, +100%);
   margin: 0 auto;
   padding: 0rem 1rem;
   border-radius: 0.6rem;
   border: 1px solid #1ff82a1a;
 
   transition: 0.5s;
-  font-size: 1.4rem;
+  font-size: clamp(0.4rem, 3cqi + 3cqh, 1.4rem);
   color: #1ff82a;
 }
-.Intro-login-button.relocate { bottom: 0rem; } /* Usado na parte 2/3 */
 .Intro-login-button:hover {
   border-color: #054d08;
   text-shadow: 0 0 6px rgba(31, 248, 42, 0.8);
   box-shadow: 0 0 4px rgba(31, 248, 42, 0.4), inset 0 0 8px rgba(31, 248, 42, 0.2);
-  transform: translate(-50%, -50%) scale(1.06);
+  transform: translate(-50%, +100%) scale(1.06);
   cursor: pointer;
 }
 
 /* --- Botão de Retorno Geral --- */
 .Intro-backbutton {
   position: fixed;
-  top: 3.5rem;
-  left: 4rem;
-  transform: translate(-50%, -50%);
+  top: 5%;
+  left: 5%;
+  transform: translate(-50%, 0%);
   display: flex;
   align-items: center;
   
   --backbutton-color: 15, 230, 255;
   color: white;
-  font-size: 4rem;
-  width: auto;
-  height: auto;
+  font-size: clamp(0.4rem, 3cqi + 3cqb, 4rem);
   transition: 0.4s;
 }
 .Intro-backbutton:hover {
   text-shadow: 0 0 5px rgba(var(--backbutton-color), 0.8);
-  transform: translate(-50%, -50%) scale(1.1);
+  transform: translate(-50%, 0%) scale(1.1);
   cursor: pointer;
 }
 
 
-/* --- Tela para Desenvolvedor: Box para as opções de entrada 2/3 --- */
+/* --- Tela Auxiliar: Box para as opções de entrada --- */
 .Intro-configbox {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 60%;
-  height: auto;
-  padding: 2.5rem 0rem;
+  height: 30%;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: left;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  /* gap: 1rem; */
+  container-type: size;
 }
 .Intro-configbox::before {
   content: "";
@@ -206,29 +212,70 @@ main {
   filter: opacity(0.1);
   z-index: -1;
 }
-.Intro-configbox h2{
-  font-size: 1.5rem;
-  color: rgb(73, 253, 253);
+.Intro-configbox-headerbar {
   position: absolute;
+  width: 60%;
+  height: 5vh;
+  top: 0%;
   left: 50%;
-  top: 1.4rem;
-  transform: translate(-50%, -50%);
-}
-.Intro-configbox-partial {
-  width: 50%;
-  height: 100%;
-  padding: 1rem 1rem;
-  gap: 2rem;
+  transform: translate(-50%, -100%);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  container-type: inline;
+  white-space: nowrap;
 }
-.Intro-configbox-partial p{
-  font-size: 1.2rem;
+.Intro-configbox h2{
+  font-size: clamp(1rem, 3cqi + 3cqh, 1.5rem);
+  color: rgb(73, 253, 253);
+}
+.Intro-configbox h3{
+  font-size: clamp(0.6rem, 2cqi + 2cqh, 1.2rem);
   color: rgba(73, 253, 253, 0.856);
   text-align: left; /* Modificado no inline css do Intro.tsx */
-  padding-right: 40px;
+}
+.Intro-configbox-textwrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.Intro-configbox-textwrapper p{
+  font-size: clamp(0.4rem, 1cqi + 1cqh, 1rem);
+  color: rgba(90, 162, 162, 0.96);
+  text-align: justify; /* Modificado no inline css do Intro.tsx */
+}
+.Intro-configbox-slider{
+  position: relative;
+  transform: translate(+50%, 0%);
+  border: 1px solid rgba(73, 253, 253, 0.774);
+  border-radius: 3rem;
+  background-color: rgba(60, 70, 75, 0.6);
+  width: 3vw;
+  height: 100%;
+  cursor: pointer;
+  transition: 0.7s;
+}
+.Intro-configbox-slider.active {
+  background-color: rgba(73, 253, 253, 0.774);
+}
+.Intro-configbox-slider-dot{
+  position: absolute;
+  top: 50%;
+  transform: translate(0%, -50%);
+  width: 40%;
+  height: 80%;
+  
+  background: rgba(0, 0, 0, 0.822);
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 3rem;
+  z-index: 10;
+  transition: 1s;
+}
+.Intro-configbox-slider-dot.inactive{
+  left: 5%;
+}
+.Intro-configbox-slider-dot.active{
+  animation: dotEffect 0.7s ease-in-out forwards 0s;
 }
 .Intro-second-image {
   position: absolute;
@@ -239,119 +286,6 @@ main {
   background-image: url('../assets/Intro/undraw_personal-notes_n75r.svg');
   background-size: 100%; background-position: center; background-repeat: no-repeat;
 }
-
-.Intro-select-box {
-  width: 100%;
-  height: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  padding: 0rem 1rem;
-  gap: 1rem;
-  color: rgba(255, 255, 255, 0.836);
-  font-size: 1.4rem;
-}
-.Intro-select {
-  width: 1rem;
-  height: 1rem;
-  background-color: rgba(255, 255, 255, 0.932);
-  border-radius: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-  cursor: pointer;
-}
-.Intro-select-image{
-  position: absolute;
-  width: 2rem;
-  height: 3rem;
-  background-image: url('../assets/Intro/Vi.png');
-  background-size: 100%; background-position: center; background-repeat: no-repeat;
-  z-index: 3;
-}
-
-/* --- Desenvolvedor: Círculo central - Seleção de Ambiente 3/3 --- */
-.Intro-circle {
-  width: 360px;
-  height: 360px;
-  border-radius: 15rem;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transform-style: preserve-3d;
-  background-image: url('../assets/Intro/circle.png');
-  background-size: 100%; background-position: center; background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.Intro-circle h3 {
-  color:#0eb5bb;
-  font-size: 1.6rem;
-  z-index: 3;
-  font-weight: bolder;
-}
-.Intro-rectangle {
-  width: 90vw;
-  height: 160px;
-  position: absolute;
-  transform: translateZ(-10px) rotate(-20deg);
-  display: flex;
-  justify-content: left;
-  align-items: center;
-}
-.Intro-rectangle-partial{
-  height: 100%;
-  width: 50%;
-  border-radius: 5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 0rem 5rem;
-}
-.Intro-rectangle-partial:hover{
-  text-shadow: 0 1px 2px rgb(73, 253, 253);
-  box-shadow: inset 1px 2px 4px rgb(73, 253, 253);
-  cursor: pointer;
-  transform: scale(1.03);
-}
-.Intro-rectangle-partial h4 { 
-  font-size: 1.5rem;
-}
-.Intro-rectangle-partial.left{ justify-content: left; border: 1px solid rgb(72, 201, 176); border-top: none; }
-.Intro-rectangle-partial.right{ justify-content: right; border: 1px solid rgb(132, 196, 240); border-bottom: none; }
-.Intro-rectangle-partial.left:hover { box-shadow: inset 1px -2px 4px rgb(73, 253, 253); }
-.Intro-lines {
-  width: 12rem;
-  height: 8rem;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.Intro-lines.left{
-  left: 0rem;
-  top: -14rem;
-  transform: rotate(20deg) translate(50%, -50%);
-}
-.Intro-lines.left h5 {
-  font-size: large;
-  color: rgb(61, 224, 203);
-}
-.Intro-lines.left p { color: rgb(61, 224, 203); }
-.Intro-lines.right{
-  right: 0rem;
-  top: 14rem;
-  transform: rotate(20deg) translate(-50%, 50%);
-}
-.Intro-lines.right h5 {
-  font-size: large;
-  color: rgb(95, 207, 241);
-}
-.Intro-lines.right p { color: rgb(149, 218, 240); }
 
 
 @keyframes backgroundEffect {
@@ -380,7 +314,7 @@ main {
     left: 50%;
   }
   100% {
-    top: 4rem;
+    top: 5%;
     left: 50%;
   }
 }
@@ -400,5 +334,13 @@ main {
   100% {
     filter: blur(0px) brightness(0.35);
     transform: scale(1);
+  }
+}
+@keyframes dotEffect{
+  0% {
+    left: 5%;
+  }
+  100% {
+    left: 55%;
   }
 }
