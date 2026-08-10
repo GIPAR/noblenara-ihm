@@ -32,7 +32,17 @@ export const Intro = () => {
     }
   }, [userConfig.Login, isReturning]);
 
-  const HandleLogin = useCallback(() => {
+  const HandleLogin = useCallback(async () => {
+
+// Tenta avisar o backend do login; se o servidor falhar, o catch captura o erro para a tela não travar.
+try { 
+  await fetch('http://localhost:8000/api/login', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }, 
+    body: JSON.stringify({ username: User.name, password: User.password }) });
+   } catch (error) { 
+    console.error(error); }
+  
     if(User.name == 'gipar' && User.password == 'usergipar'){
       setuserConfig({Login: true, isAdmin: true, Intro: true});
       setIsReturning(false);  // Reseta para carregamento inicial
