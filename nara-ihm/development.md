@@ -2,8 +2,12 @@
 
 ## Development Notes
 
-1. Organizado os nomes das moléculas
-Changes: Molecule.ts, Configuration.tsx, Dashboard.tsx, Rosapi.tsx, TeleopService.tsx, App.tsx
+Download do vllm openai
+
+docker pull vllm/vllm-openai:nightly
+
+1. Aprimoramento do visual do assistente de ia e modificação dos botões;
+Changes: LLMAssitant.tsx, LLMAssitant.css
 
 ## Planos Atuais
 
