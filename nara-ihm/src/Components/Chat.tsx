@@ -3,9 +3,9 @@ import { askGemini } from "../services/LLMService";
 import { executeVoiceCommand } from "../services/VoiceCommandService";
 import { isRobotCommand } from "../services/CommandRouterService";
 import { speechService } from "../services/SpeechService";
-import "./LLMAssistant.css";
 import { useStore } from "zustand";
 import { ChatStore, ROStore } from "../contexts/Store";
+import "./Chat.css";
 
 function createTwist(linearX: number, angularZ: number) {
   return {
@@ -14,7 +14,7 @@ function createTwist(linearX: number, angularZ: number) {
   };
 }
 
-export default function LLMAssistant() {
+export default function Chat() {
   const [awaiting, setawaiting] = useState(false);
   const [reply, setreply] = useState("Olá! eu sou a sua assistente virtual, como posso ajudar a vossa excelência hoje?")
 

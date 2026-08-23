@@ -1,5 +1,5 @@
 import VoiceChat from "./Components/VoiceChat";
-import LLMAssistant from "./Components/LLMAssistant";
+import Chat from "./Components/Chat";
 import { useEffect, useRef } from 'react'
 import { Intro } from './Components/Intro';
 import { ConfigurationMenu } from './Components/Configuration';
@@ -50,7 +50,7 @@ function App() {
 
         {ShowVoiceChat ? <VoiceChat /> : null}
 
-        {ShowAssistant ? <LLMAssistant /> : null}
+        {ShowAssistant ? <Chat /> : null}
 
         <div className='App-header'> <h1>
           {robotData.project === "noblenara" ? ( "NARA - Robot HMI" ):( null )}
