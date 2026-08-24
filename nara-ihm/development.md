@@ -2,12 +2,17 @@
 
 ## Development Notes
 
-Download do vllm openai
+1. Modificação do Chat.tsx, organização do código e modificação da estrutura;
+Changes: Chat.tsx
 
-docker pull vllm/vllm-openai:nightly
+2. Removido arquivos para utilização apenas da IA para envio e recebimento de comandos
+Changes: App.tsx, Configuration.tsx, Molecule.ts
+Deleted: CommandRouterService.ts, VoiceCommandService.ts, VoicePattern.ts; VoiceChat.tsx, VoiceChat.css
 
-1. Aprimoramento do visual do assistente de ia e modificação dos botões;
-Changes: LLMAssitant.tsx, LLMAssitant.css
+3. Modificação da frase de contexto
+Chabges: AssistantContextService.tsx
+
+Obs: Espera-se que no futuro o assistente de IA possa fazer as funcionalidades removidas e ir além
 
 ## Planos Atuais
 
