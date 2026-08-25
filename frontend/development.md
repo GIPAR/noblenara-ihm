@@ -2,17 +2,8 @@
 
 ## Development Notes
 
-1. Modificação do Chat.tsx, organização do código e modificação da estrutura;
-Changes: Chat.tsx
-
-2. Removido arquivos para utilização apenas da IA para envio e recebimento de comandos
-Changes: App.tsx, Configuration.tsx, Molecule.ts
-Deleted: CommandRouterService.ts, VoiceCommandService.ts, VoicePattern.ts; VoiceChat.tsx, VoiceChat.css
-
-3. Modificação da frase de contexto
-Chabges: AssistantContextService.tsx
-
-Obs: Espera-se que no futuro o assistente de IA possa fazer as funcionalidades removidas e ir além
+1. Renomeado as pastas base e atualização do README
+Changes: nara-ihm -> frontend ; noblenara-backend -> backend ; package.json && package-lock && README
 
 ## Planos Atuais
 
