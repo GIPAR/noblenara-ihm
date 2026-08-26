@@ -2,8 +2,8 @@
 
 ## Development Notes
 
-1. Renomeado as pastas base e atualização do README
-Changes: nara-ihm -> frontend ; noblenara-backend -> backend ; package.json && package-lock && README
+1. Permitido que dispositivos externos do host use o backend pela utilização da variável hostIP
+Changes: Intro.tsx
 
 ## Planos Atuais
 

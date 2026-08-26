@@ -31,6 +31,7 @@ export const Intro = () => {
 
   const faceAttemptsRef = useRef(0);            // conta tentativas sem causar re-render
   const faceRecognitionStopped = useRef(false); // trava novas tentativas após esgotar ou logar
+  const hostIP = useStore(ROStore, (s) => s.ros.hostIP)
 
   // Efeito para ligar a webcam assim que o componente carrega
   useEffect(() => {
@@ -95,7 +96,7 @@ export const Intro = () => {
 
       setFaceStatusMsg("Iniciando reconhecimento facial");
 
-      const response = await fetch('http://localhost:8000/api/login-face', {
+      const response = await fetch(`http://${hostIP}:8000/api/login-face`, {
         method: 'POST',
         body: formData
       });
@@ -124,7 +125,7 @@ export const Intro = () => {
         setFaceStatusMsg(null);
       }
     }
-  }, [applyLoginSuccess]);
+  }, [hostIP, applyLoginSuccess]);
 
   // Dispara as tentativas de reconhecimento facial automaticamente ao carregar a tela
   useEffect(() => {
@@ -161,7 +162,7 @@ export const Intro = () => {
         formData.append('file', blob, 'webcam_snapshot.jpg');
       }
 
-      const response = await fetch('http://localhost:8000/api/login-form', {
+      const response = await fetch(`http://${hostIP}:8000/api/login-form`, {
         method: 'POST',
         body: formData
       });
@@ -178,7 +179,7 @@ export const Intro = () => {
       console.error(error);
       setLogData({msg: "Erro de conexão com o servidor", id: Date.now(), error: true});
     }
-  }, [User, applyLoginSuccess, setLogData]);
+  }, [User, hostIP, applyLoginSuccess, setLogData]);
 
   useEffect(() => {
     if (userConfig.Login === true){return}
