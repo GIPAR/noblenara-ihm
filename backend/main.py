@@ -4,18 +4,18 @@ from fastapi.middleware.cors import CORSMiddleware
 import cv2
 import numpy as np
 from pymongo import MongoClient
-from dotenv import load_dotenv
 
 from lbp_utils import detectar_e_recortar_rosto, calcular_histograma_lbp, distancia_qui_quadrado
 
-load_dotenv()
-MONGO_URI = os.getenv("MONGODB_URI")
+# String de conexão direta com o MongoDB Atlas
+MONGO_URI = "mongodb+srv://noblegipar_db_user:usergipar@cluster0.sa9aiot.mongodb.net/reconhecimento_db?appName=Cluster0"
+print(f"DEBUG - MONGODB_URI fixa aplicada: {MONGO_URI}")
+
+app = FastAPI(title="Backend da IHM")
 
 client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
 db = client["reconhecimento_db"]
 collection = db["vetores_faciais"]
-
-app = FastAPI(title="Backend da IHM")
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,13 +25,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Usado só pelo login manual (usuário/senha)
 USUARIOS = {
     "gipar": {"senha": "usergipar", "tipo": "admin"},
 }
 
-# Quanto MENOR, mais rígido a exigência de parecença (é uma distância, não uma porcentagem de acerto)
-LIMIAR_DISTANCIA = 0.15
+LIMIAR_DISTANCIA = 0.22
+K_VIZINHOS = 5
 
 
 @app.get("/")
@@ -75,20 +74,36 @@ async def login_face(file: UploadFile = File(...)):
 
     vetor_capturado = calcular_histograma_lbp(rosto)
 
-    melhor_tipo = None
-    menor_distancia = float("inf")
+    candidatos = []
+    try:
+        for documento in collection.find():
+            tipo = documento["tipo_usuario"]
+            for vetor_salvo in documento.get("vetores", []):
+                distancia = distancia_qui_quadrado(vetor_capturado, vetor_salvo)
+                candidatos.append((distancia, tipo))
+    except Exception as e:
+        print(f"Erro ao consultar o MongoDB: {e}")
+        return {"sucesso": False, "mensagem": "Erro de conexão com o banco de dados"}
 
-    for documento in collection.find():
-        for vetor_salvo in documento.get("vetores", []):
-            distancia = distancia_qui_quadrado(vetor_capturado, vetor_salvo)
-            if distancia < menor_distancia:
-                menor_distancia = distancia
-                melhor_tipo = documento["tipo_usuario"]
+    if not candidatos:
+        return {"sucesso": False, "mensagem": "Nenhum vetor cadastrado no banco"}
 
-    print(f"Melhor correspondência: {melhor_tipo} (distância: {menor_distancia:.4f})")
+    candidatos.sort(key=lambda c: c[0])
+    vizinhos = candidatos[:K_VIZINHOS]
 
-    if melhor_tipo is None or menor_distancia > LIMIAR_DISTANCIA:
+    vizinhos_validos = [(d, t) for d, t in vizinhos if d <= LIMIAR_DISTANCIA]
+
+    print(f"Vizinhos mais próximos: {[(round(d, 4), t) for d, t in vizinhos]}")
+
+    if not vizinhos_validos:
         return {"sucesso": False, "mensagem": "Rosto não reconhecido"}
+
+    votos = {}
+    for _, tipo in vizinhos_validos:
+        votos[tipo] = votos.get(tipo, 0) + 1
+    melhor_tipo = max(votos, key=votos.get)
+
+    print(f"Resultado da votação: {votos} -> {melhor_tipo}")
 
     return {
         "sucesso": True,
