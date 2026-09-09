@@ -35,6 +35,11 @@ export const Intro = () => {
 
   // Efeito para ligar a webcam assim que o componente carrega
   useEffect(() => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      console.warn("getUserMedia indisponível (contexto não seguro ou API ausente)");
+    return;
+    }
+
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
         const videoElement = document.getElementById('webcam-login') as HTMLVideoElement;
