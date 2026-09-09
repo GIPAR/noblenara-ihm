@@ -61,6 +61,10 @@ cd ~/noblegipar-ihm/frontend && \
     npm install
 ```
 
+### 2.3 - Hosting (Opcional)
+
+Recomenda-se habilitar o próprio computador para hostear o próprio wifi, enquanto simultaneamente conecta-se com uma rede externa. Para isso, [acesse este arquivo com o passo-a-passo](/docs/ap-manager/ap-manager.md)
+
 ## Inicializando o Website
 
 ### Inicializando o backend e a frontend
